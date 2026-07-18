@@ -10,6 +10,18 @@ company data. Deliberately generic so it's safe to clone on either machine.
 - `dcoe-roster/` — the DCOE sub-agent roster as an installable plugin
   (domain, planner, architect, executor, tester, reviewer, doc-writer,
   debugger, data-agent). Matches CLAUDE.md v3.2's model routing table.
+  Also holds `dcoe-roster/CORE.md` — the shared DCOE core (architecture,
+  roster table, model routing, universal hard rules), distributed to any
+  project via a plain read instruction in that project's own `CLAUDE.md`
+  (not a Claude Code `@import` — those don't resolve absolute paths
+  outside the project tree). See `ADR-007` in the `Operations` hub's
+  `docs/decisions/` for the full design.
+- `hub-template/` — the mechanical skeleton for running the hub-and-spoke
+  `/continue` pattern at *any* Tebello-governed vault root (not just
+  `Operations`): a vault-agnostic `continue.md` to copy in verbatim, and
+  `HUB-CHECKLIST.md`, a checklist a session reconciles that vault's own
+  root `CLAUDE.md` against (never a file that overwrites one). See
+  `ADR-008` in the `Operations` hub's `docs/decisions/`.
 
 **Not included:** CLAUDE.md itself. Claude Code's plugin system does not
 recognize a CLAUDE.md inside a plugin folder — it's ignored by design.
