@@ -3,7 +3,7 @@
   "owner": {
     "name": "Tebello Lelosa"
   },
-  "description": "Private Claude Code marketplace for Tebello Lelosa's shared tooling — deployed identically on the Fan Movement work PC and the personal Pappa T, kept independent of project content on either machine.",
+  "description": "Private Claude Code marketplace for Tebello Lelosa's shared tooling — deployed identically on Operations and the personal Pappa T, kept independent of project content on either machine.",
   "plugins": [
     {
       "name": "dcoe-roster",
