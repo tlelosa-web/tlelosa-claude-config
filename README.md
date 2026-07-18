@@ -21,7 +21,11 @@ company data. Deliberately generic so it's safe to clone on either machine.
   `Operations`): a vault-agnostic `continue.md` to copy in verbatim, and
   `HUB-CHECKLIST.md`, a checklist a session reconciles that vault's own
   root `CLAUDE.md` against (never a file that overwrites one). See
-  `ADR-008` in the `Operations` hub's `docs/decisions/`.
+  `ADR-008` in the `Operations` hub's `docs/decisions/`. Also holds
+  `SKILLS-AUDIT-CHECKLIST.md` — run from a local session to find Skills
+  built in one machine's projects that are generic enough to share with
+  the other's. Feeds a future `shared-skills/` plugin (not created yet —
+  only scaffolded once the audit turns up a real skill to migrate in).
 
 **Not included:** CLAUDE.md itself. Claude Code's plugin system does not
 recognize a CLAUDE.md inside a plugin folder — it's ignored by design.
