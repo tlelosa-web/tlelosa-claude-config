@@ -1,7 +1,7 @@
 # tlelosa-claude-config
 
 Private Claude Code plugin marketplace. Holds tooling shared across the
-Fan Movement work PC and the personal home PC — never project content or
+Fan Movement work PC and the personal Pappa T — never project content or
 company data. Deliberately generic so it's safe to clone on either machine.
 
 ## What's in here
@@ -18,7 +18,7 @@ script) when a project is created or the master template updates. Keep
 the master template (`CLAUDE.md.template`) alongside this repo for
 reference, not as a plugin component.
 
-## One-time setup — run on EACH machine (work PC and home PC)
+## One-time setup — run on EACH machine (work PC and Pappa T)
 
 ```powershell
 # Confirm git auth works first (SSH key loaded, or gh auth login, or a PAT)
