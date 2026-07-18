@@ -27,7 +27,7 @@ gh auth status
 # Inside a Claude Code session:
 ```
 ```
-/plugin marketplace add https://github.com/<your-username>/tlelosa-claude-config.git
+/plugin marketplace add https://github.com/tlelosa-web/tlelosa-claude-config.git
 /plugin install [email protected]
 ```
 
