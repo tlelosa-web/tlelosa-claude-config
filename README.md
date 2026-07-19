@@ -36,6 +36,18 @@ company data. Deliberately generic so it's safe to clone on either machine.
   `docs/research/skill-drafts/` before migrating here — see that hub's
   `docs/patterns.md` for the promotion discipline.
 
+## Maintaining this repo
+
+This repo's own maintenance work (new plugin components, framework fixes)
+is tracked the same way it tells other vaults to track theirs — just not
+published as a plugin component, same as `CLAUDE.md` below:
+- `docs/todo.md` / `docs/session-log.md` — this repo's own task queue and
+  append-only session archive.
+- `.claude/commands/continue.md` / `.claude/commands/end-session.md` — a
+  resume/archive pair scoped to this repo specifically (simpler than the
+  hub-and-spoke `continue.md`/`retro.md` in `hub-template/`, which are
+  templates *for other vaults*, not for this repo itself).
+
 **Not included:** CLAUDE.md itself. Claude Code's plugin system does not
 recognize a CLAUDE.md inside a plugin folder — it's ignored by design.
 CLAUDE.md stays a per-project file, copied in manually (or via a small
