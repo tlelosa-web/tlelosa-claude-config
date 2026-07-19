@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.0** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.1** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -139,6 +139,12 @@ relax these.
 8. **Agent roster lives at user level** (`~/.claude/agents/`) — do not fork a
    full copy into a project's `.claude/agents/`; add project files there only
    as single-agent overrides.
+9. **Verify remote state before asserting it.** Before reporting repo/PR/
+   branch status or proposing an action conditioned on it (open a PR, merge,
+   rebase), `git fetch` the relevant ref and check it — never answer from a
+   locally cached branch ref that may be stale. This applies to any external
+   state a session doesn't control alone (remote branches, deployed
+   versions, other sessions' in-progress work), not git specifically.
 
 -----
 

@@ -21,7 +21,13 @@ company data. Deliberately generic so it's safe to clone on either machine.
   `Operations`): a vault-agnostic `continue.md` to copy in verbatim, and
   `HUB-CHECKLIST.md`, a checklist a session reconciles that vault's own
   root `CLAUDE.md` against (never a file that overwrites one). See
-  `ADR-008` in the `Operations` hub's `docs/decisions/`.
+  `ADR-008` in the `Operations` hub's `docs/decisions/`. Also holds
+  `retro.md` — the batched-improvement counterpart to `/continue`: reviews
+  a vault's `docs/todo.md`/`docs/session-log.md` for recurring friction
+  (redundant work, a session needing to be manually corrected on something
+  already settled) and proposes a confirmable batch of fixes, logging each
+  run to that vault's own `docs/retro-log.md` so it doesn't re-raise what
+  was already declined.
 - `shared-skills/` — cross-project Claude Code Skills as an installable
   plugin (`shared-skills/skills/<name>/SKILL.md` each): `dev-server-
   staleness-check`, `safe-office-file-read`, `reuse-existing-ui-primitive`,

@@ -1,7 +1,8 @@
 # Hub Root CLAUDE.md Checklist
 
 **Source:** `tlelosa-claude-config` (`hub-template`) | **Companion to:**
-`hub-template/continue.md` | **Not a file to install as-is** — this is a
+`hub-template/continue.md` and `hub-template/retro.md` | **Not a file to
+install as-is** — this is a
 checklist a session reconciles its own hub root's `CLAUDE.md` against, never
 a template that overwrites one. A hub root's real content (its project
 index, life-domain sections, whatever is genuinely local to that vault)
@@ -63,6 +64,15 @@ project-to-project.
       note the actual paths near the top of `CLAUDE.md` (or update
       `continue.md`'s Step 1 to point at them) rather than leaving a
       silent mismatch.
+- [ ] **`.claude/commands/retro.md` exists and is referenced.** If it's
+      missing, copy `hub-template/retro.md` (this repo, verbatim — also
+      vault-agnostic) into place at `<hub-root>/.claude/commands/retro.md`.
+      This is the batched-improvement counterpart to `/continue`: it
+      reviews `docs/todo.md`/`docs/session-log.md` for recurring friction
+      (redundant work, a session having to be manually corrected on
+      something already settled) and proposes fixes, rather than resuming
+      forward-looking work. Mention it exists in the hub root's `CLAUDE.md`
+      alongside the `/continue` reference so it isn't forgotten.
 
 ## After reconciling
 
