@@ -8,6 +8,11 @@ vault-agnostic, copy-in-verbatim treatment. Never builds anything without
 confirmation.
 -->
 
+> **Known gap:** see the note at the top of `continue.md` — typing
+> `/retro` may hit the same "isn't available in this environment" wall on
+> some session surfaces (confirmed on the Claude Code mobile app). Same
+> workaround: ask in plain text instead of the slash form.
+
 ## Purpose
 
 `/continue` orients on *what's next*. `/retro` looks backward instead: did

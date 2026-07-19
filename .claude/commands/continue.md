@@ -8,6 +8,20 @@ is a simplified, repo-specific sibling of hub-template/continue.md (that one
 is a template for OTHER vaults; this one governs this repo itself).
 -->
 
+> **Known gap (confirmed 2026-07-19):** on at least one session surface —
+> a "Default"-type session in the Claude Code mobile app — typing
+> `/continue` literally returns "isn't available in this environment,"
+> even though the command file is present and correctly formed (confirmed
+> by invoking it directly via the `Skill` tool in a Claude Code Remote/web
+> session, where it ran fine). This looks like a client-side restriction on
+> that surface — project `.claude/commands/` files may not be dispatched as
+> `/name` everywhere Claude Code runs. **Workaround:** ask in plain text
+> ("continue" / "run continue") instead of typing the slash — the assistant
+> can invoke the same command by name regardless of whether that surface's
+> own `/` autocomplete recognizes it. Unconfirmed whether the full desktop
+> CLI (where this was originally designed to run, e.g. on Pappa T) has the
+> same restriction — check there before assuming it's universal.
+
 ## Step 1 — Verify remote state (CORE.md hard rule 9)
 
 ```

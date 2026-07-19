@@ -8,6 +8,11 @@ The "archiving" half of the /continue pair: makes sure the next session
 re-deriving or re-litigating what already happened.
 -->
 
+> **Known gap:** see the note at the top of `continue.md` — typing `/end-
+> session` may hit the same "isn't available in this environment" wall on
+> some session surfaces (confirmed on the Claude Code mobile app). Same
+> workaround: ask in plain text instead of the slash form.
+
 ## Step 1 — Verify nothing is left dangling
 
 ```

@@ -7,6 +7,17 @@ Resumes work from where the last root-level session ended. Project-aware:
 identifies which project folder is in play before acting.
 -->
 
+> **Known gap (confirmed 2026-07-19, `tlelosa-claude-config`):** on at
+> least one session surface — a "Default"-type session in the Claude Code
+> mobile app — typing `/continue` literally returns "isn't available in
+> this environment," even with a correctly formed command file (confirmed
+> working when invoked directly via the `Skill` tool in a Claude Code
+> Remote/web session). Looks like a client-side restriction on that
+> surface, not a broken file. **Workaround:** ask in plain text ("continue"
+> / "run continue") instead of the slash form. Unconfirmed whether the
+> full desktop CLI has the same restriction — check on that surface before
+> assuming it's universal, and update this note once confirmed either way.
+
 ## Step 0 — Rename Stale Sessions
 
 Before orienting, clean up titles left over from prior `/continue` runs:

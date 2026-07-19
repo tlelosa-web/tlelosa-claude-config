@@ -20,9 +20,15 @@ project work on any downstream repo.
         asserting) in `Operations/docs/decisions/` — referenced from
         `CORE.md` by number elsewhere in this repo's convention, but no
         ADR number has been assigned since that repo wasn't in scope here.
-- [ ] **Verify `/continue`'s actual resume-report output** (not just that it
-      registers) on a fresh session — today's dogfooding only confirmed
-      command discovery + description text, not a full Step 1-4 run.
+- [ ] **Confirm whether the desktop CLI (Pappa T / work PC) has the same
+      "isn't available in this environment" restriction** that the Claude
+      Code mobile app hit when typing `/continue` literally (screenshot
+      evidence, 2026-07-19). If the CLI is also affected, the `> Known gap`
+      note in `continue.md`/`end-session.md`/`hub-template/*.md` needs
+      upgrading from "confirmed on mobile, unconfirmed elsewhere" to
+      "confirmed everywhere except direct Skill-tool invocation" — a much
+      bigger deal, since the whole point of these commands was to be
+      typeable at a hub root on either machine.
 
 ## Done (this session, not yet reflected upstream)
 

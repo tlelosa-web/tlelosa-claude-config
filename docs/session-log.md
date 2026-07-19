@@ -82,3 +82,39 @@ Append-only. Written by `/end-session`, read by `/continue` (last entry) and
 - The resume-report *content* of `/continue` (Step 3's actual output, not
   just whether the command registers) is still unverified — today's
   dogfooding only exercised command discovery, not a full run.
+
+## 2026-07-19 — Confirmed: /continue fails on at least one session surface
+
+**Shipped:**
+- Tebello reported `/continue` "still not executing" and provided a
+  screenshot: a "Default"-type session in the Claude Code mobile app,
+  where typing `/continue` twice both times returned "/continue isn't
+  available in this environment" verbatim from the harness.
+- Cross-checked by invoking `continue` directly via the `Skill` tool in
+  this (Claude Code Remote/web) session — it ran correctly, producing the
+  full Step 1-4 resume report grounded in real git/docs state. So the
+  command file itself is sound; the failure is specific to how at least
+  one client surface dispatches (or refuses to dispatch) project-level
+  `.claude/commands/` files as literal `/name` input.
+- Added a `> Known gap` callout to the top of all four command files
+  (`.claude/commands/continue.md`, `end-session.md`,
+  `hub-template/continue.md`, `retro.md`) documenting the symptom and the
+  plain-text workaround, so this isn't rediscovered painfully on Pappa T
+  or at the Operations hub.
+
+**Decisions:** none new — genuinely unresolved pending a CLI check (see
+`docs/todo.md`).
+
+**Manual corrections needed:**
+- Partial — Tebello had to supply the screenshot before this could be
+  pinned down; my first two responses guessed at causes (stale
+  registration, then asked clarifying questions) without independently
+  confirming client-side dispatch was the actual failure point. The
+  eventual fix (invoking directly via `Skill` to isolate file-vs-client)
+  should have been the first move, not the second-to-last.
+
+**Still open:**
+- Whether the desktop CLI has the same restriction — see `docs/todo.md`.
+  This matters a lot: if it does, the slash-command form of `/continue`/
+  `/retro` doesn't work anywhere except direct agent invocation, which
+  changes what these commands are actually good for.
