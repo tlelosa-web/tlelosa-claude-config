@@ -7,8 +7,8 @@ project work on any downstream repo.
 
 ## Open
 
-- [ ] **Decide on opening a PR** for commit `cac7ecf` (CORE.md v1.1 hard
-      rule 9 + `hub-template/retro.md`) — currently pushed straight to
+- [ ] **Decide on opening a PR** for today's three commits (`cac7ecf`,
+      `3ebeee0`, `65c8836`) — currently pushed straight to
       `claude/repo-status-update-n5z63h`, no PR opened yet, awaiting a call.
 - [ ] **Operations hub reconciliation** — out of this repo's scope to do
       directly (different repo, not added to this session). Two follow-ups
@@ -20,9 +20,9 @@ project work on any downstream repo.
         asserting) in `Operations/docs/decisions/` — referenced from
         `CORE.md` by number elsewhere in this repo's convention, but no
         ADR number has been assigned since that repo wasn't in scope here.
-- [ ] **Dogfood `/continue` + `/end-session`** on the next session that
-      touches this repo — confirm the resume report is grounded in this
-      file and `session-log.md` rather than silence or stale state.
+- [ ] **Verify `/continue`'s actual resume-report output** (not just that it
+      registers) on a fresh session — today's dogfooding only confirmed
+      command discovery + description text, not a full Step 1-4 run.
 
 ## Done (this session, not yet reflected upstream)
 
@@ -31,4 +31,7 @@ project work on any downstream repo.
 - [x] `hub-template/retro.md` — batched-improvement counterpart to
       `/continue`, wired into `HUB-CHECKLIST.md`.
 - [x] `.claude/commands/continue.md` + `.claude/commands/end-session.md` —
-      this repo's own resume/archive pair (this task).
+      this repo's own resume/archive pair.
+- [x] Dogfooded both commands same-session; found and fixed a frontmatter
+      bug (comment banner instead of a real `description:` field) in all
+      four command files, confirmed fixed via the command picker.

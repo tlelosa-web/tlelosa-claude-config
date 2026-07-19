@@ -46,3 +46,39 @@ Append-only. Written by `/end-session`, read by `/continue` (last entry) and
   this session's repo scope, tracked in `docs/todo.md`.
 - `/continue`/`/end-session` unverified beyond this first authoring pass —
   needs a real second session to confirm the resume report reads right.
+
+## 2026-07-19 — Fix slash-command frontmatter; close out session
+
+**Shipped:**
+- Dogfooded `/continue`/`/end-session` immediately (same session, no reload
+  needed) — the command picker surfaced both, but with garbage descriptions
+  ("Step 1 — Verify remote state...", "Step 1 — Verify nothing is left
+  dangling") instead of a real summary.
+- Root cause: the `---`-delimited header on all four command files
+  (`.claude/commands/continue.md`, `end-session.md`,
+  `hub-template/continue.md`, `hub-template/retro.md`) was a comment banner,
+  not real YAML frontmatter — no `description:` key, so the picker fell
+  back to the first heading. Fixed all four with a proper `description:`
+  field; moved the explanatory banner to an HTML comment below it.
+- Commit `65c8836` pushed to `claude/repo-status-update-n5z63h`. Confirmed
+  fix by re-checking the command picker — both now show correct
+  one-line descriptions.
+- Ran this `/end-session` pass itself — first real use of the command,
+  closing out today's full session (commits `cac7ecf`, `3ebeee0`,
+  `65c8836`).
+
+**Decisions:** none new.
+
+**Manual corrections needed:**
+- No — this round the session caught its own defect (via dogfooding
+  immediately after building the feature) rather than Tebello having to
+  flag it. Worth noting as the pattern working as intended, in contrast to
+  the entry above.
+
+**Still open:**
+- PR decision for the three commits pushed today (`cac7ecf`, `3ebeee0`,
+  `65c8836`) — still outstanding, see `docs/todo.md`.
+- Operations hub reconciliation — still out of this session's scope.
+- The resume-report *content* of `/continue` (Step 3's actual output, not
+  just whether the command registers) is still unverified — today's
+  dogfooding only exercised command discovery, not a full run.
