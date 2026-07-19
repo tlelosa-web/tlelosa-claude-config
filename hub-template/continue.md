@@ -1,8 +1,11 @@
 ---
-# /continue — Hub Session Resume
-# Resumes work from where the last root-level session ended.
-# Project-aware: identifies which project folder is in play before acting.
+description: Resume work at this hub root — reconciles stale sessions, checks for a shared-core update, and reports last-completed/next-pending state from docs/todo.md and docs/session-log.md
 ---
+
+<!--
+Resumes work from where the last root-level session ended. Project-aware:
+identifies which project folder is in play before acting.
+-->
 
 ## Step 0 — Rename Stale Sessions
 

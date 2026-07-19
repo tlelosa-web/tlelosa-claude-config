@@ -1,10 +1,12 @@
 ---
-# /retro — Todo & Session-Log Retrospective (batched improvement proposals)
-# Reviews this hub's own operating history for recurring friction and
-# proposes concrete utilities to close the gaps. Never builds anything
-# without confirmation. Companion to hub-template/continue.md and
-# HUB-CHECKLIST.md — same vault-agnostic, copy-in-verbatim treatment.
+description: Review this hub's docs/todo.md and docs/session-log.md for recurring framework friction and propose a confirmable batch of fixes
 ---
+
+<!--
+Companion to hub-template/continue.md and HUB-CHECKLIST.md — same
+vault-agnostic, copy-in-verbatim treatment. Never builds anything without
+confirmation.
+-->
 
 ## Purpose
 

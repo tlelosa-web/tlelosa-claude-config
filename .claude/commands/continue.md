@@ -1,9 +1,12 @@
 ---
-# /continue — Resume work on tlelosa-claude-config itself
-# This repo is a plugin marketplace, not a hub-and-spoke vault — this
-# command is a simplified, repo-specific sibling of hub-template/continue.md
-# (that one is a template for OTHER vaults; this one governs this repo).
+description: Resume work on tlelosa-claude-config — verifies origin/main isn't stale before reporting session state from docs/todo.md and docs/session-log.md
 ---
+
+<!--
+This repo is a plugin marketplace, not a hub-and-spoke vault — this command
+is a simplified, repo-specific sibling of hub-template/continue.md (that one
+is a template for OTHER vaults; this one governs this repo itself).
+-->
 
 ## Step 1 — Verify remote state (CORE.md hard rule 9)
 

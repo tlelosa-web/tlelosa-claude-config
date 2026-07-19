@@ -1,9 +1,12 @@
 ---
-# /end-session — Archive this session's outcome on tlelosa-claude-config
-# The "archiving" half of the /continue pair: makes sure the next session
-# (here or on the other machine) starts from a true record instead of
-# re-deriving or re-litigating what already happened.
+description: Archive this session's outcome on tlelosa-claude-config — appends to docs/session-log.md and updates docs/todo.md before closing out
 ---
+
+<!--
+The "archiving" half of the /continue pair: makes sure the next session
+(here or on the other machine) starts from a true record instead of
+re-deriving or re-litigating what already happened.
+-->
 
 ## Step 1 — Verify nothing is left dangling
 
