@@ -9,6 +9,11 @@
       "name": "dcoe-roster",
       "source": "./dcoe-roster",
       "description": "DCOE (Domain -> Context -> Orchestrate -> Execute) sub-agent roster: domain, planner, architect, executor, tester, reviewer, doc-writer, debugger, data-agent. Matches CLAUDE.md v3.2 model routing."
+    },
+    {
+      "name": "shared-skills",
+      "source": "./shared-skills",
+      "description": "Cross-project Claude Code Skills: dev-server-staleness-check, safe-office-file-read, reuse-existing-ui-primitive, sweep-shared-ui-convention-fix, verify-ui-cardinality-against-output."
     }
   ]
 }

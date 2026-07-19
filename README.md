@@ -22,6 +22,13 @@ company data. Deliberately generic so it's safe to clone on either machine.
   `HUB-CHECKLIST.md`, a checklist a session reconciles that vault's own
   root `CLAUDE.md` against (never a file that overwrites one). See
   `ADR-008` in the `Operations` hub's `docs/decisions/`.
+- `shared-skills/` — cross-project Claude Code Skills as an installable
+  plugin (`shared-skills/skills/<name>/SKILL.md` each): `dev-server-
+  staleness-check`, `safe-office-file-read`, `reuse-existing-ui-primitive`,
+  `sweep-shared-ui-convention-fix`, `verify-ui-cardinality-against-output`.
+  Each was drafted business-agnostic in the `Operations` hub's
+  `docs/research/skill-drafts/` before migrating here — see that hub's
+  `docs/patterns.md` for the promotion discipline.
 
 **Not included:** CLAUDE.md itself. Claude Code's plugin system does not
 recognize a CLAUDE.md inside a plugin folder — it's ignored by design.
