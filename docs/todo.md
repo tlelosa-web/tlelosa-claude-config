@@ -26,7 +26,18 @@ completed task; one task = one commit.
       `docs/specs/2026-07-21-codex-gate-readiness-audit.md`; nothing
       implemented pending answers to its open questions (2026-07-21)
 
+- [x] Scope the Codex second-opinion gate via owner questionnaire (specs-only
+      payload, self-owned command, logged-note dissent, no plan-mode hook) —
+      spec at `docs/specs/2026-07-21-codex-gate-spec.md`, awaiting approval
+      (2026-07-21)
+
 ## Open
+
+- [ ] Implement the codex-gate plugin per
+      `docs/specs/2026-07-21-codex-gate-spec.md` — **blocked on owner
+      approval of that spec**; install Pappa T only
+- [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
+      is covered — until then codex-gate stays off the work PC
 
 - [ ] Validate the marketplace against a local clone on each machine —
       full steps in `docs/marketplace-validation.md`
