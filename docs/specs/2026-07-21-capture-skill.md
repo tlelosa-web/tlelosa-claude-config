@@ -1,7 +1,7 @@
 # Spec: `/capture` skill (shared-skills)
 
 **Date:** 2026-07-21
-**Status:** Proposed — queued in `docs/todo.md`, not yet scheduled
+**Status:** Implemented (2026-07-21) — `shared-skills/skills/capture/SKILL.md`
 **Origin:** Review of Nick Saraev's "Cerebras Killed Notion, Obsidian, and
 Your 'Second Brain'" video (2026-07-21 session). Verdict was: skip the
 org-scale RAG stack (embeddings, connectors, vector DB), keep the one
