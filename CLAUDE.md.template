@@ -170,8 +170,18 @@ Set per-agent in frontmatter: `model: claude-haiku-4-5`
 Use worktrees for all parallel Executor tasks.
 Never run concurrent agents on the same branch.
 
+**Agent executors: isolation is frontmatter, not `cd`.** The `executor` agent
+carries `isolation: worktree` — Claude Code gives each executor a temporary
+worktree and (since v2.1.203) confines its shell commands to it. Never rely on
+an agent `cd`-ing into a worktree: inside a subagent, `cd` does not persist
+between Bash calls, so a `cd`-based executor silently edits the main checkout.
+Two caveats: auto-worktrees branch from the **default branch** (not the
+session's HEAD) — for work stacked on an unmerged feature branch use the
+manual flow below — and they are auto-removed if the executor makes no changes.
+
 ```bash
-# Spawn isolated worktrees
+# Manual worktrees — human-driven parallel branches, or executor work that
+# must build on an unmerged feature branch:
 git worktree add ../worktree-feature-auth -b feature/auth
 git worktree add ../worktree-bugfix-bom   -b bugfix/bom-lookup
 
@@ -184,13 +194,14 @@ git cherry-pick <​commit-hash>
 
 **Rules:**
 
-- One agent per worktree.
+- One agent per worktree (`isolation: worktree` enforces this for agents).
 - Each Executor commits its own work atomically before stopping.
 - Orchestrator reviews and integrates; never commits unreviewed code.
-- Clean up worktrees after merge.
-- Executors run in a shared session by default — confirm the executor agent's
-  first action `cd`s into its assigned worktree path before it touches files,
-  rather than assuming worktree isolation is automatic.
+  Executors run in the **background by default** (Claude Code v2.1.198+) —
+  wait for each executor's completion notification before reviewing; never
+  merge a worktree whose executor hasn't reported done.
+- Clean up manual worktrees after merge; auto-worktrees clean themselves up
+  when unchanged.
 
 -----
 

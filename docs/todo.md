@@ -22,6 +22,11 @@ completed task; one task = one commit.
       `docs/specs/2026-07-21-debugger-systematic-debugging.md`; bumped
       dcoe-roster to 3.3.0 (2026-07-21)
 
+- [x] Config-audit fix 1/3: executor worktree isolation — `isolation:
+      worktree` frontmatter on the executor agent; template worktree section
+      rewritten (no more shared-session/`cd` rule) — spec at
+      `docs/specs/2026-07-21-config-audit-week1-fixes.md` (2026-07-21)
+
 ## Open
 
 - [ ] Validate the marketplace against a local clone on each machine —
