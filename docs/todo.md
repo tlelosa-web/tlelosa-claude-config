@@ -36,6 +36,10 @@ completed task; one task = one commit.
 
 ## Open
 
+> Machine-side items below are consolidated into one ordered run per
+> machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
+> tick here as each block passes.
+
 - [ ] Install + smoke-test codex-gate on Pappa T (Codex CLI authed at
       `~/.codex/`, then `/plugin install codex-gate@tlelosa-claude-config`;
       run `/codex-review` on a real spec and confirm the fail-warn path by
