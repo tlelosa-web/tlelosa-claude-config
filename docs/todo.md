@@ -7,6 +7,8 @@ completed task; one task = one commit.
 
 - [x] Set up the repo itself with the DCOE framework (slim profile):
       root `CLAUDE.md`, `docs/todo.md`, `docs/specs/` (2026-07-21)
+- [x] Adapt a minimal `/continue` for this repo:
+      `.claude/commands/continue.md` (2026-07-21)
 
 ## Open
 
