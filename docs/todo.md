@@ -36,13 +36,18 @@ completed task; one task = one commit.
 
 ## Open
 
+> Machine-side items below are consolidated into one ordered run per
+> machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
+> tick here as each block passes.
+
 - [ ] Install + smoke-test codex-gate on Pappa T (Codex CLI authed at
       `~/.codex/`, then `/plugin install codex-gate@tlelosa-claude-config`;
       run `/codex-review` on a real spec and confirm the fail-warn path by
       running it once with the network off) — acceptance criteria in
       `docs/specs/2026-07-21-codex-gate-spec.md`
 - [ ] Record the codex-gate ADR in the Operations hub's `docs/decisions/`
-      (vault-side; content per the spec + readiness audit)
+      (vault-side) — draft ready to copy over at
+      `docs/specs/2026-07-21-codex-gate-adr-draft.md`
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
