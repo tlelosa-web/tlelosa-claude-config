@@ -17,6 +17,10 @@ completed task; one task = one commit.
 - [x] Confirm Fan Movement IT policy allows the personal private repo on
       the Operations machine — cleared by IT (personal Anthropic account
       approved for use on the work PC) (2026-07-21)
+- [x] Fold the `systematic-debugging` methodology (obra/superpowers, MIT,
+      with attribution) into the `debugger` agent — spec at
+      `docs/specs/2026-07-21-debugger-systematic-debugging.md`; bumped
+      dcoe-roster to 3.3.0 (2026-07-21)
 
 ## Open
 
@@ -25,11 +29,9 @@ completed task; one task = one commit.
 - [ ] Install Anthropic's official `document-skills` (xlsx/docx/pdf) on both
       machines (`/plugin marketplace add anthropics/skills`) — complements
       `safe-office-file-read` and strengthens `data-agent`'s report prep
-- [ ] Fold the `systematic-debugging` methodology (obra/superpowers, MIT,
-      with attribution) into the `debugger` agent — spec written
-      (`docs/specs/2026-07-21-debugger-systematic-debugging.md`,
-      2026-07-21); implementation pending: rewrite `debugger.md`, bump
-      dcoe-roster to 3.3.0
+- [ ] Roll out dcoe-roster 3.3.0 (systematic-debugging debugger) on both
+      machines: `/plugin marketplace update` + `/plugin update
+      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`
 - [ ] Run the Context7 install on both machines (IT clearance confirmed
       broad, 2026-07-21) — exact command in README's "External plugins"
       section; tick when both Operations and Pappa T show it in

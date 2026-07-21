@@ -1,7 +1,8 @@
 # Spec: fold systematic-debugging methodology into the `debugger` agent
 
 **Date:** 2026-07-21
-**Status:** Proposed
+**Status:** Implemented (2026-07-21) — `dcoe-roster/agents/debugger.md`,
+dcoe-roster 3.3.0
 **Origin:** 2026-07-21 plugin/skills ecosystem review. Verdict was: do not
 install the Superpowers plugin (its full lifecycle duplicates DCOE), but
 its `systematic-debugging` skill is the most independently validated skill
