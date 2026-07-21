@@ -27,6 +27,11 @@ completed task; one task = one commit.
       rewritten (no more shared-session/`cd` rule) — spec at
       `docs/specs/2026-07-21-config-audit-week1-fixes.md` (2026-07-21)
 
+- [x] Config-audit fix 2/3: real hooks — `hub-template/hooks/` ships
+      `secret-scan.sh` (PreToolUse) + `auto-format.sh` (PostToolUse) +
+      settings snippet; template HOOKS section now maps gates to real
+      events and the settings.json registration (2026-07-21)
+
 ## Open
 
 - [ ] Validate the marketplace against a local clone on each machine —

@@ -293,14 +293,23 @@ Follow **TDD** for all new features:
 
 Quality gates fire automatically. Do not disable without deliberate decision.
 
-|Hook           |Trigger     |Action                                  |
-|---------------|------------|----------------------------------------|
-|`pre-commit`   |`git commit`|Run lint + format check. Block if fails.|
-|`pre-push`     |`git push`  |Run full test suite. Block if fails.    |
-|`post-task`    |Agent stops |Log summary to `docs/session-log.md`    |
-|`session-start`|New session |Load `docs/todo.md` into context        |
+Hooks are **registered in `.claude/settings.json`** (`hooks` key) —
+`.claude/hooks/` only stores the scripts. Gates and their real events:
 
-Hook configs: `.claude/hooks/`
+|Gate           |Event → matcher                        |Action                                   |
+|---------------|---------------------------------------|-----------------------------------------|
+|`secret-scan`  |`PreToolUse` → `Bash\|Edit\|Write`     |Block tool input containing secrets      |
+|`auto-format`  |`PostToolUse` → `Edit\|Write`          |black/ruff or prettier on the edited file|
+|`pre-commit`   |`PreToolUse` → `Bash(git commit*)`     |Lint + format check. Block if fails.     |
+|`pre-push`     |`PreToolUse` → `Bash(git push*)`       |Run full test suite. Block if fails.     |
+|`post-task`    |`SubagentStop`                         |Log summary to `docs/session-log.md`     |
+|`session-start`|`SessionStart`                         |Inject `docs/todo.md` as additionalContext|
+
+`secret-scan` and `auto-format` ship ready-made: copy the scripts and the
+settings snippet from the config repo's `hub-template/hooks/` (install steps
+in its README). A command hook blocks by exiting 2 — stderr goes back to
+Claude; PreToolUse blocks the call, PostToolUse can only report (the tool
+already ran). Verify wiring with `/hooks` in a session.
 
 **Philosophy:** Block at commit time, not write time.
 Let agents complete their work before the gate fires.
