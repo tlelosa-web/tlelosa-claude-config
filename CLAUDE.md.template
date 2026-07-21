@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.2 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.3 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -137,6 +137,7 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
+|`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
 
 ### Model routing (via OpenRouter)
 
@@ -158,6 +159,10 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |Search / grep only                 |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
+
+The Haiku row is implemented by the roster's `Explore` agent — an override of
+the built-in Explore, which since Claude Code v2.1.198 inherits the session
+model. No override deployed = search runs at Sonnet 5 prices.
 
 **Effort tiers** map onto the Thinking Levels table below — low effort pairs with *(none)*/`think`, medium with `think hard`, high with `think harder`/`ultrathink`.
 
@@ -305,11 +310,10 @@ Hooks are **registered in `.claude/settings.json`** (`hooks` key) —
 |`post-task`    |`SubagentStop`                         |Log summary to `docs/session-log.md`     |
 |`session-start`|`SessionStart`                         |Inject `docs/todo.md` as additionalContext|
 
-`secret-scan` and `auto-format` ship ready-made: copy the scripts and the
-settings snippet from the config repo's `hub-template/hooks/` (install steps
-in its README). A command hook blocks by exiting 2 — stderr goes back to
-Claude; PreToolUse blocks the call, PostToolUse can only report (the tool
-already ran). Verify wiring with `/hooks` in a session.
+`secret-scan` and `auto-format` ship ready-made: copy scripts + settings
+snippet from the config repo's `hub-template/hooks/` (steps in its README).
+A hook blocks by exiting 2 — stderr goes back to Claude; PreToolUse blocks
+the call, PostToolUse only reports. Verify with `/hooks` in a session.
 
 **Philosophy:** Block at commit time, not write time.
 Let agents complete their work before the gate fires.
@@ -488,5 +492,9 @@ At the start of every session, Claude must:
 *v3.2 change: sub-agent roster deployment moved from project-level
 `.claude/agents/` to user-level `~/.claude/agents/`, shared across all
 projects. Project-level now reserved for per-project overrides only.*
+
+*v3.3 (see `docs/research/claude-code-config-audit.md`): executor isolation
+via `isolation: worktree` (shared-session/`cd` rule removed); HOOKS mapped to
+real events (scripts in `hub-template/hooks/`); `Explore` Haiku override.*
 
 *Last review: July 2026 — Tebello Lelosa*

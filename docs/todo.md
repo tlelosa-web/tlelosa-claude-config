@@ -32,6 +32,11 @@ completed task; one task = one commit.
       settings snippet; template HOOKS section now maps gates to real
       events and the settings.json registration (2026-07-21)
 
+- [x] Config-audit fix 3/3: `Explore` override agent (`model:
+      claude-haiku-4-5`) restores the Haiku search tier — built-in Explore
+      inherits the session model since Claude Code v2.1.198; CORE.md → 1.1,
+      template → v3.3, dcoe-roster → 3.4.0 (2026-07-21)
+
 ## Open
 
 - [ ] Validate the marketplace against a local clone on each machine —
@@ -39,9 +44,14 @@ completed task; one task = one commit.
 - [ ] Run the `document-skills` install on both machines — exact commands
       in README's "External plugins" section; tick when both Operations
       and Pappa T show it in `/plugin list`
-- [ ] Roll out dcoe-roster 3.3.0 (systematic-debugging debugger) on both
-      machines: `/plugin marketplace update` + `/plugin update
-      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`
+- [ ] Roll out dcoe-roster 3.4.0 (systematic-debugging debugger from 3.3.0
+      + executor `isolation: worktree` + `Explore` Haiku override; CORE.md
+      1.1, template v3.3) on both machines: `/plugin marketplace update` +
+      `/plugin update dcoe-roster@tlelosa-claude-config` + `/reload-plugins`;
+      also deploy `explore.md` to `~/.claude/agents/` alongside the roster
+- [ ] Wire the new hooks into live projects: copy `hub-template/hooks/`
+      scripts + settings snippet into MIMS App, IQ, TebelloReborn, Tenders
+      (steps in `hub-template/hooks/README.md`)
 - [ ] Run the Context7 install on both machines (IT clearance confirmed
       broad, 2026-07-21) — exact command in README's "External plugins"
       section; tick when both Operations and Pappa T show it in

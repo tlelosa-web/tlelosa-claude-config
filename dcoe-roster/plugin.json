@@ -1,7 +1,7 @@
 {
   "name": "dcoe-roster",
-  "version": "3.3.0",
-  "description": "DCOE sub-agent roster for Claude Code, matching CLAUDE.md v3.2. Installs to user scope so it applies automatically across every project on a machine.",
+  "version": "3.4.0",
+  "description": "DCOE sub-agent roster for Claude Code, matching CLAUDE.md v3.3. Installs to user scope so it applies automatically across every project on a machine.",
   "author": {
     "name": "Tebello Lelosa"
   }

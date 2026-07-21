@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.0** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.1** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -93,6 +93,7 @@ specific project's export format. A same-named file in a project's own
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
+|`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
 
 ### Model routing
 
@@ -118,6 +119,11 @@ per-task escalation.
 |Search / grep only                 |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
+
+The Haiku search tier is implemented by the roster's `Explore` agent — an
+override of Claude Code's built-in Explore, which since v2.1.198 inherits the
+session model instead of defaulting to Haiku. Without the override deployed,
+search delegations silently run at Sonnet 5 prices.
 
 -----
 
