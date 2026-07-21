@@ -86,10 +86,11 @@ marketplace.json / plugin.json schema here is a best-effort starting
 point — cross-check against `code.claude.com/docs/en/plugins` if
 `/plugin marketplace add` reports a validation error.
 
-## One thing worth checking before using this on Operations
+## IT-policy status (Operations machine)
 
-Confirm whether Fan Movement's IT policy allows cloning a personal private
-GitHub repo (or using a personal GitHub/git account) on a company-issued
-machine. This repo contains no company data by design, but the account and
-hosting choice is a policy question for your employer, not something this
-repo can resolve on its own.
+Cleared by Fan Movement IT (2026-07-21): personal Anthropic account approved
+for use on the work PC, covering this repo's use there. This repo still
+contains no company data by design — that remains a hard rule regardless of
+the clearance. If the policy changes, or a new tool goes beyond what was
+cleared (e.g. a plugin talking to a new external service), re-confirm before
+installing it on Operations.

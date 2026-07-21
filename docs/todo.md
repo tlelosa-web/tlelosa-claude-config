@@ -14,6 +14,9 @@ completed task; one task = one commit.
 - [x] Build `/capture` skill in `shared-skills` — spec at
       `docs/specs/2026-07-21-capture-skill.md`; bumped shared-skills to
       1.1.0 (2026-07-21)
+- [x] Confirm Fan Movement IT policy allows the personal private repo on
+      the Operations machine — cleared by IT (personal Anthropic account
+      approved for use on the work PC) (2026-07-21)
 
 ## Open
 
@@ -26,7 +29,5 @@ completed task; one task = one commit.
       with attribution) into the `debugger` agent — structural change:
       spec in `docs/specs/` first, bump dcoe-roster version
 - [ ] Install the Context7 plugin for hub dev projects (live version-correct
-      library docs for executor/debugger) — personal machine first; hold on
-      the Operations machine until the Fan Movement IT-policy check clears
-- [ ] Confirm Fan Movement IT policy allows the personal private repo on
-      the Operations machine — see README's final section
+      library docs for executor/debugger) on both machines — IT-policy
+      check cleared 2026-07-21
