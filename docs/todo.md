@@ -21,6 +21,10 @@ completed task; one task = one commit.
       with attribution) into the `debugger` agent — spec at
       `docs/specs/2026-07-21-debugger-systematic-debugging.md`; bumped
       dcoe-roster to 3.3.0 (2026-07-21)
+- [x] Audit readiness for a cross-family Codex second-opinion gate —
+      findings (recommendation, blockers, open questions) at
+      `docs/specs/2026-07-21-codex-gate-readiness-audit.md`; nothing
+      implemented pending answers to its open questions (2026-07-21)
 
 ## Open
 
