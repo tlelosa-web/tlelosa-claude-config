@@ -86,10 +86,27 @@ marketplace.json / plugin.json schema here is a best-effort starting
 point — cross-check against `code.claude.com/docs/en/plugins` if
 `/plugin marketplace add` reports a validation error.
 
+## External plugins — run on EACH machine (Operations and Pappa T)
+
+Approved external tooling installed alongside this marketplace (not
+distributed through it — install from the official directory so upstream
+updates flow directly):
+
+```
+# Context7 — live, version-correct library docs for executor/debugger work
+/plugin install context7@claude-plugins-official
+```
+
+Install at **user** scope (the default) so it's available across projects.
+Works without an API key at lower rate limits; add a key later via
+context7.com if throttling bites. Covered by the IT clearance below.
+
 ## IT-policy status (Operations machine)
 
 Cleared by Fan Movement IT (2026-07-21): personal Anthropic account approved
-for use on the work PC, covering this repo's use there. This repo still
+for use on the work PC, covering this repo's use there. Confirmed broad
+enough to cover approved external AI tooling, including Context7's external
+MCP service. This repo still
 contains no company data by design — that remains a hard rule regardless of
 the clearance. If the policy changes, or a new tool goes beyond what was
 cleared (e.g. a plugin talking to a new external service), re-confirm before

@@ -28,6 +28,7 @@ completed task; one task = one commit.
 - [ ] Fold the `systematic-debugging` methodology (obra/superpowers, MIT,
       with attribution) into the `debugger` agent — structural change:
       spec in `docs/specs/` first, bump dcoe-roster version
-- [ ] Install the Context7 plugin for hub dev projects (live version-correct
-      library docs for executor/debugger) on both machines — IT-policy
-      check cleared 2026-07-21
+- [ ] Run the Context7 install on both machines (IT clearance confirmed
+      broad, 2026-07-21) — exact command in README's "External plugins"
+      section; tick when both Operations and Pappa T show it in
+      `/plugin list`
