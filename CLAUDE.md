@@ -40,6 +40,9 @@ Content:     Shared tooling only — NEVER project content or company data
 - `CLAUDE.md.template` — **master template for OTHER projects.** Reference
   only; never fill it in or edit it as this repo's own config.
 - `docs/todo.md` — task list. `docs/specs/` — specs for larger changes.
+- `.claude/commands/continue.md` — this repo's own `/continue` (minimal
+  adaptation of `hub-template/continue.md`: orient via `docs/todo.md` +
+  git state, report, wait for confirmation — no hub session hygiene).
 
 -----
 
