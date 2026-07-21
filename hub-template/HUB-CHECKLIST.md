@@ -63,6 +63,16 @@ project-to-project.
       note the actual paths near the top of `CLAUDE.md` (or update
       `continue.md`'s Step 1 to point at them) rather than leaving a
       silent mismatch.
+- [ ] **Note frontmatter convention is documented.** The hub root's
+      `CLAUDE.md` states that new vault notes carry YAML frontmatter with
+      at minimum `date` (ISO, when captured/written), `source` (where it
+      came from — a URL, "session", a project name), `project` (which
+      project/life-domain it belongs to, or `hub`), and `status` (`draft` |
+      `active` | `archived`). This is what lets any retrieval or capture
+      flow weight recency and provenance instead of treating all notes as
+      equally current. Existing notes are **not** retro-fitted in bulk —
+      the convention applies going forward, and to old notes only as they
+      get touched anyway.
 
 ## After reconciling
 

@@ -9,6 +9,8 @@ completed task; one task = one commit.
       root `CLAUDE.md`, `docs/todo.md`, `docs/specs/` (2026-07-21)
 - [x] Adapt a minimal `/continue` for this repo:
       `.claude/commands/continue.md` (2026-07-21)
+- [x] Add note-frontmatter convention item to `hub-template/HUB-CHECKLIST.md`
+      (from second-brain video review) (2026-07-21)
 
 ## Open
 
@@ -16,3 +18,6 @@ completed task; one task = one commit.
       full steps in `docs/marketplace-validation.md`
 - [ ] Confirm Fan Movement IT policy allows the personal private repo on
       the Operations machine — see README's final section
+- [ ] Build `/capture` skill in `shared-skills` — spec at
+      `docs/specs/2026-07-21-capture-skill.md`. Deliberately queued behind
+      MIMS launch work; weekend-pilot sized
