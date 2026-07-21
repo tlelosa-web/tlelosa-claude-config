@@ -26,9 +26,9 @@ completed task; one task = one commit.
 
 - [ ] Validate the marketplace against a local clone on each machine —
       full steps in `docs/marketplace-validation.md`
-- [ ] Install Anthropic's official `document-skills` (xlsx/docx/pdf) on both
-      machines (`/plugin marketplace add anthropics/skills`) — complements
-      `safe-office-file-read` and strengthens `data-agent`'s report prep
+- [ ] Run the `document-skills` install on both machines — exact commands
+      in README's "External plugins" section; tick when both Operations
+      and Pappa T show it in `/plugin list`
 - [ ] Roll out dcoe-roster 3.3.0 (systematic-debugging debugger) on both
       machines: `/plugin marketplace update` + `/plugin update
       dcoe-roster@tlelosa-claude-config` + `/reload-plugins`

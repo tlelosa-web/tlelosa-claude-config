@@ -95,6 +95,11 @@ updates flow directly):
 ```
 # Context7 — live, version-correct library docs for executor/debugger work
 /plugin install context7@claude-plugins-official
+
+# Anthropic document skills (xlsx/docx/pdf) — strengthens data-agent's
+# report prep; complements shared-skills' safe-office-file-read
+/plugin marketplace add anthropics/skills
+/plugin install document-skills@anthropic-agent-skills
 ```
 
 Install at **user** scope (the default) so it's available across projects.
