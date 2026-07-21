@@ -26,8 +26,10 @@ completed task; one task = one commit.
       machines (`/plugin marketplace add anthropics/skills`) — complements
       `safe-office-file-read` and strengthens `data-agent`'s report prep
 - [ ] Fold the `systematic-debugging` methodology (obra/superpowers, MIT,
-      with attribution) into the `debugger` agent — structural change:
-      spec in `docs/specs/` first, bump dcoe-roster version
+      with attribution) into the `debugger` agent — spec written
+      (`docs/specs/2026-07-21-debugger-systematic-debugging.md`,
+      2026-07-21); implementation pending: rewrite `debugger.md`, bump
+      dcoe-roster to 3.3.0
 - [ ] Run the Context7 install on both machines (IT clearance confirmed
       broad, 2026-07-21) — exact command in README's "External plugins"
       section; tick when both Operations and Pappa T show it in
