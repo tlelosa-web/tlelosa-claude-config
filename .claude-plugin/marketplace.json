@@ -14,6 +14,11 @@
       "name": "shared-skills",
       "source": "./shared-skills",
       "description": "Cross-project Claude Code Skills: capture, dev-server-staleness-check, safe-office-file-read, reuse-existing-ui-primitive, sweep-shared-ui-convention-fix, verify-ui-cardinality-against-output."
+    },
+    {
+      "name": "codex-gate",
+      "source": "./codex-gate",
+      "description": "Advisory cross-family second opinion on spec files via /codex-review (OpenAI Codex CLI). Warn-only, never blocks; specs-only payload. Install per machine — only where OpenAI egress is cleared (Pappa T until Operations IT clearance)."
     }
   ]
 }
