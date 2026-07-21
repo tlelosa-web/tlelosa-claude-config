@@ -1,0 +1,8 @@
+{
+  "name": "codex-gate",
+  "version": "1.0.0",
+  "description": "Cross-family second-opinion gate: /codex-review sends exactly one spec file under docs/specs/ to OpenAI Codex for an advisory review appended to the spec. Warn-only, never blocks. Installed per machine (NOT part of dcoe-roster) so it can be limited to machines cleared for OpenAI egress.",
+  "author": {
+    "name": "Tebello Lelosa"
+  }
+}

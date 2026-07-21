@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.2 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.3 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -200,7 +200,7 @@ git cherry-pick <​commit-hash>
 
 ```
 1. /plan → Domain confirms scope → Planner writes spec to docs/specs/<​feature>.md
-2. Review spec → approve or iterate
+2. Review spec → /codex-review (advisory, warn-only, if installed) → approve or iterate
 3. /build docs/specs/<​feature>.md → Orchestrator spawns Executors in worktrees
 4. Each Executor: implement → test → commit → done
 5. Reviewer agent audits → merge to main
@@ -288,12 +288,15 @@ Quality gates fire automatically. Do not disable without deliberate decision.
 |`pre-push`     |`git push`  |Run full test suite. Block if fails.    |
 |`post-task`    |Agent stops |Log summary to `docs/session-log.md`    |
 |`session-start`|New session |Load `docs/todo.md` into context        |
+|spec approval  |`/codex-review`|Codex cross-family second opinion — warn only, never block (optional, per machine)|
 
 Hook configs: `.claude/hooks/`
 
 **Philosophy:** Block at commit time, not write time.
 Let agents complete their work before the gate fires.
 Non-blocking hints during implementation > blocking walls mid-task.
+Only deterministic local gates (lint, format, tests) may block;
+network-dependent advisory gates warn and proceed.
 
 -----
 
@@ -333,6 +336,7 @@ and prevents goal drift across long sessions.
 - No `DROP TABLE`, `DELETE FROM`, or `rm -rf` without explicit confirmation.
 - No production DB writes from dev sessions.
 - Reviewer agent runs on all auth, file-write, and data-export code.
+- External-model payloads are **default-deny**: only a single spec file under `docs/specs/` may be sent (via `/codex-review`), and only on machines where the `codex-gate` plugin is deliberately installed. Never CLAUDE.md context, `@imports`, diffs, `.env`, or sub-project content.
 - Allow-listed safe commands live in `.claude/settings.json` (see `permissions.allow`). Destructive commands are explicitly denied there (see `permissions.deny`) rather than left to per-prompt approval.
 
 -----
@@ -468,5 +472,11 @@ At the start of every session, Claude must:
 *v3.2 change: sub-agent roster deployment moved from project-level
 `.claude/agents/` to user-level `~/.claude/agents/`, shared across all
 projects. Project-level now reserved for per-project overrides only.*
+
+*v3.3 change: added the optional `codex-gate` cross-family second-opinion
+gate at Pattern 1 step 2 (`/codex-review`, advisory, warn-only — never
+blocks), the "only deterministic local gates may block" hooks rule, and the
+default-deny rule for external-model payloads. Spec:
+`docs/specs/2026-07-21-codex-gate-spec.md` in `tlelosa-claude-config`.*
 
 *Last review: July 2026 — Tebello Lelosa*
