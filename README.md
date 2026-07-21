@@ -9,7 +9,7 @@ company data. Deliberately generic so it's safe to clone on either machine.
 - `.claude-plugin/marketplace.json` — the catalog Claude Code reads.
 - `dcoe-roster/` — the DCOE sub-agent roster as an installable plugin
   (domain, planner, architect, executor, tester, reviewer, doc-writer,
-  debugger, data-agent). Matches CLAUDE.md v3.2's model routing table.
+  debugger, data-agent). Matches CLAUDE.md v3.3's model routing table.
   Also holds `dcoe-roster/CORE.md` — the shared DCOE core (architecture,
   roster table, model routing, universal hard rules), distributed to any
   project via a plain read instruction in that project's own `CLAUDE.md`
@@ -32,6 +32,21 @@ company data. Deliberately generic so it's safe to clone on either machine.
   Each was drafted business-agnostic in the `Operations` hub's
   `docs/research/skill-drafts/` before migrating here — see that hub's
   `docs/patterns.md` for the promotion discipline.
+- `codex-gate/` — advisory cross-family second-opinion gate as an
+  installable plugin: `/codex-review docs/specs/<feature>.md` sends exactly
+  one spec file to the OpenAI Codex CLI and appends the response to the
+  spec as an advisory note. Warn-only, never blocks (offline-first hard
+  rule); the `reviewer` agent keeps sole APPROVE/BLOCK authority.
+  **Install per machine, Pappa T only for now** — see IT-policy status
+  below. Spec: `docs/specs/2026-07-21-codex-gate-spec.md`; readiness audit:
+  `docs/specs/2026-07-21-codex-gate-readiness-audit.md`. Requires the Codex
+  CLI authenticated at user scope (`~/.codex/`) — no API key ever lives in
+  this repo or any project `.env`.
+
+  ```
+  # Pappa T ONLY (until Operations OpenAI clearance):
+  /plugin install codex-gate@tlelosa-claude-config
+  ```
 
 **Not included:** CLAUDE.md itself. Claude Code's plugin system does not
 recognize a CLAUDE.md inside a plugin folder — it's ignored by design.
@@ -116,3 +131,8 @@ contains no company data by design — that remains a hard rule regardless of
 the clearance. If the policy changes, or a new tool goes beyond what was
 cleared (e.g. a plugin talking to a new external service), re-confirm before
 installing it on Operations.
+
+**Not covered by the clearance:** `codex-gate` (OpenAI egress). The
+existing clearance is Anthropic-specific plus named tools; sending spec
+content to OpenAI from the work PC needs its own confirmation. Until then,
+do **not** install `codex-gate` on Operations — Pappa T only.

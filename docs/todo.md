@@ -30,12 +30,19 @@ completed task; one task = one commit.
       payload, self-owned command, logged-note dissent, no plan-mode hook) —
       spec at `docs/specs/2026-07-21-codex-gate-spec.md`, awaiting approval
       (2026-07-21)
+- [x] Implement codex-gate per approved spec: new `codex-gate/` plugin
+      (`/codex-review` command), marketplace entry, CLAUDE.md.template
+      bumped to v3.3, README install + IT-scope notes (2026-07-21)
 
 ## Open
 
-- [ ] Implement the codex-gate plugin per
-      `docs/specs/2026-07-21-codex-gate-spec.md` — **blocked on owner
-      approval of that spec**; install Pappa T only
+- [ ] Install + smoke-test codex-gate on Pappa T (Codex CLI authed at
+      `~/.codex/`, then `/plugin install codex-gate@tlelosa-claude-config`;
+      run `/codex-review` on a real spec and confirm the fail-warn path by
+      running it once with the network off) — acceptance criteria in
+      `docs/specs/2026-07-21-codex-gate-spec.md`
+- [ ] Record the codex-gate ADR in the Operations hub's `docs/decisions/`
+      (vault-side; content per the spec + readiness audit)
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
