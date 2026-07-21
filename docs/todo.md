@@ -12,8 +12,7 @@ completed task; one task = one commit.
 
 ## Open
 
-- [ ] Validate the marketplace against a local clone on each machine
-      (`/plugin marketplace add ./tlelosa-claude-config`) — see README
-      "Before relying on this for real"
+- [ ] Validate the marketplace against a local clone on each machine —
+      full steps in `docs/marketplace-validation.md`
 - [ ] Confirm Fan Movement IT policy allows the personal private repo on
       the Operations machine — see README's final section
