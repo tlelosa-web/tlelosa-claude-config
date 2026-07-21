@@ -19,5 +19,14 @@ completed task; one task = one commit.
 
 - [ ] Validate the marketplace against a local clone on each machine —
       full steps in `docs/marketplace-validation.md`
+- [ ] Install Anthropic's official `document-skills` (xlsx/docx/pdf) on both
+      machines (`/plugin marketplace add anthropics/skills`) — complements
+      `safe-office-file-read` and strengthens `data-agent`'s report prep
+- [ ] Fold the `systematic-debugging` methodology (obra/superpowers, MIT,
+      with attribution) into the `debugger` agent — structural change:
+      spec in `docs/specs/` first, bump dcoe-roster version
+- [ ] Install the Context7 plugin for hub dev projects (live version-correct
+      library docs for executor/debugger) — personal machine first; hold on
+      the Operations machine until the Fan Movement IT-policy check clears
 - [ ] Confirm Fan Movement IT policy allows the personal private repo on
       the Operations machine — see README's final section
