@@ -34,6 +34,11 @@ completed task; one task = one commit.
       (`/codex-review` command), marketplace entry, CLAUDE.md.template
       bumped to v3.3, README install + IT-scope notes (2026-07-21)
 
+- [x] Validate the marketplace against a local clone on each machine —
+      full steps in `docs/marketplace-validation.md`; both Operations and
+      Pappa T passed local + remote install and the ADR-007 CORE.md path
+      check (2026-07-22)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -51,8 +56,6 @@ completed task; one task = one commit.
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
-- [ ] Validate the marketplace against a local clone on each machine —
-      full steps in `docs/marketplace-validation.md`
 - [ ] Run the `document-skills` install on both machines — exact commands
       in README's "External plugins" section; tick when both Operations
       and Pappa T show it in `/plugin list`
