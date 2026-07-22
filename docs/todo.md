@@ -43,6 +43,8 @@ completed task; one task = one commit.
       shows the four-phase systematic-debugging methodology (2026-07-22)
 - [x] Run the `document-skills` install on both machines — both
       Operations and Pappa T show it in `/plugin list` (2026-07-22)
+- [x] Run the Context7 install on both machines — both Operations and
+      Pappa T show it in `/plugin list` (2026-07-22)
 
 ## Open
 
@@ -61,7 +63,3 @@ completed task; one task = one commit.
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
-- [ ] Run the Context7 install on both machines (IT clearance confirmed
-      broad, 2026-07-21) — exact command in README's "External plugins"
-      section; tick when both Operations and Pappa T show it in
-      `/plugin list`
