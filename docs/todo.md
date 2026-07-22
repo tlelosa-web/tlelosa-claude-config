@@ -38,6 +38,9 @@ completed task; one task = one commit.
       full steps in `docs/marketplace-validation.md`; both Operations and
       Pappa T passed local + remote install and the ADR-007 CORE.md path
       check (2026-07-22)
+- [x] Roll out dcoe-roster 3.3.0 (systematic-debugging debugger) on both
+      machines — both Operations and Pappa T updated; `debugger` agent
+      shows the four-phase systematic-debugging methodology (2026-07-22)
 
 ## Open
 
@@ -59,9 +62,6 @@ completed task; one task = one commit.
 - [ ] Run the `document-skills` install on both machines — exact commands
       in README's "External plugins" section; tick when both Operations
       and Pappa T show it in `/plugin list`
-- [ ] Roll out dcoe-roster 3.3.0 (systematic-debugging debugger) on both
-      machines: `/plugin marketplace update` + `/plugin update
-      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`
 - [ ] Run the Context7 install on both machines (IT clearance confirmed
       broad, 2026-07-21) — exact command in README's "External plugins"
       section; tick when both Operations and Pappa T show it in
