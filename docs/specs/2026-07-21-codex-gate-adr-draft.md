@@ -1,11 +1,21 @@
 # ADR draft — Codex cross-family second-opinion gate
 
-> **Draft staged in the config repo for copy-over.** The recorded ADR lives
-> in the Operations hub's `docs/decisions/` (vault-side), per the codex-gate
-> spec. Copy the block below into a new file there — suggested name
-> `ADR-009-codex-second-opinion-gate.md` (renumber to the next free number
-> if the vault has moved past 009; ADR-007/008 were the latest referenced
-> from this repo). Delete this draft's todo pointer once recorded.
+> **Paste-ready.** Staged in the config repo; the recorded ADR lives in the
+> Operations hub's `docs/decisions/` (vault-side), per the codex-gate spec.
+> **This top block is copy-over instructions — it is NOT part of the ADR.**
+> Everything below the `-----` divider is the exact file contents to record,
+> verbatim.
+>
+> **Copy-over steps (run on the Operations hub machine):**
+> 1. Pick the next free ADR number in `docs/decisions/`. This draft assumes
+>    **009** (ADR-007/008 were the latest referenced from this repo). If the
+>    vault has moved past 009, bump both the filename and the `# ADR-0NN`
+>    heading below to match.
+> 2. Save the block below the divider as
+>    `docs/decisions/ADR-0NN-codex-second-opinion-gate.md`.
+> 3. Back in this config repo, tick/remove the codex-gate ADR pointer in
+>    `docs/todo.md` (and, optionally, delete this draft file) — the recorded
+>    ADR is then the source of truth.
 
 -----
 
