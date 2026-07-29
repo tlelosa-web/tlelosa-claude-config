@@ -1,7 +1,7 @@
 {
   "name": "dcoe-roster",
-  "version": "3.3.0",
-  "description": "DCOE sub-agent roster for Claude Code, matching CLAUDE.md v3.2. Installs to user scope so it applies automatically across every project on a machine.",
+  "version": "3.4.0",
+  "description": "DCOE shared core (CORE.md) for Claude Code, matching CLAUDE.md v3.2. Agent bodies live at ~/.claude/agents/ (user level) — see agent-bodies-reference/ in this repo for new-machine bootstrap copies; this plugin no longer ships duplicate agent definitions.",
   "author": {
     "name": "Tebello Lelosa"
   }
