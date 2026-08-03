@@ -45,6 +45,13 @@ completed task; one task = one commit.
       Operations and Pappa T show it in `/plugin list` (2026-07-22)
 - [x] Run the Context7 install on both machines — both Operations and
       Pappa T show it in `/plugin list` (2026-07-22)
+- [x] Name the reviewer Loop and promote the impact-based scale Router into
+      `dcoe-roster/CORE.md`, per a Graph Engineering reference-architecture
+      comparison — spec at
+      `docs/specs/2026-08-03-graph-engineering-core-additions.md` (Codex
+      second opinion + Amendment folded in before build). Bumped Core
+      version 1.1 → 1.2. Documentation-only, no plugin/manifest changes
+      (2026-08-03)
 
 ## Open
 
@@ -63,3 +70,17 @@ completed task; one task = one commit.
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
+- [ ] **Bootstrap `~/.claude/agents/` on the machine this repo was cloned to
+      under `C:\Users\tlelo\Downloads\`** — per
+      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md`, the roster
+      is no longer plugin-installed; each machine needs the 9 files in
+      `agent-bodies-reference/` copied into `~/.claude/agents/` manually.
+      Discovered 2026-08-03 while trying to dispatch the `reviewer` agent
+      against `docs/specs/2026-08-03-graph-engineering-core-additions.md`
+      and finding no agent files anywhere on that machine (not a repo bug —
+      this machine's local git clone was also 3 commits behind `origin/main`
+      at the time, predating the strip-agent-bodies merge; corrected via
+      merge this session). Worth checking whether Operations/Pappa T
+      themselves ever got the manual bootstrap step run too, since the
+      rollout checklist's old verify step for it is now informational-only
+      per that spec's item 4.

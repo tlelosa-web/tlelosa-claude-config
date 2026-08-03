@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.1** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.2** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -62,6 +62,19 @@ complex task is routed through four stages. Never collapse them.
 
 ### DCOE Rules
 
+0. **Router (scale check).** Before Domain Agent, classify the task by
+   **impact first, file count second** — file count alone under-classifies
+   governance changes (a 2-file edit to `CORE.md` is still Structural):
+   - **Structural regardless of file count:** anything touching contracts,
+     data, security, production behavior, governance/shared-core docs
+     (`CORE.md`, an agent definition), or cross-project dependencies — full
+     DCOE: Domain confirms scope, Context writes a spec, then Execute.
+   - **Trivial** (only if none of the above apply): single-file edit, typo
+     fix, version bump, no schema/contract change, no cross-project effect —
+     skip Domain/Context, go straight to Execute. One task = one commit
+     still holds.
+   A project's own `CLAUDE.md` may restate this in project-specific terms
+   but should not need to re-derive the underlying rule.
 1. **Domain Agent** confirms scope, stack/project, and ambiguities before
    anything else.
 2. **Context Agent** writes the plan — never the code. Spec lives in
@@ -70,6 +83,15 @@ complex task is routed through four stages. Never collapse them.
 4. **Executors** each get a fresh context. One task. One atomic commit. Done.
 5. If acceptance criteria are unclear at any stage → **STOP and ask**.
 6. Orchestrator never does heavy lifting. Executors never plan.
+7. **Reviewer Loop.** The spec-review-build sequence is a loop, not a single
+   gate: `Context Agent writes spec → codex-review (advisory) → reviewer
+   approve/reject`. Final pre-build authority rests with the `reviewer`
+   agent (Codex is advisory only, never a decider). On reject, control
+   returns to the **Context Agent**, not to Execute — the spec is revised
+   and the loop repeats. Only the `reviewer` agent's APPROVE exits the loop
+   into Execute. The loop is manual and owner/reviewer-directed — no
+   automatic retry count or escalation; a spec can cycle as many times as
+   the reviewer requires.
 
 -----
 
