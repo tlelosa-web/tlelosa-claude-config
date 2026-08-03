@@ -7,15 +7,20 @@ company data. Deliberately generic so it's safe to clone on either machine.
 ## What's in here
 
 - `.claude-plugin/marketplace.json` — the catalog Claude Code reads.
-- `dcoe-roster/` — the DCOE sub-agent roster as an installable plugin
-  (domain, planner, architect, executor, tester, reviewer, doc-writer,
-  debugger, data-agent). Matches CLAUDE.md v3.3's model routing table.
-  Also holds `dcoe-roster/CORE.md` — the shared DCOE core (architecture,
-  roster table, model routing, universal hard rules), distributed to any
-  project via a plain read instruction in that project's own `CLAUDE.md`
-  (not a Claude Code `@import` — those don't resolve absolute paths
-  outside the project tree). See `ADR-007` in the `Operations` hub's
-  `docs/decisions/` for the full design.
+- `dcoe-roster/` — installable plugin holding `dcoe-roster/CORE.md`, the
+  shared DCOE core (architecture, roster table, model routing, universal
+  hard rules), distributed to any project via a plain read instruction in
+  that project's own `CLAUDE.md` (not a Claude Code `@import` — those
+  don't resolve absolute paths outside the project tree). See `ADR-007` in
+  the `Operations` hub's `docs/decisions/` for the full design. The 9
+  roster agent bodies (domain, planner, architect, executor, tester,
+  reviewer, doc-writer, debugger, data-agent) are **not** shipped by this
+  plugin — they live at `~/.claude/agents/` on each machine (user level,
+  authoritative). `agent-bodies-reference/` at repo root holds copies to
+  bootstrap a new machine from (2026-07-29: stripped from the plugin to
+  stop the triple-listing duplication caused by Claude Code's per-plugin
+  SHA namespacing — see `docs/specs/2026-07-29-strip-dcoe-roster-agent-
+  bodies.md`).
 - `hub-template/` — the mechanical skeleton for running the hub-and-spoke
   `/continue` pattern at *any* Tebello-governed vault root (not just
   `Operations`): a vault-agnostic `continue.md` to copy in verbatim, and
@@ -79,7 +84,28 @@ Verify with:
 
 ## Updating the roster (e.g. after refining reviewer.md)
 
-1. Edit the relevant file under `dcoe-roster/agents/` in your local clone.
+The roster agents themselves are edited directly at `~/.claude/agents/` on
+whichever machine you're on (not through this plugin — see the note above).
+Optionally mirror the change into `agent-bodies-reference/` here so a future
+new-machine bootstrap starts from the current version, then
+`git add . && git commit -m "..." && git push`.
+
+## Bootstrapping the roster on a new machine
+
+1. Copy `agent-bodies-reference/*.md` from a local clone of this repo into
+   `~/.claude/agents/` on the new machine.
+2. Install the plugin for `CORE.md` distribution + shared skills:
+   ```
+   /plugin marketplace add https://github.com/tlelosa-web/tlelosa-claude-config.git
+   /plugin install [email protected]
+   ```
+3. Verify with `/agents` (all nine show up, unprefixed) and confirm
+   `~/.claude/plugins/marketplaces/tlelosa-claude-config/dcoe-roster/CORE.md`
+   exists.
+
+## Updating CORE.md or plugin content
+
+1. Edit the relevant file in your local clone.
 2. `git add . && git commit -m "..." && git push`
 3. On **each** machine:
    ```

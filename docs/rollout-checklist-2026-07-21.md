@@ -33,8 +33,13 @@ In a Claude Code session started in the directory containing the clone:
 /plugin install shared-skills@tlelosa-claude-config
 ```
 
-Verify: `/plugin list` shows both at user scope; `/agents` shows all nine
-roster agents; the five shared skills appear. Then swap to remote:
+Verify: `/plugin list` shows both at user scope; the five shared skills
+appear. (Historical note, 2026-07-29: `dcoe-roster` no longer ships agent
+bodies, so `/agents` showing all nine now depends on copying
+`agent-bodies-reference/*.md` into `~/.claude/agents/` separately — see
+`docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md`. This checklist is
+historical and not re-run; noted for anyone reading it later.) Then swap to
+remote:
 
 ```
 /plugin marketplace remove tlelosa-claude-config

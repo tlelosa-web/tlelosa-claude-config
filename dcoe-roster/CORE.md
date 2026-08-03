@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.0** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.1** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -139,6 +139,13 @@ relax these.
 8. **Agent roster lives at user level** (`~/.claude/agents/`) — do not fork a
    full copy into a project's `.claude/agents/`; add project files there only
    as single-agent overrides.
+9. **Run `/codex-review` on every spec in `docs/specs/` before dispatching an
+   Executor** — advisory cross-family second opinion, appended to the spec,
+   never blocking. Fold the strongest points (buried assumptions, missing
+   acceptance criteria, real failure modes) back into the spec as a dated
+   Amendment section before build starts. Standard procedure for every spec,
+   not optional. The `reviewer` agent still holds sole APPROVE/BLOCK
+   authority — Codex is advisory only.
 
 -----
 
