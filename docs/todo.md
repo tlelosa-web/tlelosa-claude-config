@@ -52,6 +52,14 @@ completed task; one task = one commit.
       second opinion + Amendment folded in before build). Bumped Core
       version 1.1 → 1.2. Documentation-only, no plugin/manifest changes
       (2026-08-03)
+- [x] Add a `/session-end` command (close out a session, prep it for
+      archiving) — spec at
+      `docs/specs/2026-08-04-session-end-command.md`. Promoted the same way
+      as `/continue` (ADR-008): `hub-template/session-end.md`
+      (vault-agnostic) plus a minimal instance here at
+      `.claude/commands/session-end.md` and a full instance in the
+      `Claude-Code` hub. Recorded as `Claude-Code/docs/decisions/
+      ADR-010-session-end-command.md` (2026-08-04)
 
 ## Open
 
