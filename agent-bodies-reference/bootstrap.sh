@@ -51,7 +51,10 @@ for agent in "${AGENTS[@]}"; do
     echo "bootstrap.sh: overwriting $dest (content differed from reference)"
   fi
 
-  cp "$src" "$dest"
+  if ! cp "$src" "$dest"; then
+    echo "bootstrap.sh: failed copying $agent — rerun to retry (script is idempotent)" >&2
+    exit 1
+  fi
 done
 
 echo "bootstrap.sh: ${#AGENTS[@]} roster agents present in $DEST_DIR"
