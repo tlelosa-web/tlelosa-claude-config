@@ -21,6 +21,13 @@ Use the **local working-copy path above**, not the installed-plugin path
 projects use — this repo IS the source of that file, and the installed copy
 may lag behind the branch being edited.
 
+Also check whether `~/.claude/agents/` (user-level only) contains all 9
+expected roster filenames (`architect.md`, `data-agent.md`, `debugger.md`,
+`doc-writer.md`, `domain.md`, `executor.md`, `planner.md`, `reviewer.md`,
+`tester.md` — e.g. via `ls ~/.claude/agents/`). If any are missing, print a
+one-line warning naming which ones, pointing at
+`agent-bodies-reference/bootstrap.sh` as the fix.
+
 -----
 
 ## PROJECT OVERVIEW
