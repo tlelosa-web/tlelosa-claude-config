@@ -95,6 +95,30 @@ command.
   uncommitted/unpushed work, it does not commit or push on Tebello's
   behalf without being asked.
 
+## Post-implementation corrections (2026-08-06)
+
+Item 3 (`Claude-Code/.claude/commands/session-end.md`) was **not** actually
+created when this spec was first marked `Status: Implemented` — only items 1
+and 2 shipped in `a56ea84`. The hub instance was written 2026-08-06; the
+status line is accurate as of then. Worth noting as a process point: a
+cross-repo item in a spec can lag its status line, since the status is set
+in the repo the spec lives in.
+
+Two defects surfaced on the command's first real run and are fixed in the
+same change that closed item 3:
+
+1. **The session-log step over-appended.** It said "append a new dated
+   entry" unconditionally, which produces a duplicate or near-empty entry
+   when the session already wrote its own entries, or when `/session-end`
+   runs twice (mid-session checkpoint, then again at the end). Reworded to
+   reconcile-not-duplicate, with the three cases spelled out.
+2. **The title step was framed as attempt-then-handle-failure, but on some
+   surfaces it cannot be attempted at all.** On the CCD desktop surface
+   `set_session_title` rejects the current session *and* `list_sessions`
+   excludes it, so a session cannot obtain its own ID — there is no call to
+   make and no error to catch. Reworded to report `not available in this
+   environment` outright, and to not go hunting for the ID elsewhere.
+
 ## References
 
 - `hub-template/session-end.md`, `.claude/commands/session-end.md` (this

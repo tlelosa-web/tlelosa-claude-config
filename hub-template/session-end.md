@@ -32,10 +32,26 @@ Open this vault's `docs/todo.md`:
 
 If this vault keeps a `docs/session-log.md` (hub roots do; single-repo
 vaults like a plugin/marketplace repo typically don't — check whether
-`CLAUDE.md` references one before assuming), append a new dated entry in
-the same format the existing entries use, ending with the same
+`CLAUDE.md` references one before assuming), make sure it ends with a
+dated entry covering this session, in the same format the existing entries
+use, ending with the same
 `**Last completed:** / **Next task:** / **Known risks:** / **Blockers:**`
 block `/continue`'s Step 1 already expects to read.
+
+**Reconcile — don't blindly append.** Check what's already there first:
+
+- **Work not logged yet** → append a new entry. The common case.
+- **Session already wrote its own entries** → don't restate them. Either
+  add a short entry covering only what's new since (and say so explicitly,
+  so it doesn't read as a duplicate), or verify the existing final entry's
+  `Last completed:` / `Next task:` block is still accurate and leave it.
+- **Second `/session-end` run in the same session** (mid-session checkpoint,
+  then again at the end) → extend or replace the entry the first run wrote,
+  rather than adding a near-empty second one.
+
+Appending unconditionally produces duplicate or near-empty entries, which
+is exactly the noise this log exists to avoid — an entry should be the
+session's *output*, not a record that a close-out command ran.
 
 If this vault keeps a topic-keyed knowledge cache (check `CLAUDE.md` for a
 `knowledge/` convention) and this session surfaced a reusable fact — a
@@ -52,15 +68,26 @@ naming convention `/continue`'s Step 0 uses when renaming *other* stale
 sessions, so a later `/continue` run doesn't have to reverse-engineer one
 from `list_events`.
 
-**A session cannot rename or archive itself in every environment** —
-confirmed in `/continue` Step 0 that some tool surfaces only expose
-`set_session_title`/`archive_session` for *other* sessions, never the
-current one. If the tool call fails or isn't available for that reason,
-say so plainly and move on — don't treat it as an error to work around,
-and don't attempt `archive_session` on this session directly. Setting a
-clear title (when possible) is what "prepares this session for archiving"
-— a later `/continue` run (or Tebello directly) does the actual archiving,
-same as today.
+**On some tool surfaces this step is not merely unreliable — it is
+impossible, and cannot even be attempted.** Confirmed on the CCD desktop
+surface (2026-08-06, this command's first real run): `set_session_title`
+rejects the current session *and* `list_sessions` excludes it, so a session
+has no way to obtain its own ID. There is no call to make and therefore no
+error to report.
+
+So don't frame this as "try it and handle the failure":
+
+- **Self-titling reachable** → set the title.
+- **No way to identify this session** (as above) → report
+  `not available in this environment` in Step 4 and move on. This is
+  expected, not a failure, and not something to work around — do not go
+  hunting for the session ID in logs, config, or transcripts.
+
+Never call `archive_session` on this session either way. Setting a clear
+title, *where possible*, is what "prepares this session for archiving" — a
+later `/continue` run (or Tebello directly) does the actual archiving. Where
+it isn't possible, the queue and log reconciliation from Step 2 is what
+makes that later run's judgment easy, which is most of the value anyway.
 
 ## Step 4 — Report Close-Out
 
