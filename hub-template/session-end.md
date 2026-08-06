@@ -1,10 +1,13 @@
 ---
-# /session-end — Close Out & Prep For Archiving
-# Runs at the end of a session (or as a checkpoint mid-session): reconciles
-# this vault's task queue, logs what happened, and leaves the session in a
-# state a later /continue run can recognize and archive without needing to
-# reverse-engineer it from the transcript.
+description: Close out a session — reconcile the queue, log it, prep it for archiving
 ---
+
+# /session-end — Close Out & Prep For Archiving
+
+Runs at the end of a session (or as a checkpoint mid-session): reconciles
+this vault's task queue, logs what happened, and leaves the session in a
+state a later `/continue` run can recognize and archive without needing to
+reverse-engineer it from the transcript.
 
 ## Step 1 — Check Working Tree State
 
