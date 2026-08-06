@@ -37,10 +37,14 @@ session's title to `Cont-"<3-6 word context-based title>"` describing what
 this session did — so a later `/continue` run doesn't have to
 reverse-engineer one from the transcript.
 
-A session cannot rename or archive itself in every tool surface (see
-`hub-template/continue.md` Step 0 point 5). If the tool isn't available or
-the call fails for that reason, say so plainly and move on — don't attempt
-`archive_session` on this session directly. This is what "prepares the
+On some tool surfaces this is impossible rather than merely unreliable, and
+cannot even be attempted (see `hub-template/continue.md` Step 0 point 5).
+Confirmed on the CCD desktop surface 2026-08-06: `set_session_title`
+rejects the current session *and* `list_sessions` excludes it, so a session
+has no way to obtain its own ID — no call to make, no error to report. In
+that case report `not available in this environment` in Step 4 and move on;
+don't go hunting for the ID elsewhere. Never call `archive_session` on this
+session either way. Setting a title *where possible* is what "prepares the
 session for archiving": a later `/continue` run (or Tebello directly) does
 the actual archiving.
 
