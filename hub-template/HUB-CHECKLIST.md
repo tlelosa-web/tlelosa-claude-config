@@ -43,7 +43,25 @@ project-to-project.
       commands as active, check they actually exist on disk — don't trust
       the prose over the filesystem (this exact gap — commands described
       as active but the folder empty — is what triggered this checklist's
-      existence for Pappa T).
+      existence for Pappa T). **If it already exists, diff it against
+      `hub-template/continue.md`** rather than assuming it's current —
+      distribution is file-copy, not a live read (ADR-008), so an installed
+      copy never auto-updates and drifts in *both* directions: the template
+      gains fixes the hub hasn't taken, and the hub invents improvements the
+      template hasn't been given. Fold each difference the correct way
+      (vault-specific → stays local; generally useful → promote upstream)
+      instead of overwriting one side with the other.
+- [ ] **`continue.md`'s vault-specific hooks are filled in.** The template
+      is deliberately generic where it can't know the answer, and those
+      spots are inert until this vault supplies it. Check each: Step 1.75's
+      contention files (the task queue and session log always, plus any
+      knowledge-cache index this vault keeps), Step 1.9's live-vs-mirror
+      convention (if this vault holds both a live working copy and a
+      consolidated/mirrored copy of a project, which one is authoritative
+      for a clock comparison), and Step 2.5's machine names and per-machine
+      notes. A vault with only one machine and no mirrors can say so
+      explicitly — "not applicable here" is a filled-in answer; silence
+      isn't.
 - [ ] **Hard rules don't relax `CORE.md`'s universal ones.** The hub root's
       own Hard Rules section may add local rules (e.g. this vault's own
       data-safety or project-onboarding rules) but must not contradict or
