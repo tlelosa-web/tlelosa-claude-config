@@ -60,6 +60,21 @@ completed task; one task = one commit.
       `.claude/commands/session-end.md` and a full instance in the
       `Claude-Code` hub. Recorded as `Claude-Code/docs/decisions/
       ADR-010-session-end-command.md` (2026-08-04)
+- [x] Fix two `/session-end` defects found on its first real run against the
+      `Claude-Code` hub: the session-log step over-appended (reworded to
+      reconcile-not-duplicate, three cases spelled out) and the title step
+      assumed `set_session_title` could always be attempted (reworded to
+      report "not available in this environment" on surfaces where a session
+      can't obtain its own ID). Fix 1 is hub-template-only; fix 2 applies to
+      both `hub-template/session-end.md` and this repo's own instance. PR #11
+      (2026-08-06)
+- [x] Fix inert YAML frontmatter in both `hub-template/` commands —
+      `continue.md` and `session-end.md` opened with a `---` block of only
+      `#` comments, which parses to nothing, so every vault copying them into
+      `.claude/commands/` got an undescribed command. Converted both to a
+      real `description:` key with the explanatory text moved below as prose.
+      Rest of the repo checked; no other command file affected. PR #12
+      (2026-08-06)
 
 ## Open
 
