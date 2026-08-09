@@ -2,7 +2,7 @@
 name: reviewer
 description: MUST BE USED before merging any feature, and always on auth, file-write, or data-export code. Quality and security gate — read-only, reports findings, does not fix them.
 tools: Read, Grep, Glob
-model: claude-opus-4-8
+model: claude-opus-5
 memory: project
 ---
 
