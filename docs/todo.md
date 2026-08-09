@@ -184,6 +184,29 @@ completed task; one task = one commit.
       version bump — `.github/` ships in no manifest and GitHub reads the
       template server-side, so neither machine does anything (2026-08-09)
 
+- [x] **Landed `hub-template/retro.md`** — the 2026-08-08 call to drop it is
+      reversed. `/retro` is the backward-looking counterpart to `/continue`:
+      where `/continue` orients on what's next, `/retro` reads the session log
+      and queue for *framework* friction — a session redoing settled work,
+      Tebello having to point out something already decided, a stale
+      external-state assertion, the same gap recurring across entries, an item
+      deferred three times — then proposes a confirmable batch and records the
+      run in `docs/retro-log.md` so it never repeats its own complaint.
+      Authorised by `docs/specs/2026-08-08-branch-triage-verdicts.md` (Branch 3,
+      LAND items 1–2), so no new spec. Recovered from
+      `claude/repo-status-update-n5z63h`, the last unlanded file across either
+      repo's branches. **The evidence was this session:** every one of its five
+      detection signals fired here — a Done entry false twice over, a second
+      half-true for a day, a spec calling a branch "already merged" when it was
+      not, a "byte-identical" claim wrong when written, an open item held on a
+      branch that no longer existed. All of it surfaced from an audit that
+      happened to be run. Two costs taken deliberately rather than waved past:
+      `docs/retro-log.md` becomes a fourth contention file, so the command
+      carries a pull-before-appending note in Step 5, and `HUB-CHECKLIST.md`'s
+      new item marks `/retro` **optional** and periodic — it does nothing
+      useful in a vault with no session history. No version bump;
+      `hub-template/` is copy-source, not a plugin (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -231,14 +254,6 @@ completed task; one task = one commit.
       `auto-format.sh` are all bash; Operations and Pappa T are Windows and
       need git-bash on PATH. Either confirm git-bash is present on both, or
       add `.ps1` equivalents.
-- [ ] **Confirm `retro.md` is genuinely not wanted** — dropped 2026-08-08 on
-      the reading that `/continue` + `/session-end` already cover workflow
-      management. It still exists on `claude/repo-status-update-n5z63h`,
-      which is being held undeleted in case that call is reversed.
-      **This is now the only thing holding all four config-repo branches
-      open** (2026-08-09 reconciliation): `hub-template/retro.md` is the sole
-      file across the four that `main` does not have. Answer this and the
-      deletion item below can run.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
@@ -247,18 +262,34 @@ completed task; one task = one commit.
 - [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
       already Codex-reviewed. Hard rule 3 is self-monitored until then.
-- [ ] **Delete the triaged branches** once the `retro.md` decision above is
-      made — **4 config-repo branches and 14 hub branches** (corrected
+- [ ] **Delete the triaged branches** — **now fully unblocked**, both halves.
+      `retro.md` landed 2026-08-09, which was the last held decision.
+      **4 config-repo branches and 14 hub branches** (corrected
       2026-08-09; the spec's original 3 and 13 were both wrong). Verdicts and
       live per-branch figures in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`, whose 2026-08-09
       amendment supersedes its own summary tables. The hub's
       `claude/pr-template-linear-planning-40hnrd` was the one exclusion — it
       held the only file either repo's branches still had that `main` lacked —
-      and is **now safe to delete**, once that file reaches the hub's `main`.
-      All 14 hub branches are therefore unblocked; the four config-repo ones
-      still wait on the `retro.md` decision alone. The other held decision this
-      used to wait on (`/overwatch`) is resolved.
+      and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
+      branches are cleared**, re-measured at 0 unique files each after the
+      merge. The other held decision this used to wait on (`/overwatch`) is
+      resolved. The four config-repo branches are cleared too, but **by
+      verdict, not by measuring zero** — three still carry `dcoe-roster/agents/*`
+      (deliberately stripped 2026-07-29) and one also carries `end-session.md`
+      and `session-log.md` (both superseded). The spec's config deletion sheet
+      tabulates exactly which files are expected on each; confirm the remaining
+      files match it and nothing new has appeared, since the hub's "0 unique"
+      check does **not** apply on this side.
+      **Machine-bound — a cloud session cannot do this half.** `git push origin
+      --delete` returns HTTP 403 for all 14: not the egress policy (the proxy
+      logged no failure and ordinary pushes succeed), but the session's git
+      credentials, which create and update refs but cannot delete them, with no
+      delete-ref tool on the GitHub MCP server either. Run it from Operations
+      or Pappa T, or from the GitHub web UI. **Ready-to-paste command and every
+      branch's tip SHA are in the spec's "Deletion sheet" section** — the SHAs
+      are what make the deletion reversible, so use that block rather than
+      re-deriving the list.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the

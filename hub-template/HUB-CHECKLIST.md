@@ -51,6 +51,19 @@ project-to-project.
       template hasn't been given. Fold each difference the correct way
       (vault-specific → stays local; generally useful → promote upstream)
       instead of overwriting one side with the other.
+- [ ] **`.claude/commands/retro.md` exists** (added 2026-08-09), if this
+      vault wants the backward-looking counterpart to `/continue`. Copy
+      `hub-template/retro.md` verbatim — vault-agnostic, same treatment as
+      `continue.md`, and the same diff-don't-assume rule applies if a copy is
+      already in place. Unlike `continue.md` this one is **optional**: it
+      earns its place in a vault that has accumulated enough session-log
+      history for cross-session patterns to be visible, and does nothing
+      useful in a fresh one. Two things come with it: `docs/retro-log.md`
+      becomes a new contention file (see the note in the command's Step 5 —
+      add it wherever this vault lists the others), and `/retro` is meant to
+      run periodically rather than every session, so say so in `CLAUDE.md`
+      alongside the resume/close-out pair or it will be treated as part of
+      the routine.
 - [ ] **Both branch checks are present** (added 2026-08-08). `continue.md`
       needs **Step 1.8** (unmerged-branch check, after Step 1.75 so it reads
       fresh refs) and `session-end.md` needs **Step 1.5** ("can this
