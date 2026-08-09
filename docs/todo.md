@@ -83,6 +83,37 @@ completed task; one task = one commit.
       real `description:` key with the explanatory text moved below as prose.
       Rest of the repo checked; no other command file affected. PR #12
       (2026-08-06)
+- [x] Record PR #14 (`hub-template/continue.md` reconciled with four hub
+      improvements: Step 0.5 stale/idle category, Step 1.75 sync check,
+      Step 1.9 cross-repo staleness, Step 2.5 machine-bound flagging, plus
+      Step 3 fields; three vault-specific leaks generalised) — merged
+      2026-08-07, recorded here 2026-08-08 during the systems check that
+      found it missing from this list
+- [x] **Systems check of both repos** — findings and a seven-phase
+      maintenance plan at `docs/specs/2026-08-08-system-maintenance-plan.md`;
+      per-branch verdicts at `docs/specs/2026-08-08-branch-triage-verdicts.md`
+      (2026-08-08)
+- [x] **Phase 1 — branch triage, both repos.** 16 unmerged branches with no
+      open PR assessed by reading contents against current `main`. Config
+      repo: 3 branches, partial keeps. Hub: 13 branches, 7 carrying nothing
+      but stale state. Found three version collisions that a naive merge
+      would have shipped (two different v3.3 templates, two 3.4.0 rosters)
+      (2026-08-08)
+- [x] **Phase 2 — recovered the keeps.** Config repo: `bootstrap.sh` + its
+      session-start check, the JSON-validation hook spec (Draft), the
+      session-end reusable-fact question, the mobile slash-command gap note,
+      the config audit + week-1 spec (new `docs/research/`), the
+      `hub-template/hooks/` pair, `CLAUDE.md.template` v3.4 (executor
+      isolation + real HOOKS events), the `Explore` Haiku override, and
+      CORE 1.3 (Explore row + hard rule 10, verify-remote-before-asserting).
+      Hub: ADR-010, three stranded `knowledge/` files, and four PWA
+      service-worker entries (2026-08-08)
+- [x] **Phase 3/4 — corrected the record.** The false ADR-010 claim (wrong
+      twice over — see the entry above), the marketplace catalog still
+      advertising agent bodies stripped on 2026-07-29, and four CLAUDE.md
+      drifts including a validation block missing `codex-gate/plugin.json`
+      (2026-08-08)
+
 
 ## Open
 
@@ -115,3 +146,43 @@ completed task; one task = one commit.
       themselves ever got the manual bootstrap step run too, since the
       rollout checklist's old verify step for it is now informational-only
       per that spec's item 4.
+
+### From the 2026-08-08 systems check
+
+- [ ] **Roll out dcoe-roster 3.5.0 + CORE 1.3 + template v3.4 on both
+      machines** — `/plugin marketplace update` + `/plugin update
+      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`, then **re-run
+      `agent-bodies-reference/bootstrap.sh`** so `explore.md` and the
+      executor's `isolation: worktree` actually reach `~/.claude/agents/`.
+      The plugin update alone does not deliver agent bodies.
+- [ ] **Decide: bash vs PowerShell for the shipped scripts** (deferred
+      2026-08-08). `bootstrap.sh`, `hub-template/hooks/secret-scan.sh` and
+      `auto-format.sh` are all bash; Operations and Pappa T are Windows and
+      need git-bash on PATH. Either confirm git-bash is present on both, or
+      add `.ps1` equivalents.
+- [ ] **Review `/overwatch` and the command-center spec** (deferred
+      2026-08-08). Built 2026-08-05, still unmerged on the hub's
+      `claude/continuation-utn4f5`. Gaps 2 and 3 of that spec landed today;
+      Gap 1 (`/overwatch`) is the only piece left. Decide whether it is still
+      wanted or lands as historical — the branch is held undeleted until then.
+- [ ] **Confirm `retro.md` is genuinely not wanted** — dropped 2026-08-08 on
+      the reading that `/continue` + `/session-end` already cover workflow
+      management. It still exists on `claude/repo-status-update-n5z63h`,
+      which is being held undeleted in case that call is reversed.
+- [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
+      restriction** — `/continue` returns "isn't available in this
+      environment" on a Default-type mobile session (2026-07-19). If the CLI
+      is affected too, the note now in `hub-template/continue.md` needs
+      upgrading from a surface quirk to a much bigger problem.
+- [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
+      spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
+      already Codex-reviewed. Hard rule 3 is self-monitored until then.
+- [ ] **Delete the triaged branches** once the two held-open decisions above
+      are made — 3 config-repo branches and 13 hub branches, verdicts in
+      `docs/specs/2026-08-08-branch-triage-verdicts.md`.
+- [ ] **Phases 5-7 of the maintenance plan remain**: model routing (needs a
+      spec — `architect` is pinned to Opus against hard rule 7, and the table
+      escalates from Sonnet 5 to a 4.8-generation Opus), the unmerged-branch
+      check in `/continue` and `/session-end` that stops all of this
+      recurring, and hub hygiene/governance (`.gitignore`, the company-data
+      rule contradiction).
