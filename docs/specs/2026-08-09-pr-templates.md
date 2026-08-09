@@ -1,7 +1,7 @@
 # Spec — PR templates for `tlelosa-claude-config` and `Claude-Code`
 
 **Date:** 2026-08-09
-**Status:** Draft — awaiting owner approval
+**Status:** Implemented 2026-08-09 (approved by owner same day)
 **Owner:** Tebello Lelosa
 **Type:** Structural — adds a new `.github/` surface to two repos and changes
 the shape of every future PR in both.
@@ -220,3 +220,15 @@ than left to lapse quietly.
 
 - **2026-08-09** — first draft. Scope set by owner questionnaire the same day
   (both repos tailored / two gates / self-attested / single default template).
+- **2026-08-09** — approved and implemented in three commits: the config
+  repo's template, the hub's template, and this status update.
+
+  **Verified.** The shared block (`What changed` through `DCOE gates`) diffs
+  clean between the two files, and each carries exactly two checkboxes — both
+  acceptance criteria checked by comparison, not by eye.
+
+  Two criteria are **not** verifiable from here and need a human on the next
+  real PR: that GitHub pre-fills the body with no `?template=` parameter, and
+  that nothing blocks a merge. The first is the one worth watching — it is the
+  whole reason a single default template was chosen over a chooser directory,
+  and a cloud session cannot confirm it from the filesystem.
