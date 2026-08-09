@@ -21,6 +21,41 @@ leaving behind" — surface them plainly in the Step 4 report. **Never commit
 or push on Tebello's behalf just because `/session-end` is running** — same
 discipline as everywhere else: only act on explicit confirmation this turn.
 
+## Step 1.5 — Can This Session's Work Be Found?
+
+Committed and pushed is not the same as reachable. Work sitting on a feature
+branch with no PR is invisible to every session that starts from the default
+branch — and nothing about that state looks wrong: the tree is clean, the
+commits are pushed, and this close-out reads like a success.
+
+This session is the only one that knows what it just built, and this is the
+last moment anyone will look at that branch on purpose. So check:
+
+```bash
+git rev-parse --abbrev-ref HEAD
+git log --oneline origin/<default-branch>..HEAD
+```
+
+If HEAD is not the default branch and the second command returns commits,
+report it in Step 4:
+
+> **Branch state:** N commit(s) on `<branch>` not reachable from
+> `<default>`. Invisible to any session starting from `<default>` until
+> merged or a PR is opened.
+
+**Report a pass in one line too** — "all commits reachable from `<default>`"
+— because silence and never-ran look identical.
+
+**Never open the PR, merge, or push** to resolve this. Same rule as Step 1:
+`/session-end` reports what it is leaving behind; it does not act on the
+owner's behalf. Naming the branch is the whole job — a branch that has been
+named is one somebody can find again.
+
+Why this belongs here rather than only in `/continue`: a resuming session
+can find stranded work, but only after it has already been stranded, and it
+has no idea which branch mattered. This step costs one command and catches
+it at the source.
+
 ## Step 2 — Reconcile the Task Queue
 
 Open this vault's `docs/todo.md`:
@@ -102,11 +137,13 @@ makes that later run's judgment easy, which is most of the value anyway.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
+**Branch state:** [all commits reachable from <default> | N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated]
 **Title set:** [Cont-"<title>" | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```
 
 Keep this short — it's a close-out, not a new resume report. If Step 1
-surfaced uncommitted or unpushed work, lead with that rather than burying
-it at the end.
+surfaced uncommitted or unpushed work, or Step 1.5 found commits unreachable
+from the default branch, lead with that rather than burying it at the end.
+Those are the two ways a session's work disappears, and both are silent.
