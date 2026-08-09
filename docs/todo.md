@@ -136,7 +136,6 @@ completed task; one task = one commit.
       session's own 22 commits. No version bump: `hub-template/` is
       copy-source, not a plugin (2026-08-08)
 
-
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -154,20 +153,21 @@ completed task; one task = one commit.
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
-- [ ] **Bootstrap `~/.claude/agents/` on the machine this repo was cloned to
-      under `C:\Users\tlelo\Downloads\`** — per
-      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md`, the roster
-      is no longer plugin-installed; each machine needs the 9 files in
-      `agent-bodies-reference/` copied into `~/.claude/agents/` manually.
-      Discovered 2026-08-03 while trying to dispatch the `reviewer` agent
-      against `docs/specs/2026-08-03-graph-engineering-core-additions.md`
-      and finding no agent files anywhere on that machine (not a repo bug —
-      this machine's local git clone was also 3 commits behind `origin/main`
-      at the time, predating the strip-agent-bodies merge; corrected via
-      merge this session). Worth checking whether Operations/Pappa T
-      themselves ever got the manual bootstrap step run too, since the
-      rollout checklist's old verify step for it is now informational-only
-      per that spec's item 4.
+- [ ] **Run `agent-bodies-reference/bootstrap.sh` on the machine this repo
+      was cloned to under `C:\Users\tlelo\Downloads\`** — and check whether
+      Operations and Pappa T ever had it run either. Logged 2026-08-03 as a
+      manual "copy these files" step after
+      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md` stopped the
+      plugin shipping agent bodies; discovered when dispatching the
+      `reviewer` agent found no agent files anywhere on that machine.
+      **As of 2026-08-08 there is a script for it** — recovered from a
+      stranded branch, idempotent and rerun-safe — so this is one command
+      now, not a copy-by-hand. Two things changed with it: the roster is
+      **10 files, not 9** (`explore.md` was added the same day, and a
+      machine missing it silently falls back to Sonnet-priced search), and
+      `CLAUDE.md`'s session-start check now warns when any are missing.
+      Note this is the same command the pending rollout item needs, so doing
+      the rollout covers this for Operations and Pappa T.
 
 ### From the 2026-08-08 systems check
 
@@ -203,13 +203,16 @@ completed task; one task = one commit.
 - [ ] **Delete the triaged branches** once the two held-open decisions above
       are made — 3 config-repo branches and 13 hub branches, verdicts in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`.
-- [ ] **Run `/codex-review` on `docs/specs/2026-08-08-model-routing.md` from
-      Pappa T, or record a waiver.** The spec was approved and implemented
-      2026-08-08 without it — codex-gate is a per-machine install and this
-      was written from a cloud container. Universal hard rule 9 wants the
-      pass on every spec; noted here rather than left to lapse quietly. The
-      change is already committed, so this is a retrospective review: if
-      Codex raises something real, it becomes a follow-up fix, not a revert.
+- [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
+      a waiver** — `2026-08-08-model-routing.md` and
+      `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
+      pass on every spec before an Executor runs; both were approved and
+      implemented the same day without it, because codex-gate is a
+      per-machine install and this session ran in a cloud container. Both
+      changes are already committed, so these are **retrospective** reviews:
+      anything Codex raises becomes a follow-up fix, not a revert. Recorded
+      here rather than left to lapse quietly — the model-routing one changes
+      what both machines install.
 - [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
       in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
       batch jobs before that date. 22 days out as of 2026-08-08 and
@@ -219,9 +222,6 @@ completed task; one task = one commit.
       `.claude/commands/` copies** — the templates here have them as of
       2026-08-08; the hub's instances are separate files in a separate repo
       and do not yet. Run `HUB-CHECKLIST.md` against that vault.
-- [ ] **Run `/codex-review` on
-      `docs/specs/2026-08-08-unmerged-branch-checks.md` from Pappa T, or
-      record a waiver** — same standing gap as the model-routing spec.
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
       images are tracked today), and the contradiction between the hub's
