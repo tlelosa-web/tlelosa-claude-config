@@ -7,6 +7,17 @@ description: Resume hub work from where the last root-level session ended
 Resumes work from where the last root-level session ended. Project-aware:
 identifies which project folder is in play before acting.
 
+> **Known gap (confirmed 2026-07-19, still unresolved):** on at least one
+> session surface — a "Default"-type session in the Claude Code mobile app —
+> typing `/continue` returns "isn't available in this environment" even with
+> a correctly formed command file, while the same file works when invoked
+> via the `Skill` tool in a Claude Code Remote/web session. It looks like a
+> client-side restriction on that surface, not a broken file.
+> **Workaround:** ask in plain text ("continue" / "run continue") instead of
+> the slash form. Whether the desktop CLI has the same restriction is still
+> unconfirmed — check there before assuming it is universal, and update this
+> note once confirmed either way.
+
 > **Vault-agnostic by design (ADR-008).** Nothing below names a specific
 > machine, project, or vault. When you copy this into a hub root's
 > `.claude/commands/continue.md`, it is expected to work as-is; add that
