@@ -184,6 +184,29 @@ completed task; one task = one commit.
       version bump — `.github/` ships in no manifest and GitHub reads the
       template server-side, so neither machine does anything (2026-08-09)
 
+- [x] **Landed `hub-template/retro.md`** — the 2026-08-08 call to drop it is
+      reversed. `/retro` is the backward-looking counterpart to `/continue`:
+      where `/continue` orients on what's next, `/retro` reads the session log
+      and queue for *framework* friction — a session redoing settled work,
+      Tebello having to point out something already decided, a stale
+      external-state assertion, the same gap recurring across entries, an item
+      deferred three times — then proposes a confirmable batch and records the
+      run in `docs/retro-log.md` so it never repeats its own complaint.
+      Authorised by `docs/specs/2026-08-08-branch-triage-verdicts.md` (Branch 3,
+      LAND items 1–2), so no new spec. Recovered from
+      `claude/repo-status-update-n5z63h`, the last unlanded file across either
+      repo's branches. **The evidence was this session:** every one of its five
+      detection signals fired here — a Done entry false twice over, a second
+      half-true for a day, a spec calling a branch "already merged" when it was
+      not, a "byte-identical" claim wrong when written, an open item held on a
+      branch that no longer existed. All of it surfaced from an audit that
+      happened to be run. Two costs taken deliberately rather than waved past:
+      `docs/retro-log.md` becomes a fourth contention file, so the command
+      carries a pull-before-appending note in Step 5, and `HUB-CHECKLIST.md`'s
+      new item marks `/retro` **optional** and periodic — it does nothing
+      useful in a vault with no session history. No version bump;
+      `hub-template/` is copy-source, not a plugin (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -231,14 +254,6 @@ completed task; one task = one commit.
       `auto-format.sh` are all bash; Operations and Pappa T are Windows and
       need git-bash on PATH. Either confirm git-bash is present on both, or
       add `.ps1` equivalents.
-- [ ] **Confirm `retro.md` is genuinely not wanted** — dropped 2026-08-08 on
-      the reading that `/continue` + `/session-end` already cover workflow
-      management. It still exists on `claude/repo-status-update-n5z63h`,
-      which is being held undeleted in case that call is reversed.
-      **This is now the only thing holding all four config-repo branches
-      open** (2026-08-09 reconciliation): `hub-template/retro.md` is the sole
-      file across the four that `main` does not have. Answer this and the
-      deletion item below can run.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
