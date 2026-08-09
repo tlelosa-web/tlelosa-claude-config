@@ -213,7 +213,10 @@ Three things to get right, each learned the expensive way:
 2. **Unmerged by ancestry ≠ holding lost work.** Content often lands by
    another path — a rebase, a re-commit, a vault re-merge — leaving a branch
    that looks stranded but is byte-identical to the default. Verify
-   per-file before concluding anything.
+   per-file before concluding anything. And when verifying with `grep`,
+   don't filter on `--include=*.md`: it silently skips files whose names
+   don't end in `.md` even though they are markdown, such as a
+   `CLAUDE.md.template`.
 3. **Surfacing is not triaging, and never deleting.** Report what is
    unmerged and let the owner decide. Do not merge, open a PR, or delete a
    branch from this step — an ancestry test is not enough evidence to

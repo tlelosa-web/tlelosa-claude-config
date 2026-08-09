@@ -207,6 +207,38 @@ completed task; one task = one commit.
       useful in a vault with no session history. No version bump;
       `hub-template/` is copy-source, not a plugin (2026-08-09)
 
+- [x] **Installed `/retro` in the `Claude-Code` hub and re-ran
+      `HUB-CHECKLIST.md` against it** — closing the "adopt the Phase 6 branch
+      checks in the hub" item, which was **half stale when its own addendum was
+      written**. The hub adopted `/continue` Step 1.8 and `/session-end`
+      Step 1.5 on 2026-08-09, recorded in both the hub's `docs/todo.md` and its
+      `docs/session-log.md`; the addendum added here later that day said "one
+      pass over three commands, not two" without re-reading the sentence above
+      it. One command was outstanding, not three. Fifth instance this week of a
+      queue entry asserting state it did not have — and the first signal
+      `/retro`'s own Step 2 is written to detect, in the item that sent a
+      session to redo finished work the day before `/retro` existed.
+      Landed in the hub: `.claude/commands/retro.md`, tailored per ADR-008
+      (its real paths, the "most recent last" log convention with the
+      `grep -n "^## " | tail` idiom since that file is 3,000 lines, the
+      hub-and-spoke boundary on whose friction counts, and the
+      `hub-template/`-is-copy-source note); `docs/retro-log.md` wired in as
+      the hub's **fourth** contention file across Hard Rule 6, `/continue`
+      Step 1.75 and `/retro` Step 5; and `CLAUDE.md` now names `/retro` as
+      periodic rather than part of the routine pair.
+      **The checklist's diff-don't-assume rule found three drifts unrelated to
+      the task**, which is the point of running it rather than trusting a copy
+      made 12 days ago. Two folded into the hub: the mobile slash-command
+      known-gap note (template-only since 2026-07-19, never copied to a hub
+      whose owner uses the mobile app) and Step 1.75's
+      conflicts-≠-misordering caveat. One folded the other way — the hub's
+      `--include=*.md` grep gotcha was a local improvement the template
+      lacked, now **promoted upstream** into `hub-template/continue.md`, the
+      only change in this repo. ADR-008's file-copy distribution makes drift in
+      both directions the expected state; only running the diff surfaces it.
+      No version bump; `hub-template/` is copy-source, not a plugin
+      (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -305,12 +337,7 @@ completed task; one task = one commit.
       batch jobs before that date. 22 days out as of 2026-08-08 and
       unverified — deliberately left out of the model-routing spec as a
       separate factual question.
-- [ ] **Adopt the Phase 6 branch checks in the `Claude-Code` hub's own
-      `.claude/commands/` copies** — the templates here have them as of
-      2026-08-08; the hub's instances are separate files in a separate repo
-      and do not yet. Run `HUB-CHECKLIST.md` against that vault.
-      **Note while doing it:** the hub now needs `retro.md` copied in as well
-      (landed 2026-08-09), so this is one pass over three commands, not two.
+
 ### From 2026-08-09
 
 - [ ] **Evaluate feasibility of adopting Linear** for project management —
