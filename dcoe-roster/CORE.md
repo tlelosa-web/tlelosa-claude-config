@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.2** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.3** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -115,6 +115,7 @@ specific project's export format. A same-named file in a project's own
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
+|`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
 
 ### Model routing
 
@@ -140,6 +141,11 @@ per-task escalation.
 |Search / grep only                 |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
+
+The Haiku search tier is implemented by the roster's `Explore` agent — an
+override of Claude Code's built-in Explore, which inherits the session model
+instead of defaulting to Haiku. Without the override deployed, search
+delegations silently run at Sonnet 5 prices.
 
 -----
 
@@ -168,6 +174,12 @@ relax these.
    Amendment section before build starts. Standard procedure for every spec,
    not optional. The `reviewer` agent still holds sole APPROVE/BLOCK
    authority — Codex is advisory only.
+10. **Verify remote state before asserting it.** Before reporting repo/PR/
+   branch status or proposing an action conditioned on it (open a PR, merge,
+   rebase), `git fetch` the relevant ref and check it — never answer from a
+   locally cached branch ref that may be stale. This applies to any external
+   state a session doesn't control alone (remote branches, deployed
+   versions, other sessions' in-progress work), not git specifically.
 
 -----
 
