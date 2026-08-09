@@ -61,6 +61,9 @@ If this vault keeps a topic-keyed knowledge cache (check `CLAUDE.md` for a
 config quirk, a decision, an API behavior, something that would otherwise
 get re-derived next time — append it to the matching `knowledge/<topic>.md`
 and update its `knowledge/INDEX.md` row now, not as an afterthought later.
+Ask explicitly, even if the answer is no: **did this session surface a
+reusable fact not yet in `knowledge/`?** If yes, capture it now before
+closing out.
 
 ## Step 3 — Set This Session's Title
 
