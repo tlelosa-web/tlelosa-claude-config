@@ -262,8 +262,9 @@ completed task; one task = one commit.
 - [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
       already Codex-reviewed. Hard rule 3 is self-monitored until then.
-- [ ] **Delete the triaged branches** once the `retro.md` decision above is
-      made — **4 config-repo branches and 14 hub branches** (corrected
+- [ ] **Delete the triaged branches** — **now fully unblocked**, both halves.
+      `retro.md` landed 2026-08-09, which was the last held decision.
+      **4 config-repo branches and 14 hub branches** (corrected
       2026-08-09; the spec's original 3 and 13 were both wrong). Verdicts and
       live per-branch figures in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`, whose 2026-08-09
@@ -273,8 +274,13 @@ completed task; one task = one commit.
       and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
       branches are cleared**, re-measured at 0 unique files each after the
       merge. The other held decision this used to wait on (`/overwatch`) is
-      resolved; the four config-repo branches still wait on the `retro.md`
-      decision alone.
+      resolved. The four config-repo branches are cleared too, but **by
+      verdict, not by measuring zero** — three still carry `dcoe-roster/agents/*`
+      (deliberately stripped 2026-07-29) and one also carries `end-session.md`
+      and `session-log.md` (both superseded). The spec's config deletion sheet
+      tabulates exactly which files are expected on each; confirm the remaining
+      files match it and nothing new has appeared, since the hub's "0 unique"
+      check does **not** apply on this side.
       **Machine-bound — a cloud session cannot do this half.** `git push origin
       --delete` returns HTTP 403 for all 14: not the egress policy (the proxy
       logged no failure and ordinary pushes succeed), but the session's git
