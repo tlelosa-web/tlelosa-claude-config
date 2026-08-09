@@ -170,6 +170,20 @@ completed task; one task = one commit.
       command-center gaps are now live across both repos and that spec is
       marked complete (2026-08-09)
 
+- [x] **Landed the hub's PR template** — the half of the 2026-08-09
+      PR-template task that never merged. `Claude-Code` had no `.github/` at
+      all; `.github/pull_request_template.md` sat alone on
+      `claude/pr-template-linear-planning-40hnrd` while the Done entry above
+      recorded the task complete for both repos, so that entry was half-true
+      for a day. Taken verbatim from the stranded branch onto a branch cut from
+      the hub's current `main` — **not merged**: that branch is thousands of
+      lines behind `main`, per the triage's extract-don't-merge rule. Content
+      unchanged from the spec's §2 (shared block + hub-tailored `Verification`).
+      Logged in the hub's `docs/session-log.md`; its `docs/todo.md` needs no
+      entry, since this initiative is tracked here under hub-and-spoke. No
+      version bump — `.github/` ships in no manifest and GitHub reads the
+      template server-side, so neither machine does anything (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -238,10 +252,13 @@ completed task; one task = one commit.
       2026-08-09; the spec's original 3 and 13 were both wrong). Verdicts and
       live per-branch figures in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`, whose 2026-08-09
-      amendment supersedes its own summary tables. **Exclude the hub's
-      `claude/pr-template-linear-planning-40hnrd`** — it holds the only file
-      either repo's branches still have that `main` lacks; see the item below.
-      The other held decision this used to wait on (`/overwatch`) is resolved.
+      amendment supersedes its own summary tables. The hub's
+      `claude/pr-template-linear-planning-40hnrd` was the one exclusion — it
+      held the only file either repo's branches still had that `main` lacked —
+      and is **now safe to delete**, once that file reaches the hub's `main`.
+      All 14 hub branches are therefore unblocked; the four config-repo ones
+      still wait on the `retro.md` decision alone. The other held decision this
+      used to wait on (`/overwatch`) is resolved.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
@@ -286,16 +303,6 @@ completed task; one task = one commit.
       `bootstrap.sh` as the fix for a missing roster, and the Open item above
       about re-running `bootstrap.sh` by hand describes the manual step 1.5
       was built to obsolete.
-- [ ] **Land the hub's PR template** — `Claude-Code` has no `.github/` on
-      `main`; `.github/pull_request_template.md` sits alone and unmerged on
-      `claude/pr-template-linear-planning-40hnrd` (1 commit, 2026-08-09).
-      `docs/specs/2026-08-09-pr-templates.md` specifies both repos and the Done
-      entry above records both, but only the config-repo half merged (PR #16),
-      so that entry is half-true. Found 2026-08-09 by the branch-count
-      reconciliation — the same day, and the same failure mode, that Phase 6's
-      branch checks exist to catch. Cut a fresh branch from the hub's `main`
-      and re-land the file; the stranded branch is thousands of lines behind
-      `main` and must not be merged.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
