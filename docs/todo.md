@@ -53,13 +53,21 @@ completed task; one task = one commit.
       version 1.1 → 1.2. Documentation-only, no plugin/manifest changes
       (2026-08-03)
 - [x] Add a `/session-end` command (close out a session, prep it for
-      archiving) — spec at
-      `docs/specs/2026-08-04-session-end-command.md`. Promoted the same way
-      as `/continue` (ADR-008): `hub-template/session-end.md`
-      (vault-agnostic) plus a minimal instance here at
-      `.claude/commands/session-end.md` and a full instance in the
-      `Claude-Code` hub. Recorded as `Claude-Code/docs/decisions/
-      ADR-010-session-end-command.md` (2026-08-04)
+      archiving) — spec at `docs/specs/2026-08-04-session-end-command.md`
+      (design decided 2026-08-04). **Correction (2026-08-05):** this entry
+      previously claimed the `Claude-Code` hub instance and its ADR already
+      existed as of 2026-08-04 — they didn't; caught by the Reviewer Loop
+      on `docs/specs/2026-08-05-command-center.md`'s Gap 3, verified against
+      the filesystem. Promoted the same way as `/continue` (ADR-008):
+      `hub-template/session-end.md` (vault-agnostic, gained a
+      reusable-fact knowledge-cache checklist question 2026-08-05 per Gap 3)
+      plus a minimal instance here at `.claude/commands/session-end.md`
+      (2026-08-04, unaffected by the correction) and a full instance in the
+      `Claude-Code` hub — actually built 2026-08-05. Recorded as
+      `Claude-Code/docs/decisions/ADR-010-session-end-command.md`
+      (written 2026-08-05; **merged to the hub's `main` only on 2026-08-08**
+      — it sat unmerged on a branch until the systems-check recovery, so
+      this entry was still false in a second way until then)
 - [x] Fix two `/session-end` defects found on its first real run against the
       `Claude-Code` hub: the session-log step over-appended (reworded to
       reconcile-not-duplicate, three cases spelled out) and the title step
@@ -75,6 +83,58 @@ completed task; one task = one commit.
       real `description:` key with the explanatory text moved below as prose.
       Rest of the repo checked; no other command file affected. PR #12
       (2026-08-06)
+- [x] Record PR #14 (`hub-template/continue.md` reconciled with four hub
+      improvements: Step 0.5 stale/idle category, Step 1.75 sync check,
+      Step 1.9 cross-repo staleness, Step 2.5 machine-bound flagging, plus
+      Step 3 fields; three vault-specific leaks generalised) — merged
+      2026-08-07, recorded here 2026-08-08 during the systems check that
+      found it missing from this list
+- [x] **Systems check of both repos** — findings and a seven-phase
+      maintenance plan at `docs/specs/2026-08-08-system-maintenance-plan.md`;
+      per-branch verdicts at `docs/specs/2026-08-08-branch-triage-verdicts.md`
+      (2026-08-08)
+- [x] **Phase 1 — branch triage, both repos.** 16 unmerged branches with no
+      open PR assessed by reading contents against current `main`. Config
+      repo: 3 branches, partial keeps. Hub: 13 branches, 7 carrying nothing
+      but stale state. Found three version collisions that a naive merge
+      would have shipped (two different v3.3 templates, two 3.4.0 rosters)
+      (2026-08-08)
+- [x] **Phase 2 — recovered the keeps.** Config repo: `bootstrap.sh` + its
+      session-start check, the JSON-validation hook spec (Draft), the
+      session-end reusable-fact question, the mobile slash-command gap note,
+      the config audit + week-1 spec (new `docs/research/`), the
+      `hub-template/hooks/` pair, `CLAUDE.md.template` v3.4 (executor
+      isolation + real HOOKS events), the `Explore` Haiku override, and
+      CORE 1.3 (Explore row + hard rule 10, verify-remote-before-asserting).
+      Hub: ADR-010, three stranded `knowledge/` files, and four PWA
+      service-worker entries (2026-08-08)
+- [x] **Phase 3/4 — corrected the record.** The false ADR-010 claim (wrong
+      twice over — see the entry above), the marketplace catalog still
+      advertising agent bodies stripped on 2026-07-29, and four CLAUDE.md
+      drifts including a validation block missing `codex-gate/plugin.json`
+      (2026-08-08)
+
+- [x] **Phase 5 — model routing.** Spec at
+      `docs/specs/2026-08-08-model-routing.md`, approved and implemented the
+      same day. Added the standing-pin test (a role earns a permanent model
+      pin only when *every* task it receives already meets an escalation
+      trigger), which documents `architect`'s pin instead of leaving it
+      contradicting hard rule 7, and replaced 11 stale `claude-opus-4-8`
+      references with `claude-opus-5` across `CORE.md`, `CLAUDE.md.template`
+      and two agent bodies. CORE 1.4 / template v3.5 / dcoe-roster 3.6.0
+      (2026-08-08)
+
+- [x] **Phase 6 — unmerged-branch checks.** Spec at
+      `docs/specs/2026-08-08-unmerged-branch-checks.md`, approved and
+      implemented the same day. `/continue` gains Step 1.8 (find work earlier
+      sessions stranded) and `/session-end` gains Step 1.5 (don't strand your
+      own), in both `hub-template/` and this repo's own instances; this
+      repo's `/continue` also now fetches before reporting git state, which
+      it never did. `HUB-CHECKLIST.md` names both steps so a vault that
+      copied the commands earlier learns to re-copy. Verified against a known
+      answer — the check found 5 unmerged branches here including this
+      session's own 22 commits. No version bump: `hub-template/` is
+      copy-source, not a plugin (2026-08-08)
 
 ## Open
 
@@ -93,17 +153,76 @@ completed task; one task = one commit.
 - [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
       is covered — until then codex-gate stays off the work PC
 
-- [ ] **Bootstrap `~/.claude/agents/` on the machine this repo was cloned to
-      under `C:\Users\tlelo\Downloads\`** — per
-      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md`, the roster
-      is no longer plugin-installed; each machine needs the 9 files in
-      `agent-bodies-reference/` copied into `~/.claude/agents/` manually.
-      Discovered 2026-08-03 while trying to dispatch the `reviewer` agent
-      against `docs/specs/2026-08-03-graph-engineering-core-additions.md`
-      and finding no agent files anywhere on that machine (not a repo bug —
-      this machine's local git clone was also 3 commits behind `origin/main`
-      at the time, predating the strip-agent-bodies merge; corrected via
-      merge this session). Worth checking whether Operations/Pappa T
-      themselves ever got the manual bootstrap step run too, since the
-      rollout checklist's old verify step for it is now informational-only
-      per that spec's item 4.
+- [ ] **Run `agent-bodies-reference/bootstrap.sh` on the machine this repo
+      was cloned to under `C:\Users\tlelo\Downloads\`** — and check whether
+      Operations and Pappa T ever had it run either. Logged 2026-08-03 as a
+      manual "copy these files" step after
+      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md` stopped the
+      plugin shipping agent bodies; discovered when dispatching the
+      `reviewer` agent found no agent files anywhere on that machine.
+      **As of 2026-08-08 there is a script for it** — recovered from a
+      stranded branch, idempotent and rerun-safe — so this is one command
+      now, not a copy-by-hand. Two things changed with it: the roster is
+      **10 files, not 9** (`explore.md` was added the same day, and a
+      machine missing it silently falls back to Sonnet-priced search), and
+      `CLAUDE.md`'s session-start check now warns when any are missing.
+      Note this is the same command the pending rollout item needs, so doing
+      the rollout covers this for Operations and Pappa T.
+
+### From the 2026-08-08 systems check
+
+- [ ] **Roll out dcoe-roster 3.6.0 + CORE 1.4 + template v3.5 on both
+      machines** (was 3.5.0/1.3/v3.4 before the model-routing change landed
+      on top — nothing has shipped yet, so it all goes in one pass) — `/plugin marketplace update` + `/plugin update
+      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`, then **re-run
+      `agent-bodies-reference/bootstrap.sh`** so `explore.md` and the
+      executor's `isolation: worktree` actually reach `~/.claude/agents/`.
+      The plugin update alone does not deliver agent bodies.
+- [ ] **Decide: bash vs PowerShell for the shipped scripts** (deferred
+      2026-08-08). `bootstrap.sh`, `hub-template/hooks/secret-scan.sh` and
+      `auto-format.sh` are all bash; Operations and Pappa T are Windows and
+      need git-bash on PATH. Either confirm git-bash is present on both, or
+      add `.ps1` equivalents.
+- [ ] **Review `/overwatch` and the command-center spec** (deferred
+      2026-08-08). Built 2026-08-05, still unmerged on the hub's
+      `claude/continuation-utn4f5`. Gaps 2 and 3 of that spec landed today;
+      Gap 1 (`/overwatch`) is the only piece left. Decide whether it is still
+      wanted or lands as historical — the branch is held undeleted until then.
+- [ ] **Confirm `retro.md` is genuinely not wanted** — dropped 2026-08-08 on
+      the reading that `/continue` + `/session-end` already cover workflow
+      management. It still exists on `claude/repo-status-update-n5z63h`,
+      which is being held undeleted in case that call is reversed.
+- [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
+      restriction** — `/continue` returns "isn't available in this
+      environment" on a Default-type mobile session (2026-07-19). If the CLI
+      is affected too, the note now in `hub-template/continue.md` needs
+      upgrading from a surface quirk to a much bigger problem.
+- [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
+      spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
+      already Codex-reviewed. Hard rule 3 is self-monitored until then.
+- [ ] **Delete the triaged branches** once the two held-open decisions above
+      are made — 3 config-repo branches and 13 hub branches, verdicts in
+      `docs/specs/2026-08-08-branch-triage-verdicts.md`.
+- [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
+      a waiver** — `2026-08-08-model-routing.md` and
+      `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
+      pass on every spec before an Executor runs; both were approved and
+      implemented the same day without it, because codex-gate is a
+      per-machine install and this session ran in a cloud container. Both
+      changes are already committed, so these are **retrospective** reviews:
+      anything Codex raises becomes a follow-up fix, not a revert. Recorded
+      here rather than left to lapse quietly — the model-routing one changes
+      what both machines install.
+- [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
+      in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
+      batch jobs before that date. 22 days out as of 2026-08-08 and
+      unverified — deliberately left out of the model-routing spec as a
+      separate factual question.
+- [ ] **Adopt the Phase 6 branch checks in the `Claude-Code` hub's own
+      `.claude/commands/` copies** — the templates here have them as of
+      2026-08-08; the hub's instances are separate files in a separate repo
+      and do not yet. Run `HUB-CHECKLIST.md` against that vault.
+- [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
+      governance — a root `.gitignore` (31 MB installer, logs and generated
+      images are tracked today), and the contradiction between the hub's
+      hard rule 4 and the company data actually living in `Operations/`.

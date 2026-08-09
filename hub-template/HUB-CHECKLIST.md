@@ -51,6 +51,16 @@ project-to-project.
       template hasn't been given. Fold each difference the correct way
       (vault-specific → stays local; generally useful → promote upstream)
       instead of overwriting one side with the other.
+- [ ] **Both branch checks are present** (added 2026-08-08). `continue.md`
+      needs **Step 1.8** (unmerged-branch check, after Step 1.75 so it reads
+      fresh refs) and `session-end.md` needs **Step 1.5** ("can this
+      session's work be found?"). Called out separately from the general
+      diff item above because a vault that copied these commands *before*
+      that date has files that look complete and pass every other item here
+      — the only symptom is the one thing these steps exist to catch, and
+      it is silent by nature. An audit on that date found 16 branches
+      stranded across two repos this way, including an ADR another file
+      already claimed existed. Check for the step headings specifically.
 - [ ] **`continue.md`'s vault-specific hooks are filled in.** The template
       is deliberately generic where it can't know the answer, and those
       spots are inert until this vault supplies it. Check each: Step 1.75's

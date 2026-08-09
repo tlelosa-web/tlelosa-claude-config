@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.2** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.4** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -108,18 +108,19 @@ specific project's export format. A same-named file in a project's own
 |------------|-------------------------------|----------------------------------------|
 |`domain`    |`~/.claude/agents/domain.md`    |Session start, scope confirmation      |
 |`planner`   |`~/.claude/agents/planner.md`   |Break features into spec + tasks       |
-|`architect` |`~/.claude/agents/architect.md` |System design, ADRs, DB schema         |
+|`architect` |`~/.claude/agents/architect.md` |System design, ADRs, DB schema (Opus, standing)|
 |`executor`  |`~/.claude/agents/executor.md`  |Implement a single well-defined task   |
 |`tester`    |`~/.claude/agents/tester.md`    |Write tests, TDD loops                 |
-|`reviewer`  |`~/.claude/agents/reviewer.md`  |Code review, security, quality gate    |
+|`reviewer`  |`~/.claude/agents/reviewer.md`  |Code review, security, quality gate (Opus, standing)|
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
+|`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
 
 ### Model routing
 
 `claude-sonnet-5` at **medium effort** is the universal default for all
-agents. `claude-opus-4-8` is reserved for **evidence-based escalation
+agents. `claude-opus-5` is reserved for **evidence-based escalation
 only** — not assigned up front by task type.
 
 **Escalate to Opus when:**
@@ -128,18 +129,38 @@ only** — not assigned up front by task type.
   non-trivial ADRs)
 - A security review is warranted (auth, data-export, file-write code)
 
-**Standing exception:** the `reviewer` agent runs permanently on
-`claude-opus-4-8` — code review is treated as a fixed high-stakes gate, not a
-per-task escalation.
+**When a standing pin is legitimate.** A role earns a **standing** model pin
+only when **every** task it can receive already meets an escalation trigger
+above. If some of its tasks would meet one and some would not, the role takes
+the default and escalates per-task on evidence. Two roles pass this test, and
+only two:
+
+- **`reviewer`** — every review is a quality/security gate, which is already
+  an escalation trigger. Code review is a fixed high-stakes gate, not a
+  per-task judgment call.
+- **`architect`** — "deep architectural reasoning (system-wide redesign,
+  non-trivial ADRs)" is an escalation trigger and is also a description of
+  this role's entire job. Making it re-establish escalation per task is
+  ceremony.
+
+This test keeps hard rule 7 intact rather than carving out favourites: a
+proposal to pin any other role is answered by asking whether *any* task that
+role receives would fail to meet a trigger.
 
 |Role                              |Model              |Effort |
 |-----------------------------------|-------------------|-------|
 |All agents (default)               |`claude-sonnet-5`  |Medium |
-|`reviewer` (permanent)             |`claude-opus-4-8`  |High   |
-|Escalation (2 failed attempts / deep architecture / security review)|`claude-opus-4-8`|High|
-|Search / grep only                 |`claude-haiku-4-5` |Low    |
+|`reviewer` (standing)              |`claude-opus-5`    |High   |
+|`architect` (standing)             |`claude-opus-5`    |High   |
+|Escalation (2 failed attempts / deep architecture / security review)|`claude-opus-5`|High|
+|`Explore` / search-grep only       |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
+
+The Haiku search tier is implemented by the roster's `Explore` agent — an
+override of Claude Code's built-in Explore, which inherits the session model
+instead of defaulting to Haiku. Without the override deployed, search
+delegations silently run at Sonnet 5 prices.
 
 -----
 
@@ -168,6 +189,12 @@ relax these.
    Amendment section before build starts. Standard procedure for every spec,
    not optional. The `reviewer` agent still holds sole APPROVE/BLOCK
    authority — Codex is advisory only.
+10. **Verify remote state before asserting it.** Before reporting repo/PR/
+   branch status or proposing an action conditioned on it (open a PR, merge,
+   rebase), `git fetch` the relevant ref and check it — never answer from a
+   locally cached branch ref that may be stale. This applies to any external
+   state a session doesn't control alone (remote branches, deployed
+   versions, other sessions' in-progress work), not git specifically.
 
 -----
 
