@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bootstrap.sh — copy the 9 DCOE roster agent bodies into ~/.claude/agents/
+# bootstrap.sh — copy the 10 DCOE roster agent bodies into ~/.claude/agents/
 #
 # Context: dcoe-roster/agents/ used to be plugin-installed and auto-bootstrapped
 # a new machine's ~/.claude/agents/. That stopped (see
@@ -9,7 +9,7 @@
 #
 # Behavior:
 #   - Creates ~/.claude/agents/ if it doesn't exist.
-#   - Copies each of the 9 named files from this script's own directory into
+#   - Copies each of the 10 named files from this script's own directory into
 #     ~/.claude/agents/, only touching those 9 filenames — nothing else in
 #     that directory is read, moved, or removed.
 #   - Idempotent: running it twice in a row leaves the same end state both
@@ -31,6 +31,7 @@ AGENTS=(
   doc-writer.md
   domain.md
   executor.md
+  explore.md
   planner.md
   reviewer.md
   tester.md

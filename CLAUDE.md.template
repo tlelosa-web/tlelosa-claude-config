@@ -137,6 +137,7 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
+|`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
 
 ### Model routing (via OpenRouter)
 
@@ -158,6 +159,10 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |Search / grep only                 |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
+
+The Haiku row is implemented by the roster's `Explore` agent — an override of
+the built-in Explore, which since Claude Code v2.1.198 inherits the session
+model. No override deployed = search runs at Sonnet 5 prices.
 
 **Effort tiers** map onto the Thinking Levels table below — low effort pairs with *(none)*/`think`, medium with `think hard`, high with `think harder`/`ultrathink`.
 
@@ -502,7 +507,8 @@ default-deny rule for external-model payloads. Spec:
 isolation via `isolation: worktree` — the shared-session/`cd` rule is removed
 because `cd` does not persist between a subagent's Bash calls; HOOKS mapped to
 real Claude Code events and to `settings.json` registration, with ready-made
-scripts in `hub-template/hooks/`. Written against v3.3 in July 2026, landed
+scripts in `hub-template/hooks/`; `Explore` Haiku override added to the
+roster. Written against v3.3 in July 2026, landed
 2026-08-08 after being recovered from an unmerged branch — v3.3 had been taken
 by the codex-gate change in the meantime.*
 
