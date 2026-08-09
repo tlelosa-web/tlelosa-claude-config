@@ -170,6 +170,55 @@ Note this prevents *conflicts*, not *misordering*: a clean auto-merge can
 still insert a session-log entry above an older one. Step 3's log discipline
 covers that separately.
 
+## Step 1.8 — Unmerged-Branch Check (finds work earlier sessions stranded)
+
+Run this **after** Step 1.75, for the same reason: a branch list read from
+stale remote refs answers the wrong question.
+
+Cloud and remote sessions each push a `claude/<slug>` branch and end. Nothing
+in that loop asks whether the work became reachable from the default branch,
+so a session can finish, push, and still leave its work invisible to every
+session that follows. **Nothing about stranded work looks stranded** — the
+tree is clean, `rev-list HEAD..origin/main` is `0`, and the close-out reads
+like a success. Left unchecked this accumulates silently: a 2026-08-08 audit
+of this hub's two repos found 16 such branches, holding an ADR another file
+already claimed existed, three `knowledge/` files, and a finished three-part
+initiative nobody could see.
+
+```
+git fetch origin --quiet
+git for-each-ref --format='%(refname:short)|%(committerdate:short)' refs/remotes/origin
+```
+
+Then, for each ref that is not the default branch and not `HEAD`:
+
+```
+git merge-base --is-ancestor <ref> origin/<default-branch>
+```
+
+A non-zero exit means that branch is **not** contained in the default branch.
+
+**Report in Step 3:** the total count of unmerged branches, then detail at
+most the **5 oldest** — name, age in days, and commits ahead. Flag anything
+older than **7 days** (same threshold as Step 0.5's stale-session rule).
+Report a pass in one line too; silence and never-ran look identical.
+
+Three things to get right, each learned the expensive way:
+
+1. **Diff against `origin/<default-branch>`, not the merge-base.** If the
+   default branch has absorbed a large merge, a merge-base diff reports tens
+   of thousands of lines that already landed. `git diff origin/<default>
+   <branch>` answers the question you actually have: what does this branch
+   have that the default lacks?
+2. **Unmerged by ancestry ≠ holding lost work.** Content often lands by
+   another path — a rebase, a re-commit, a vault re-merge — leaving a branch
+   that looks stranded but is byte-identical to the default. Verify
+   per-file before concluding anything.
+3. **Surfacing is not triaging, and never deleting.** Report what is
+   unmerged and let the owner decide. Do not merge, open a PR, or delete a
+   branch from this step — an ancestry test is not enough evidence to
+   discard someone's work.
+
 ## Step 1.9 — Cross-Repo Staleness Check (verifies Step 1 before you believe it)
 
 Run this **after** Step 1.75, not before — comparing against a stale local
@@ -292,9 +341,11 @@ Tell the owner:
    own `docs/specs/`) for the next task, if it's a build task?
 4. **Hub state** — Step 1.9's result, stated explicitly whether it passed
    or found drift
-5. **Known risks** — surface any standing risk this hub's own `CLAUDE.md`
+5. **Branch state** — Step 1.8's result, stated explicitly whether it
+   passed or found unmerged branches
+6. **Known risks** — surface any standing risk this hub's own `CLAUDE.md`
    or `docs/todo.md` flags as still unresolved
-6. **Blockers** — anything unresolved, pending decisions, or missing
+7. **Blockers** — anything unresolved, pending decisions, or missing
    context
 
 Format:
@@ -307,6 +358,7 @@ Format:
 **Next task:** [task name from todo.md — if machine-bound and unreachable from this session, say so here: "⚠️ requires local access on <machine> — not runnable from this session"]
 **Spec:** [exists at docs/specs/<name>.md | MISSING — must write spec before building | N/A]
 **Hub state:** [Step 1.9 — verified: hub <sha> <time> ahead of <repo> <sha> <time>, entry accurate | STALE: <repo> is <N> ahead of the hub's last write, state above taken from that project's own docs | not checkable: <machine> unreachable from this session]
+**Branch state:** [Step 1.8 — all remote branches merged | <N> unmerged, oldest <branch> (<days>d, <M> commits ahead) — ⚠️ <K> over 7 days]
 **Known risks:** [none new | <standing item from CLAUDE.md/todo.md>]
 **Blockers:** [none | description — include any machine-access gap from Step 2.5 here too]
 
