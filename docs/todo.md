@@ -114,6 +114,16 @@ completed task; one task = one commit.
       drifts including a validation block missing `codex-gate/plugin.json`
       (2026-08-08)
 
+- [x] **Phase 5 — model routing.** Spec at
+      `docs/specs/2026-08-08-model-routing.md`, approved and implemented the
+      same day. Added the standing-pin test (a role earns a permanent model
+      pin only when *every* task it receives already meets an escalation
+      trigger), which documents `architect`'s pin instead of leaving it
+      contradicting hard rule 7, and replaced 11 stale `claude-opus-4-8`
+      references with `claude-opus-5` across `CORE.md`, `CLAUDE.md.template`
+      and two agent bodies. CORE 1.4 / template v3.5 / dcoe-roster 3.6.0
+      (2026-08-08)
+
 
 ## Open
 
@@ -149,8 +159,9 @@ completed task; one task = one commit.
 
 ### From the 2026-08-08 systems check
 
-- [ ] **Roll out dcoe-roster 3.5.0 + CORE 1.3 + template v3.4 on both
-      machines** — `/plugin marketplace update` + `/plugin update
+- [ ] **Roll out dcoe-roster 3.6.0 + CORE 1.4 + template v3.5 on both
+      machines** (was 3.5.0/1.3/v3.4 before the model-routing change landed
+      on top — nothing has shipped yet, so it all goes in one pass) — `/plugin marketplace update` + `/plugin update
       dcoe-roster@tlelosa-claude-config` + `/reload-plugins`, then **re-run
       `agent-bodies-reference/bootstrap.sh`** so `explore.md` and the
       executor's `isolation: worktree` actually reach `~/.claude/agents/`.
@@ -180,13 +191,13 @@ completed task; one task = one commit.
 - [ ] **Delete the triaged branches** once the two held-open decisions above
       are made — 3 config-repo branches and 13 hub branches, verdicts in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`.
-- [ ] **Phase 5 — model routing.** Spec written 2026-08-08 at
-      `docs/specs/2026-08-08-model-routing.md`, awaiting approval. Adds a
-      test for when a standing model pin is legitimate (resolving the
-      `architect`-vs-hard-rule-7 contradiction without weakening the rule)
-      and replaces 11 stale `claude-opus-4-8` references. **Not yet
-      `/codex-review`ed** — codex-gate is Pappa T only; run it there before
-      building, or record a waiver here.
+- [ ] **Run `/codex-review` on `docs/specs/2026-08-08-model-routing.md` from
+      Pappa T, or record a waiver.** The spec was approved and implemented
+      2026-08-08 without it — codex-gate is a per-machine install and this
+      was written from a cloud container. Universal hard rule 9 wants the
+      pass on every spec; noted here rather than left to lapse quietly. The
+      change is already committed, so this is a retrospective review: if
+      Codex raises something real, it becomes a follow-up fix, not a revert.
 - [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
       in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
       batch jobs before that date. 22 days out as of 2026-08-08 and

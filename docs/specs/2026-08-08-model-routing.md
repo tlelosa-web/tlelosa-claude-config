@@ -1,7 +1,7 @@
 # Spec — Model routing: a test for standing exceptions, and a generation fix
 
 **Date:** 2026-08-08
-**Status:** Draft — awaiting owner approval
+**Status:** Implemented 2026-08-08 (approved by owner same day)
 **Owner:** Tebello Lelosa
 **Type:** Structural — changes `CORE.md` and `CLAUDE.md.template`, so it reaches
 every opted-in project on both machines. Core version bump required.
@@ -205,3 +205,14 @@ machines install.
 
 - **2026-08-08** — first draft, from the Phase 5 findings of the systems
   check (`docs/specs/2026-08-08-system-maintenance-plan.md`).
+- **2026-08-08** — approved and implemented in three commits (CORE 1.4 +
+  template v3.5 + plugin 3.6.0; the two agent bodies; this status update).
+  One deviation from the letter of the spec: a single `claude-opus-4-8`
+  mention remains in `CLAUDE.md.template`, inside the v3.5 changelog line
+  describing this very change. That is a historical citation of the kind the
+  acceptance criteria already permit in `docs/specs/` and `docs/research/`,
+  not an unreplaced reference. Additions beyond the listed changes: the
+  `architect`/`reviewer` roster rows in **both** files are annotated
+  "(Opus, standing)", so a reader of the roster table sees the pin without
+  having to reach the routing table. Rollout remains outstanding — nothing
+  has reached either machine yet.
