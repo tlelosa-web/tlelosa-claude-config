@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.4 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.5 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -18,7 +18,7 @@ Type:        [Web App / CLI / API / Automation / Desktop Offline]
 Stack:       [e.g. Flask · SQLite · Jinja2 · Vanilla JS / FastAPI · React · ReportLab]
 Deployment:  [e.g. Local Windows desktop / Vercel / Docker]
 Runtime:     [e.g. Python 3.11 / Node 20]
-Inference:   OpenRouter  →  claude-sonnet-5 (default, medium effort) | claude-opus-4-8 (evidence-based escalation only)
+Inference:   OpenRouter  →  claude-sonnet-5 (default, medium effort) | claude-opus-5 (evidence-based escalation only)
 Owner:       Tebello Lelosa
 ```
 
@@ -130,10 +130,10 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |------------|-------------------------------|----------------------------------------|
 |`domain`    |`~/.claude/agents/domain.md`    |Session start, scope confirmation      |
 |`planner`   |`~/.claude/agents/planner.md`   |Break features into spec + tasks       |
-|`architect` |`~/.claude/agents/architect.md` |System design, ADRs, DB schema         |
+|`architect` |`~/.claude/agents/architect.md` |System design, ADRs, DB schema (Opus, standing)|
 |`executor`  |`~/.claude/agents/executor.md`  |Implement a single well-defined task   |
 |`tester`    |`~/.claude/agents/tester.md`    |Write tests, TDD loops                 |
-|`reviewer`  |`~/.claude/agents/reviewer.md`  |Code review, security, quality gate    |
+|`reviewer`  |`~/.claude/agents/reviewer.md`  |Code review, security, quality gate (Opus, standing)|
 |`doc-writer`|`~/.claude/agents/doc-writer.md`|Update docs, README, changelogs        |
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
@@ -142,20 +142,26 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 ### Model routing (via OpenRouter)
 
 `claude-sonnet-5` at **medium effort** is the universal default for all agents.
-`claude-opus-4-8` is reserved for **evidence-based escalation only** — not assigned up front by task type.
+`claude-opus-5` is reserved for **evidence-based escalation only** — not assigned up front by task type.
 
 **Escalate to Opus when:**
 - Two prior Sonnet attempts on the same task have failed
 - The task requires deep architectural reasoning (system-wide redesign, non-trivial ADRs)
 - A security review is warranted (auth, data-export, file-write code)
 
-**Standing exception:** the `reviewer` agent runs permanently on `claude-opus-4-8` — code review is treated as a fixed high-stakes gate, not a per-task escalation.
+**When a standing pin is legitimate.** A role earns a **standing** model pin only when **every** task it can receive already meets an escalation trigger above. If some of its tasks would meet one and some would not, the role takes the default and escalates per-task on evidence. Two roles pass this test, and only two:
+
+- **`reviewer`** — every review is a quality/security gate, already an escalation trigger.
+- **`architect`** — "deep architectural reasoning (non-trivial ADRs)" is both a trigger and a description of this role's entire job.
+
+The test keeps the "Opus is earned, not assigned" rule intact rather than carving out favourites.
 
 |Role                              |Model              |Effort |
 |-----------------------------------|-------------------|-------|
 |All agents (default)               |`claude-sonnet-5`  |Medium |
-|`reviewer` (permanent)             |`claude-opus-4-8`  |High   |
-|Escalation (2 failed attempts / deep architecture / security review)|`claude-opus-4-8`|High|
+|`reviewer` (standing)              |`claude-opus-5`    |High   |
+|`architect` (standing)             |`claude-opus-5`    |High   |
+|Escalation (2 failed attempts / deep architecture / security review)|`claude-opus-5`|High|
 |Search / grep only                 |`claude-haiku-4-5` |Low    |
 
 Set per-agent in frontmatter: `model: claude-haiku-4-5`
@@ -511,5 +517,13 @@ scripts in `hub-template/hooks/`; `Explore` Haiku override added to the
 roster. Written against v3.3 in July 2026, landed
 2026-08-08 after being recovered from an unmerged branch — v3.3 had been taken
 by the codex-gate change in the meantime.*
+
+*v3.5 change (spec: `docs/specs/2026-08-08-model-routing.md` in
+`tlelosa-claude-config`): added the standing-pin test — a role earns a
+permanent model pin only when every task it can receive already meets an
+escalation trigger — which documents `architect`'s pin instead of leaving it
+contradicting the "Opus is earned" rule; and moved every escalation target
+from `claude-opus-4-8` to `claude-opus-5`, since escalating from a 5-family
+default to a 4.8-family Opus moved to an older model.*
 
 *Last review: August 2026 — Tebello Lelosa*
