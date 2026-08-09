@@ -1,10 +1,17 @@
-# Branch triage verdicts — `tlelosa-claude-config` (Phase 1.1)
+# Branch triage verdicts — Phase 1 (both repos)
 
 **Date:** 2026-08-08
 **Status:** Awaiting owner approval — no branch merged or deleted until approved
-**Plan:** `docs/specs/2026-08-08-system-maintenance-plan.md`, Phase 1.1
+**Plan:** `docs/specs/2026-08-08-system-maintenance-plan.md`, Phases 1.1 + 1.2
 **Method:** every verdict below is based on reading the branch's actual file
 contents against current `main` (fetched 2026-08-08), not on commit messages.
+
+Part 1 covers `tlelosa-claude-config` (3 branches). Part 2 covers the
+`Claude-Code` hub (13 branches).
+
+-----
+
+# Part 1 — `tlelosa-claude-config` (Phase 1.1)
 
 ## Summary
 
@@ -260,3 +267,156 @@ on Operations and Pappa T, plus re-running `bootstrap.sh`.
    equivalents?
 4. **`docs/research/`** — this repo has no such folder today. Create it for
    the config audit, or move that document under `docs/specs/`?
+
+-----
+
+# Part 2 — `Claude-Code` hub (Phase 1.2)
+
+## Method correction
+
+The plan warned not to assume all 13 branches carry lost work. That warning
+was right, and the first measurement was misleading: diffing each branch
+against its **merge-base** showed 43,000-line deltas across ~290 files,
+which looks catastrophic. It isn't. `main`'s tip is a 68-commit vault
+re-merge, so those diffs mostly show content that has *since* landed by
+another path.
+
+The reliable test is diffing **`main` against the branch** and counting only
+what the branch adds. Every branch turns out to be far *behind* `main`
+(2,800–5,600 lines), each carrying a small unique residue:
+
+| Branch | Lines `main` lacks | Lines behind `main` | Verdict |
+|---|---|---|---|
+| `continuation-utn4f5` | 649 | 2,854 | **Extract 3 files** |
+| `total-race-count-indicator-keqb18` | 277 | 2,871 | **Extract 3 items** |
+| `session-end-archive-afo043` | 253 | 2,853 | **Superseded** by utn4f5 |
+| `pwa-component-driver-app-ysxe8a` | 245 | 2,869 | **Extract 1 file** |
+| `reddit-article-claude-sessions-yefxfd` | 232 | 3,988 | **Extract 1 file** |
+| `repo-update-check-mn1wv2` | 155 | 1,546 | **Extract 1 item** |
+| `continuation-sqlkfd` | 134 | 4,747 | **Delete** |
+| `continuation-cl1tel` | 102 | 5,410 | **Delete** |
+| `repo-knowledge-insights-62s4xj` | 94 | 4,367 | **Delete** |
+| `continuation-tmc4e6` | 85 | 5,077 | **Delete** |
+| `environment-update-process-c1zn1a` | 83 | 3,990 | **Delete** |
+| `continuation-bpj3tw` | 67 | 5,256 | **Delete** |
+| `continuation-s2a36h` | 21 | 5,634 | **Delete** |
+
+**Seven of thirteen carry nothing worth keeping.** Their residue is entirely
+*older* `knowledge/INDEX.md` rows and stale `docs/todo.md` / `docs/session-log.md`
+state that `main` has since superseded with richer versions — e.g. a branch's
+`tlelosa-claude-config.md` index row dated 2026-07-28 against `main`'s much
+fuller row dated 2026-08-08. Landing them would move the cache backwards.
+
+Spot-checked to be safe: the seven `docs/specs/2026-07-29-*.md` files that
+appear across three of these branches are all already on `main`, as is the
+Ollama `READ_TIMEOUT` finding in `knowledge/ai-outreach-agency.md`.
+
+## Confirmed lost work — six extractions
+
+### 1. `docs/decisions/ADR-010-session-end-command.md` — **the highest priority**
+
+Exists on two branches in two versions. **Take `continuation-utn4f5`'s
+(111 lines), not `session-end-archive-afo043`'s (86 lines)** — the former is
+the deliberate 2026-08-05 rewrite whose commit is titled "Write ADR-010 for
+real," made after a prior session discovered the first version's claims were
+premature.
+
+This is the file `tlelosa-claude-config/docs/todo.md` already asserts exists.
+Landing it is what makes that Done entry true, and it gates config-repo
+Branch 2's todo correction.
+
+### 2. The command-center initiative — fully built, entirely stranded
+
+`docs/specs/2026-08-05-command-center.md` (286 lines) and
+`.claude/commands/overwatch.md` (175 lines), both on `continuation-utn4f5`.
+
+This one deserves attention beyond its line count. The spec is an
+owner-scoped, `AskUserQuestion`-confirmed initiative from 2026-08-05
+addressing three named gaps, with a locked build order. **All three gaps were
+built, across two repos, and not one landed:**
+
+| Gap | Deliverable | Stranded on |
+|---|---|---|
+| 1 — no single status view | `/overwatch` command | hub `continuation-utn4f5` |
+| 2 — roster bootstrap gap | `bootstrap.sh` | config `continuation-utn4f5` |
+| 3 — knowledge cache goes stale | session-end reusable-fact prompt | config `continuation-utn4f5` |
+
+A complete, approved, three-part piece of work finished and lost. Recovering
+it is the single largest value item in this triage, and it is the sharpest
+evidence for why the plan's Phase 6 matters.
+
+`/overwatch` is read-only by contract (never writes, edits, or commits) and
+aggregates open items across the hub, every sub-project, and the config repo.
+Land it with the spec, marked Gap 1 complete and Gaps 2–3 landing alongside
+the config-repo branch.
+
+### 3. `knowledge/claude-code-sessions.md` (79 lines)
+
+From `reddit-article-claude-sessions-yefxfd`. Claude Code internals: the
+`~/.claude/projects/` path/encoding scheme. Not on `main`; no `INDEX.md` row.
+
+### 4. `knowledge/cloud-sessions.md` (71 lines)
+
+From `total-race-count-indicator-keqb18`. Agent-proxy host blocking, and
+specifically that **HTTP 000 is not an empty page** — exactly the kind of
+gotcha that costs an hour when re-derived. Directly relevant to sessions like
+this one.
+
+### 5. `knowledge/pitcrew-sync.md` (95 lines)
+
+From `pwa-component-driver-app-ysxe8a`. PitCrew Sync, the third F1 Clash
+sibling PWA, including that it lives in the `RMLRACE` org and not
+`tlelosa-web` — a fact that will otherwise be re-derived by anyone looking
+for the repo.
+
+### 6. Two entries appended to existing knowledge files
+
+- **`knowledge/cratetracker.md`** (from `keqb18`) — "Cache-busting isn't
+  enough: the SW update prompt." Bumping `CACHE_VERSION` was necessary but
+  never sufficient; with the old cache-first worker a deploy needed *two* app
+  opens to appear. The entry records that the gap cost a full debugging round.
+- **`knowledge/pitwall-companion.md`** (from `mn1wv2` and `keqb18`) — the
+  cache-busting rule was documented and then **missed three times in a row**
+  across consecutive PRs, plus the `tlelosa-web` → `RMLRACE` repo move.
+
+Both are append-only additions to files `main` already has — low-risk, and
+they are the highest-signal kind of knowledge entry: a documented rule that
+was written down and then not followed.
+
+## Explicit deletions
+
+- **7 branches** with no unique content: `continuation-sqlkfd`,
+  `continuation-cl1tel`, `repo-knowledge-insights-62s4xj`,
+  `continuation-tmc4e6`, `environment-update-process-c1zn1a`,
+  `continuation-bpj3tw`, `continuation-s2a36h`.
+- **`session-end-archive-afo043`** once ADR-010 is taken from `utn4f5`.
+- **`cloud-env-overview-setup-ymv1vd`** — already merged.
+- The 5 source branches above, after their extractions land.
+
+**Do not merge any of these branches.** Every one is thousands of lines
+behind `main`; a merge risks reverting current content. Extract the named
+files and entries onto a fresh branch cut from `main`, then delete.
+
+## Recommended execution order for hub Phase 2.2
+
+1. **ADR-010** from `utn4f5` — unblocks config Phase 3.1.
+2. **The three missing `knowledge/` files** + the two appended entries, with
+   their `INDEX.md` rows in the same commit (hub hard rule: index and file
+   move together).
+3. **Command-center spec + `/overwatch`**, coordinated with the config repo's
+   `bootstrap.sh` so all three gaps land together and the spec can be marked
+   complete rather than partially done.
+4. **Delete all 13 branches.**
+
+Note the hub's own contention-file rule: `docs/todo.md`, `docs/session-log.md`,
+and `knowledge/INDEX.md` are touched by nearly every session and have already
+caused two real conflicts. Fetch and pull immediately before each commit
+above, not once at the start.
+
+## Open questions for Tebello
+
+5. **`/overwatch`** — still wanted? It was scoped and built on 2026-08-05 and
+   has sat unmerged since. If the command-center goal has moved on, say so and
+   the spec lands as historical rather than as live work.
+6. **Two ADR-010s** — confirm taking `utn4f5`'s 111-line version. It contradicts
+   the 86-line one on dates and on what existed when.
