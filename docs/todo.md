@@ -124,6 +124,18 @@ completed task; one task = one commit.
       and two agent bodies. CORE 1.4 / template v3.5 / dcoe-roster 3.6.0
       (2026-08-08)
 
+- [x] **Phase 6 — unmerged-branch checks.** Spec at
+      `docs/specs/2026-08-08-unmerged-branch-checks.md`, approved and
+      implemented the same day. `/continue` gains Step 1.8 (find work earlier
+      sessions stranded) and `/session-end` gains Step 1.5 (don't strand your
+      own), in both `hub-template/` and this repo's own instances; this
+      repo's `/continue` also now fetches before reporting git state, which
+      it never did. `HUB-CHECKLIST.md` names both steps so a vault that
+      copied the commands earlier learns to re-copy. Verified against a known
+      answer — the check found 5 unmerged branches here including this
+      session's own 22 commits. No version bump: `hub-template/` is
+      copy-source, not a plugin (2026-08-08)
+
 
 ## Open
 
@@ -203,7 +215,14 @@ completed task; one task = one commit.
       batch jobs before that date. 22 days out as of 2026-08-08 and
       unverified — deliberately left out of the model-routing spec as a
       separate factual question.
-- [ ] **Phases 6-7 of the maintenance plan remain**: the unmerged-branch
-      check in `/continue` and `/session-end` that stops all of this
-      recurring, and hub hygiene/governance (`.gitignore`, the company-data
-      rule contradiction).
+- [ ] **Adopt the Phase 6 branch checks in the `Claude-Code` hub's own
+      `.claude/commands/` copies** — the templates here have them as of
+      2026-08-08; the hub's instances are separate files in a separate repo
+      and do not yet. Run `HUB-CHECKLIST.md` against that vault.
+- [ ] **Run `/codex-review` on
+      `docs/specs/2026-08-08-unmerged-branch-checks.md` from Pappa T, or
+      record a waiver** — same standing gap as the model-routing spec.
+- [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
+      governance — a root `.gitignore` (31 MB installer, logs and generated
+      images are tracked today), and the contradiction between the hub's
+      hard rule 4 and the company data actually living in `Operations/`.

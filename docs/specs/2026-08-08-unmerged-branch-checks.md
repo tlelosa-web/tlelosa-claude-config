@@ -1,7 +1,7 @@
 # Spec — Unmerged-branch checks in `/continue` and `/session-end`
 
 **Date:** 2026-08-08
-**Status:** Draft — awaiting owner approval
+**Status:** Implemented 2026-08-08 (approved by owner same day)
 **Owner:** Tebello Lelosa
 **Type:** Structural — changes both `hub-template/` commands and both of this
 repo's own instances, so it alters what every vault copies in.
@@ -184,3 +184,25 @@ container. Same standing gap as the model-routing spec; tracked in
 ## Revision history
 
 - **2026-08-08** — first draft, from Phase 6 of the maintenance plan.
+- **2026-08-08** — approved and implemented in five commits (template
+  `continue.md` Step 1.8, template `session-end.md` Step 1.5, both of this
+  repo's instances, the `HUB-CHECKLIST.md` item, and this status update).
+
+  **Verified against a known answer.** Running the Step 1.5 logic as written
+  against this repo returned 5 unmerged branches, not the 3 the acceptance
+  criteria predicted. The criterion undercounted; the check is right:
+
+  | Branch | Age | Ahead | Why it appears |
+  |---|---|---|---|
+  | `repo-status-update-n5z63h` | 20d | 5 | triage: partial keep, held open |
+  | `config-audit-gap-report-aew9g7` | 18d | 5 | triage: cherry-picked, held open |
+  | `continuation-yon8p3` | 13d | 5 | content identical to `main`, pending deletion |
+  | `continuation-utn4f5` | 4d | 6 | triage: landed, pending deletion |
+  | `continuation-rpdmh0` | 0d | 22 | **this session's own work** |
+
+  Two of these are worth noting. `continuation-yon8p3` is byte-identical to
+  `main` and still flags as unmerged — precisely the case warning 2 in the
+  step exists for, and evidence the warning is not hypothetical. And the
+  check caught **this session's own 22 commits**, which is exactly the state
+  `/session-end`'s Step 1.5 exists to name: work committed, pushed, green,
+  and unreachable from `main`.
