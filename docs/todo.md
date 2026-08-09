@@ -180,9 +180,19 @@ completed task; one task = one commit.
 - [ ] **Delete the triaged branches** once the two held-open decisions above
       are made — 3 config-repo branches and 13 hub branches, verdicts in
       `docs/specs/2026-08-08-branch-triage-verdicts.md`.
-- [ ] **Phases 5-7 of the maintenance plan remain**: model routing (needs a
-      spec — `architect` is pinned to Opus against hard rule 7, and the table
-      escalates from Sonnet 5 to a 4.8-generation Opus), the unmerged-branch
+- [ ] **Phase 5 — model routing.** Spec written 2026-08-08 at
+      `docs/specs/2026-08-08-model-routing.md`, awaiting approval. Adds a
+      test for when a standing model pin is legitimate (resolving the
+      `architect`-vs-hard-rule-7 contradiction without weakening the rule)
+      and replaces 11 stale `claude-opus-4-8` references. **Not yet
+      `/codex-review`ed** — codex-gate is Pappa T only; run it there before
+      building, or record a waiver here.
+- [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
+      in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
+      batch jobs before that date. 22 days out as of 2026-08-08 and
+      unverified — deliberately left out of the model-routing spec as a
+      separate factual question.
+- [ ] **Phases 6-7 of the maintenance plan remain**: the unmerged-branch
       check in `/continue` and `/session-end` that stops all of this
       recurring, and hub hygiene/governance (`.gitignore`, the company-data
       rule contradiction).
