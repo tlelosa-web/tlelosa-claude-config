@@ -86,22 +86,54 @@ Verify with:
 
 The roster agents themselves are edited directly at `~/.claude/agents/` on
 whichever machine you're on (not through this plugin — see the note above).
-Optionally mirror the change into `agent-bodies-reference/` here so a future
-new-machine bootstrap starts from the current version, then
-`git add . && git commit -m "..." && git push`.
+The `SessionStart` hook is **missing-only**, so a local edit survives every
+session start; the hook names the edited file rather than reverting it.
+
+Mirror the change into `agent-bodies-reference/` here so other machines pick
+it up, then `git add . && git commit -m "..." && git push`. Note that other
+machines will *not* be updated automatically: an agent already present is
+never overwritten. Run `bootstrap.mjs --repair` on those machines to pull the
+new version down, and add or remove entries in `roster-manifest.json` if the
+set of agents or their models changed.
 
 ## Bootstrapping the roster on a new machine
 
-1. Copy `agent-bodies-reference/*.md` from a local clone of this repo into
-   `~/.claude/agents/` on the new machine.
-2. Install the plugin for `CORE.md` distribution + shared skills:
-   ```
-   /plugin marketplace add https://github.com/tlelosa-web/tlelosa-claude-config.git
-   /plugin install [email protected]
-   ```
-3. Verify with `/agents` (all nine show up, unprefixed) and confirm
-   `~/.claude/plugins/marketplaces/tlelosa-claude-config/dcoe-roster/CORE.md`
-   exists.
+**Since `dcoe-roster` 3.7.0 this is automatic — there is no copy step.**
+Install the plugin and start a session:
+
+```
+/plugin marketplace add https://github.com/tlelosa-web/tlelosa-claude-config.git
+/plugin install [email protected]
+```
+
+Its `SessionStart` hook runs `agent-bodies-reference/bootstrap.mjs`, which
+installs every roster agent missing from `~/.claude/agents/`, enables the
+plugins listed in `roster-manifest.json`, and re-heals the directory if it is
+ever emptied. Steady state is silent; it speaks only when it changes
+something or hits a problem.
+
+Verify with `/agents` — all ten show up unprefixed, with no `dcoe-roster:*`
+or `<sha>:*` duplicates. `node agent-bodies-reference/bootstrap.mjs --check`
+reports roster state without writing anything.
+
+**Why the bodies live outside the plugin.** They sit in
+`agent-bodies-reference/` at repo root rather than `dcoe-roster/agents/`
+because the plugin loader would otherwise list every agent three times
+(`docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md`). The hook restores
+the automatic bootstrap that strip decision gave up, without bringing the
+duplicate listing back.
+
+Running the script by hand still works on any machine with Node:
+
+```
+node agent-bodies-reference/bootstrap.mjs            # install what's missing
+node agent-bodies-reference/bootstrap.mjs --check    # report only, no writes
+node agent-bodies-reference/bootstrap.mjs --repair   # restore all from reference
+```
+
+`bootstrap.sh` is retained as a bash fallback but is no longer on the hook
+path — Node is what Claude Code already guarantees on every machine, and the
+bash variant could not report its own absence.
 
 ## Updating CORE.md or plugin content
 

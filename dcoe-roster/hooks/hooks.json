@@ -1,0 +1,15 @@
+{
+  "$comment": "SessionStart bootstrap for the DCOE roster. Agent bodies deliberately live OUTSIDE this plugin (agent-bodies-reference/ at repo root) so the plugin loader never scans them — see docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md, which removed dcoe-roster/agents/ to stop each agent being listed three times. This hook restores the bootstrap role that strip gave up, without reintroducing the duplicate listing. Spec: docs/specs/2026-08-09-universal-roster-and-codex-gate.md in the Claude-Code hub.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/../agent-bodies-reference/bootstrap.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

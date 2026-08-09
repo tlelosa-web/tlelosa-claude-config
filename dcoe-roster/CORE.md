@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.4** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.5** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -103,6 +103,25 @@ project. No per-project copying required. Project-level `.claude/agents/` is
 reserved for **overrides only** — e.g. a `data-agent` variant tuned to a
 specific project's export format. A same-named file in a project's own
 `.claude/agents/` wins over the user-level default for that project.
+
+**Deployment is automatic (since Core 1.5).** A `SessionStart` hook shipped
+with `dcoe-roster` runs `agent-bodies-reference/bootstrap.mjs`, which installs
+any roster agent missing from `~/.claude/agents/` and self-heals if that
+directory is emptied. It is **missing-only**: a file you have edited locally
+is left alone and reported, never silently reverted — per-machine edits stay
+legitimate under the 2026-07-29 strip decision. `bootstrap.mjs --repair`
+restores everything from the reference copy; `--check` reports without
+writing. `roster-manifest.json` beside it is the source of truth for which
+agents exist and which model each takes — keep it in step with the routing
+table below.
+
+This closes a real failure. Before Core 1.5 bootstrap was a manual
+per-machine copy, and on 2026-08-09 `~/.claude/agents/` was found not to
+exist **at all** on Pappa T — six weeks after this roster was declared
+authoritative. Every delegation had been falling back to Claude Code's
+built-ins, with `Explore` inheriting the session model rather than Haiku. A
+missing agent raises no error; it just makes sessions quieter and more
+expensive. Hence a hook rather than a documented step.
 
 |Agent       |Default file                  |When to Use                            |
 |------------|-------------------------------|----------------------------------------|
