@@ -148,6 +148,42 @@ completed task; one task = one commit.
       blocks — no CI, no required check. No version bump; `.github/` ships in
       no manifest, so neither machine needs to do anything (2026-08-09)
 
+- [x] **Reconciled the branch-triage count** — the queue recorded 3 held-open
+      config-repo branches against a 2026-08-09 check finding 4. Re-measured
+      both repos against freshly fetched refs, by ancestry and by *files
+      present on the branch and absent from `main`*: **4 config-repo branches
+      and 14 hub branches**, so both of the spec's headline counts were wrong,
+      for four independent reasons. Amendment appended to
+      `docs/specs/2026-08-08-branch-triage-verdicts.md` (2026-08-09); it
+      supersedes that file's own summary tables. Three findings beyond the
+      count: (1) `hub-template/retro.md` is the **only** file across all four
+      config branches that `main` lacks — everything else is the
+      deliberately-stripped `dcoe-roster/agents/` path or a file this repo
+      decided against — so the `retro.md` decision alone now gates all four
+      deletions; (2) `continuation-yon8p3`'s "byte-identical to `main`" reason
+      was wrong when written, though its delete verdict stands; (3) the hub's
+      PR template never landed — logged as its own open item below. Also
+      **closed the `/overwatch` open item**: it was being held on the hub's
+      `claude/continuation-utn4f5`, but that branch's content reached the hub's
+      `main` on 2026-08-09 (`b7ceebb` for `/overwatch` + the command-center
+      spec, `1517c7f` for ADR-010) and the branch was deleted. All three
+      command-center gaps are now live across both repos and that spec is
+      marked complete (2026-08-09)
+
+- [x] **Landed the hub's PR template** — the half of the 2026-08-09
+      PR-template task that never merged. `Claude-Code` had no `.github/` at
+      all; `.github/pull_request_template.md` sat alone on
+      `claude/pr-template-linear-planning-40hnrd` while the Done entry above
+      recorded the task complete for both repos, so that entry was half-true
+      for a day. Taken verbatim from the stranded branch onto a branch cut from
+      the hub's current `main` — **not merged**: that branch is thousands of
+      lines behind `main`, per the triage's extract-don't-merge rule. Content
+      unchanged from the spec's §2 (shared block + hub-tailored `Verification`).
+      Logged in the hub's `docs/session-log.md`; its `docs/todo.md` needs no
+      entry, since this initiative is tracked here under hub-and-spoke. No
+      version bump — `.github/` ships in no manifest and GitHub reads the
+      template server-side, so neither machine does anything (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -195,15 +231,14 @@ completed task; one task = one commit.
       `auto-format.sh` are all bash; Operations and Pappa T are Windows and
       need git-bash on PATH. Either confirm git-bash is present on both, or
       add `.ps1` equivalents.
-- [ ] **Review `/overwatch` and the command-center spec** (deferred
-      2026-08-08). Built 2026-08-05, still unmerged on the hub's
-      `claude/continuation-utn4f5`. Gaps 2 and 3 of that spec landed today;
-      Gap 1 (`/overwatch`) is the only piece left. Decide whether it is still
-      wanted or lands as historical — the branch is held undeleted until then.
 - [ ] **Confirm `retro.md` is genuinely not wanted** — dropped 2026-08-08 on
       the reading that `/continue` + `/session-end` already cover workflow
       management. It still exists on `claude/repo-status-update-n5z63h`,
       which is being held undeleted in case that call is reversed.
+      **This is now the only thing holding all four config-repo branches
+      open** (2026-08-09 reconciliation): `hub-template/retro.md` is the sole
+      file across the four that `main` does not have. Answer this and the
+      deletion item below can run.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
@@ -212,9 +247,18 @@ completed task; one task = one commit.
 - [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
       already Codex-reviewed. Hard rule 3 is self-monitored until then.
-- [ ] **Delete the triaged branches** once the two held-open decisions above
-      are made — 3 config-repo branches and 13 hub branches, verdicts in
-      `docs/specs/2026-08-08-branch-triage-verdicts.md`.
+- [ ] **Delete the triaged branches** once the `retro.md` decision above is
+      made — **4 config-repo branches and 14 hub branches** (corrected
+      2026-08-09; the spec's original 3 and 13 were both wrong). Verdicts and
+      live per-branch figures in
+      `docs/specs/2026-08-08-branch-triage-verdicts.md`, whose 2026-08-09
+      amendment supersedes its own summary tables. The hub's
+      `claude/pr-template-linear-planning-40hnrd` was the one exclusion — it
+      held the only file either repo's branches still had that `main` lacked —
+      and is **now safe to delete**, once that file reaches the hub's `main`.
+      All 14 hub branches are therefore unblocked; the four config-repo ones
+      still wait on the `retro.md` decision alone. The other held decision this
+      used to wait on (`/overwatch`) is resolved.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
@@ -259,11 +303,6 @@ completed task; one task = one commit.
       `bootstrap.sh` as the fix for a missing roster, and the Open item above
       about re-running `bootstrap.sh` by hand describes the manual step 1.5
       was built to obsolete.
-- [ ] **Reconcile the branch-triage count** — `docs/specs/2026-08-08-branch-triage-verdicts.md`
-      records 3 held-open config-repo branches; a check on 2026-08-09 found 4
-      (`repo-status-update-n5z63h`, `config-audit-gap-report-aew9g7`,
-      `continuation-yon8p3`, `continuation-utn4f5`). The hub's 13 matches.
-      Establish which is right before acting on the deletion item below.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated

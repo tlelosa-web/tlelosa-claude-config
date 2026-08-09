@@ -9,6 +9,11 @@ contents against current `main` (fetched 2026-08-08), not on commit messages.
 Part 1 covers `tlelosa-claude-config` (3 branches). Part 2 covers the
 `Claude-Code` hub (13 branches).
 
+> **Both counts are wrong — see the 2026-08-09 amendment at the foot of this
+> file.** The live figures are **4** config-repo branches and **14** hub
+> branches. Work from the amendment's tables, not from these two numbers or
+> from the Part 2 summary table, when acting on the deletion item.
+
 -----
 
 # Part 1 — `tlelosa-claude-config` (Phase 1.1)
@@ -418,5 +423,96 @@ above, not once at the start.
 5. **`/overwatch`** — still wanted? It was scoped and built on 2026-08-05 and
    has sat unmerged since. If the command-center goal has moved on, say so and
    the spec lands as historical rather than as live work.
+   **Answered 2026-08-09 — see the amendment: it landed.**
 6. **Two ADR-010s** — confirm taking `utn4f5`'s 111-line version. It contradicts
    the 86-line one on dates and on what existed when.
+   **Answered 2026-08-09 — see the amendment: `utn4f5`'s version landed.**
+
+-----
+
+# Amendment — 2026-08-09: count reconciliation
+
+`docs/todo.md` carried an open item noting that this spec records 3 held-open
+config-repo branches while a 2026-08-09 check found 4. Both repos were
+re-measured today against freshly fetched refs. **4 and 14 are correct;** this
+spec's 3 and 13 are not, for four separate reasons set out below.
+
+**Method.** Two measurements per branch, both against `origin/main` fetched
+2026-08-09 (never against a merge-base — that is this file's own rule 1):
+ancestry via `git merge-base --is-ancestor`, and *files present on the branch
+and absent from `main`*. The second number is the one that matters: it is what
+would actually be lost on deletion. It does **not** count edits to files `main`
+already has, so a zero there means no new file is at risk, not that the branch
+is byte-identical.
+
+## Part 1 — config repo: 4, not 3
+
+All four branches from the original summary table still exist. The headline
+"3 branches" excluded `continuation-yon8p3` because its verdict was Delete —
+but a branch with a delete verdict that was never deleted is still a live
+branch, and the deletion item has to name it.
+
+| Branch | Age | Ahead | Files `main` lacks | What they are |
+|---|---|---|---|---|
+| `repo-status-update-n5z63h` | 21d | 5 | 12 | 9 stripped agents + `end-session.md` + `session-log.md` + **`hub-template/retro.md`** |
+| `config-audit-gap-report-aew9g7` | 19d | 5 | 10 | all `dcoe-roster/agents/*` |
+| `continuation-yon8p3` | 14d | 5 | 9 | all `dcoe-roster/agents/*` |
+| `continuation-utn4f5` | 4d | 6 | **0** | — fully recovered by Phase 2 |
+
+**`hub-template/retro.md` is the only unlanded file across all four.** Every
+other unique file is either `dcoe-roster/agents/*` — the path the 2026-07-29
+strip deliberately removed, so re-adding it would reverse a governance
+decision — or a file this repo decided against (`end-session.md`, superseded by
+`session-end.md`; `session-log.md`, which this repo deliberately keeps none of).
+That leaves exactly one open question gating all four deletions, and it is
+already in the queue: **is `retro.md` wanted?** Answer it and all four go.
+
+**Correction to `continuation-yon8p3`'s verdict.** The stated reason — "its
+files are byte-identical to `main` … verified with a full diff" — was wrong
+when written, not merely stale: the branch carries 9 `dcoe-roster/agents/`
+files that `main` had already dropped on 2026-07-29, a week before the triage.
+The verdict itself (safe to delete) stands; only the reason changes, to the
+same one as `config-audit-gap-report-aew9g7` — its unique content is a
+deliberately-removed path.
+
+## Part 2 — hub: 14, not 13
+
+Three separate movements since 2026-08-08, netting +1:
+
+1. **`continuation-utn4f5` is gone** (−1). Its content landed on `main` and the
+   branch was deleted: ADR-010 via `1517c7f`, `/overwatch` plus the
+   command-center spec via `b7ceebb` (2026-08-09). This closes open questions
+   5 and 6 above and completes the three-part command-center initiative this
+   file called "the single largest value item in this triage" — all three gaps
+   are now on `main` in their respective repos.
+2. **`cloud-env-overview-setup-ymv1vd` was mislabelled** (+1). The Deletions
+   section lists it as "already merged"; it is **not** an ancestor of `main`.
+   It carries 0 files `main` lacks, so the Delete verdict stands unchanged —
+   but it belongs in the held count, and a reader working from "already merged"
+   would leave it behind.
+3. **`pr-template-linear-planning-40hnrd` is new** (+1), created 2026-08-09,
+   after this triage. See below.
+
+12 of the original 13 remain, all carrying **0 files `main` lacks**. So do
+`cloud-env-overview-setup-ymv1vd` and every other hub branch — with one
+exception.
+
+### The exception: the hub's PR template never landed
+
+`claude/pr-template-linear-planning-40hnrd` is 1 commit ahead and holds
+`.github/pull_request_template.md` — **the only file across all 14 hub branches
+that `main` does not have.** The hub has no `.github/` directory at all.
+
+`docs/specs/2026-08-09-pr-templates.md` specifies a template for *both* repos
+and `docs/todo.md` records it Done for both. The config-repo half merged as
+PR #16; the hub half did not. The Done entry is currently half-true — the same
+failure mode, on the same day, that Phase 6's branch checks were built to
+catch. Recorded as its own open item rather than fixed here, since this
+amendment is a record correction and landing a file in another repo is not.
+
+## Net effect on the deletion item
+
+The queue's deletion item reads "3 config-repo branches and 13 hub branches."
+It should read **4 and 14**, and the hub's 14 must not include the PR-template
+branch until that file lands — deleting it would strand the only unique file
+either repo has left, plus `retro.md` here.
