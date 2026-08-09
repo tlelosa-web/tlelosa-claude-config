@@ -309,6 +309,8 @@ completed task; one task = one commit.
       `.claude/commands/` copies** — the templates here have them as of
       2026-08-08; the hub's instances are separate files in a separate repo
       and do not yet. Run `HUB-CHECKLIST.md` against that vault.
+      **Note while doing it:** the hub now needs `retro.md` copied in as well
+      (landed 2026-08-09), so this is one pass over three commands, not two.
 ### From 2026-08-09
 
 - [ ] **Evaluate feasibility of adopting Linear** for project management —
@@ -334,6 +336,27 @@ completed task; one task = one commit.
       `bootstrap.sh` as the fix for a missing roster, and the Open item above
       about re-running `bootstrap.sh` by hand describes the manual step 1.5
       was built to obsolete.
+
+- [ ] **`HUB-CHECKLIST.md` has no install item for `session-end.md`** —
+      spotted 2026-08-09 while adding the `retro.md` item. There is an item for
+      `continue.md` and one for `retro.md`, but `session-end.md` appears only
+      in passing, inside the branch-checks item that assumes it already exists.
+      A vault worked through this checklist end to end therefore installs half
+      of ADR-008's resume/close-out pair and passes every check. Same class of
+      silent gap the checklist was written to catch for Pappa T. Small fix:
+      one item mirroring the `continue.md` one, including the same
+      diff-don't-assume rule.
+
+- [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
+      cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
+      cloud container for every branch, while ordinary pushes to the same
+      remote succeed and the agent proxy logs no failure: the session's git
+      credentials create and update refs but cannot delete them, and the GitHub
+      MCP server exposes no delete-ref tool. Cost a real attempt on 2026-08-09.
+      Belongs in `Claude-Code`'s `knowledge/cloud-sessions.md` (which already
+      holds the "HTTP 000 is not an empty page" entry), not here — logged in
+      this queue only so it isn't lost, since this repo keeps no knowledge
+      cache and this session's `/session-end` has no step for one.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
