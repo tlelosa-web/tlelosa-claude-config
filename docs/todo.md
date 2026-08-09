@@ -53,13 +53,21 @@ completed task; one task = one commit.
       version 1.1 → 1.2. Documentation-only, no plugin/manifest changes
       (2026-08-03)
 - [x] Add a `/session-end` command (close out a session, prep it for
-      archiving) — spec at
-      `docs/specs/2026-08-04-session-end-command.md`. Promoted the same way
-      as `/continue` (ADR-008): `hub-template/session-end.md`
-      (vault-agnostic) plus a minimal instance here at
-      `.claude/commands/session-end.md` and a full instance in the
-      `Claude-Code` hub. Recorded as `Claude-Code/docs/decisions/
-      ADR-010-session-end-command.md` (2026-08-04)
+      archiving) — spec at `docs/specs/2026-08-04-session-end-command.md`
+      (design decided 2026-08-04). **Correction (2026-08-05):** this entry
+      previously claimed the `Claude-Code` hub instance and its ADR already
+      existed as of 2026-08-04 — they didn't; caught by the Reviewer Loop
+      on `docs/specs/2026-08-05-command-center.md`'s Gap 3, verified against
+      the filesystem. Promoted the same way as `/continue` (ADR-008):
+      `hub-template/session-end.md` (vault-agnostic, gained a
+      reusable-fact knowledge-cache checklist question 2026-08-05 per Gap 3)
+      plus a minimal instance here at `.claude/commands/session-end.md`
+      (2026-08-04, unaffected by the correction) and a full instance in the
+      `Claude-Code` hub — actually built 2026-08-05. Recorded as
+      `Claude-Code/docs/decisions/ADR-010-session-end-command.md`
+      (written 2026-08-05; **merged to the hub's `main` only on 2026-08-08**
+      — it sat unmerged on a branch until the systems-check recovery, so
+      this entry was still false in a second way until then)
 - [x] Fix two `/session-end` defects found on its first real run against the
       `Claude-Code` hub: the session-log step over-appended (reworded to
       reconcile-not-duplicate, three cases spelled out) and the title step
