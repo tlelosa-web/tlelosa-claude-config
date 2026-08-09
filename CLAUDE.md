@@ -41,15 +41,22 @@ Content:     Shared tooling only — NEVER project content or company data
 ```
 
 - `.claude-plugin/marketplace.json` — the catalog Claude Code reads.
-- `dcoe-roster/` — DCOE sub-agent roster plugin + `CORE.md` (shared core, ADR-007).
+- `dcoe-roster/` — ships `CORE.md` only (shared core, ADR-007). Does **not**
+  ship agent bodies; those were stripped 2026-07-29.
+- `agent-bodies-reference/` — the 10 roster agent bodies + `bootstrap.sh`,
+  the copy-source for a new machine's `~/.claude/agents/`.
+- `codex-gate/` — `/codex-review`, advisory cross-family second opinion on a
+  spec. Per-machine install; Pappa T only until Operations OpenAI clearance.
 - `shared-skills/` — cross-project Skills plugin.
-- `hub-template/` — vault-agnostic `/continue` skeleton + checklists (ADR-008).
+- `hub-template/` — vault-agnostic `/continue` + `/session-end` skeletons,
+  checklists, and ready-made `hooks/` (ADR-008).
 - `CLAUDE.md.template` — **master template for OTHER projects.** Reference
   only; never fill it in or edit it as this repo's own config.
 - `docs/todo.md` — task list. `docs/specs/` — specs for larger changes.
-- `.claude/commands/continue.md` — this repo's own `/continue` (minimal
-  adaptation of `hub-template/continue.md`: orient via `docs/todo.md` +
-  git state, report, wait for confirmation — no hub session hygiene).
+- `.claude/commands/continue.md` / `session-end.md` — this repo's own
+  resume/close-out pair (minimal adaptations of the `hub-template/`
+  versions: orient via `docs/todo.md` + git state, report, wait for
+  confirmation — no hub session hygiene, no session log).
 
 -----
 
@@ -60,6 +67,7 @@ Content:     Shared tooling only — NEVER project content or company data
 python -m json.tool .claude-plugin/marketplace.json
 python -m json.tool dcoe-roster/plugin.json
 python -m json.tool shared-skills/plugin.json
+python -m json.tool codex-gate/plugin.json
 
 # Test a change against a LOCAL clone before pushing (inside Claude Code):
 #   /plugin marketplace add ./tlelosa-claude-config
@@ -97,6 +105,8 @@ scaled to the work:
    plugin manifest changes; a broken manifest breaks installs on both machines.
 4. **No `CLAUDE.md` inside plugin folders** — Claude Code ignores it there
    by design; per-project config stays a per-project file.
-5. **Changes to `dcoe-roster/CORE.md` or the agents affect every opted-in
-   project on both machines** — treat edits to them as structural (spec
-   first), and bump the core version noted at the top of `CORE.md`.
+5. **Changes to `dcoe-roster/CORE.md` or to `agent-bodies-reference/` affect
+   every opted-in project on both machines** — treat edits to them as
+   structural (spec first), and bump the core version noted at the top of
+   `CORE.md`. Note the agent bodies reach a machine by `bootstrap.sh`, not by
+   the plugin, so an agent edit needs a re-run there as well as a push here.
