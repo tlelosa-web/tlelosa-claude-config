@@ -8,7 +8,7 @@
     {
       "name": "dcoe-roster",
       "source": "./dcoe-roster",
-      "description": "DCOE (Domain -> Context -> Orchestrate -> Execute) sub-agent roster: domain, planner, architect, executor, tester, reviewer, doc-writer, debugger, data-agent. Matches CLAUDE.md v3.2 model routing."
+      "description": "DCOE shared core (CORE.md): architecture, roster table, model routing and universal hard rules, read at session start by any opted-in project. Matches CLAUDE.md v3.4. Does NOT ship agent bodies — those live at ~/.claude/agents/ per machine; bootstrap a new machine with agent-bodies-reference/bootstrap.sh from this repo."
     },
     {
       "name": "shared-skills",
