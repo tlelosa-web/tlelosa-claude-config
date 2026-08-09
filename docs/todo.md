@@ -255,10 +255,20 @@ completed task; one task = one commit.
       amendment supersedes its own summary tables. The hub's
       `claude/pr-template-linear-planning-40hnrd` was the one exclusion — it
       held the only file either repo's branches still had that `main` lacked —
-      and is **now safe to delete**, once that file reaches the hub's `main`.
-      All 14 hub branches are therefore unblocked; the four config-repo ones
-      still wait on the `retro.md` decision alone. The other held decision this
-      used to wait on (`/overwatch`) is resolved.
+      and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
+      branches are cleared**, re-measured at 0 unique files each after the
+      merge. The other held decision this used to wait on (`/overwatch`) is
+      resolved; the four config-repo branches still wait on the `retro.md`
+      decision alone.
+      **Machine-bound — a cloud session cannot do this half.** `git push origin
+      --delete` returns HTTP 403 for all 14: not the egress policy (the proxy
+      logged no failure and ordinary pushes succeed), but the session's git
+      credentials, which create and update refs but cannot delete them, with no
+      delete-ref tool on the GitHub MCP server either. Run it from Operations
+      or Pappa T, or from the GitHub web UI. **Ready-to-paste command and every
+      branch's tip SHA are in the spec's "Deletion sheet" section** — the SHAs
+      are what make the deletion reversible, so use that block rather than
+      re-deriving the list.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the

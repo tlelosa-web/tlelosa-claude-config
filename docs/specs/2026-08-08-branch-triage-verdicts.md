@@ -516,3 +516,74 @@ The queue's deletion item reads "3 config-repo branches and 13 hub branches."
 It should read **4 and 14**, and the hub's 14 must not include the PR-template
 branch until that file lands — deleting it would strand the only unique file
 either repo has left, plus `retro.md` here.
+
+-----
+
+# Deletion sheet — hub's 14, cleared 2026-08-09
+
+The PR template landed (hub `main` `8a3fd14`), so the one exclusion above is
+released. All 14 hub branches were re-measured against `main` **after** that
+merge and every one carries **0 files `main` lacks**. They are cleared to
+delete.
+
+**A cloud session cannot do it.** `git push origin --delete` returns HTTP 403
+from GitHub for all 14. This is not the egress policy — the proxy's
+`recentRelayFailures` is empty and ordinary pushes to the same remote succeed —
+it is the session's git credentials, which can create and update refs but not
+delete them. The GitHub MCP server available here exposes `create_branch` and
+`list_branches` but no delete-ref tool. So this step needs a machine with full
+credentials, or the GitHub web UI.
+
+Tips recorded below because **a deleted branch is recoverable only if its SHA
+was written down** — `git push origin <sha>:refs/heads/<name>` restores any of
+them until GitHub garbage-collects. Verified against hub `main` `8a3fd14`.
+
+| Branch (`claude/…`) | Tip | Last commit |
+|---|---|---|
+| `continuation-s2a36h` | `9c7f010b` | 2026-07-26 |
+| `continuation-tmc4e6` | `1789efb2` | 2026-07-28 |
+| `continuation-cl1tel` | `2c1d2967` | 2026-07-28 |
+| `continuation-sqlkfd` | `e2f4dac6` | 2026-07-28 |
+| `continuation-bpj3tw` | `edcb9c04` | 2026-07-28 |
+| `environment-update-process-c1zn1a` | `0553aa0c` | 2026-07-29 |
+| `repo-knowledge-insights-62s4xj` | `7c4ddb00` | 2026-07-29 |
+| `reddit-article-claude-sessions-yefxfd` | `e3f3c43c` | 2026-07-30 |
+| `cloud-env-overview-setup-ymv1vd` | `87f9506f` | 2026-08-01 |
+| `session-end-archive-afo043` | `a328d22e` | 2026-08-04 |
+| `pwa-component-driver-app-ysxe8a` | `1b931991` | 2026-08-05 |
+| `repo-update-check-mn1wv2` | `5aebd259` | 2026-08-06 |
+| `total-race-count-indicator-keqb18` | `630039e4` | 2026-08-07 |
+| `pr-template-linear-planning-40hnrd` | `580f3d32` | 2026-08-09 |
+
+Run from a `Claude-Code` clone on Operations or Pappa T:
+
+```bash
+git fetch origin --prune
+git push origin --delete \
+  claude/continuation-s2a36h claude/continuation-tmc4e6 \
+  claude/continuation-cl1tel claude/continuation-sqlkfd \
+  claude/continuation-bpj3tw claude/environment-update-process-c1zn1a \
+  claude/repo-knowledge-insights-62s4xj \
+  claude/reddit-article-claude-sessions-yefxfd \
+  claude/cloud-env-overview-setup-ymv1vd claude/session-end-archive-afo043 \
+  claude/pwa-component-driver-app-ysxe8a claude/repo-update-check-mn1wv2 \
+  claude/total-race-count-indicator-keqb18 \
+  claude/pr-template-linear-planning-40hnrd
+```
+
+Do **not** add `claude/continuation-wn1egp` to that list — it is the current
+working branch and points at `main`.
+
+Re-run the measurement first if any time has passed, since `main` moves:
+
+```bash
+comm -13 <(git ls-tree -r --name-only origin/main | sort) \
+        <(git ls-tree -r --name-only origin/<branch> | sort)
+```
+
+A non-empty result means that branch gained something `main` lacks — stop and
+re-triage it rather than deleting.
+
+The config repo's own 4 are **not** cleared: `hub-template/retro.md` on
+`repo-status-update-n5z63h` is still the one unlanded file, and that decision
+gates all four.
