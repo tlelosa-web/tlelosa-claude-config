@@ -20,6 +20,26 @@ Uncommitted changes or unpushed commits are part of what this session is
 leaving behind — surface them, never commit or push without explicit
 confirmation this turn.
 
+## Step 1.5 — Can This Session's Work Be Found?
+
+Committed and pushed is not the same as reachable. Work on a feature branch
+with no PR is invisible to every session that starts from `main`, and nothing
+about that state looks wrong — clean tree, commits pushed, close-out reading
+like a success.
+
+```bash
+git rev-parse --abbrev-ref HEAD
+git log --oneline origin/main..HEAD
+```
+
+If HEAD is not `main` and commits come back, say so in Step 4, naming the
+branch and the count. Report a pass in one line too — silence and never-ran
+look identical.
+
+**Never open the PR, merge, or push** to resolve it: same rule as Step 1.
+Naming the branch is the whole job — a branch that has been named is one
+somebody can find again.
+
 ## Step 2 — Reconcile `docs/todo.md`
 
 - Move anything actually finished this session from Open → Done, with a
@@ -55,6 +75,7 @@ the actual archiving.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
+**Branch state:** [all commits reachable from main | N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated]
 **Title set:** [Cont-"<title>" | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
