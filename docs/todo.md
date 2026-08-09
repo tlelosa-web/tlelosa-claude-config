@@ -136,6 +136,18 @@ completed task; one task = one commit.
       session's own 22 commits. No version bump: `hub-template/` is
       copy-source, not a plugin (2026-08-08)
 
+- [x] **PR templates for both repos** — spec at
+      `docs/specs/2026-08-09-pr-templates.md`, approved and implemented the
+      same day. Neither repo had one; PR bodies were freehand, so the two
+      facts a reviewer needs before merging (which spec authorised the change,
+      whether the `reviewer` agent approved it) lived only in a session
+      transcript that dies with the container. Adds
+      `.github/pull_request_template.md` to this repo and to `Claude-Code`:
+      shared `What changed` / `Why` / `Scope` / `DCOE gates` block, a two-box
+      self-attested checklist, tailored `Verification` prose per repo. Nothing
+      blocks — no CI, no required check. No version bump; `.github/` ships in
+      no manifest, so neither machine needs to do anything (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -222,6 +234,37 @@ completed task; one task = one commit.
       `.claude/commands/` copies** — the templates here have them as of
       2026-08-08; the hub's instances are separate files in a separate repo
       and do not yet. Run `HUB-CHECKLIST.md` against that vault.
+### From 2026-08-09
+
+- [ ] **Evaluate feasibility of adopting Linear** for project management —
+      raised alongside the PR-template task and deliberately left unstarted;
+      explicitly out of scope in
+      `docs/specs/2026-08-09-pr-templates.md`. Wants a findings doc
+      (recommendation, blockers, open questions) in the shape of the
+      2026-07-21 codex-gate readiness audit, covering whether it replaces or
+      merely duplicates the `docs/todo.md` + `docs/session-log.md` pair, how
+      it behaves with two machines plus concurrent cloud sessions, and what
+      changed for it now the Fan Movement contract has terminated.
+- [ ] **Confirm the PR templates behave on the next real PR in each repo** —
+      two acceptance criteria from `docs/specs/2026-08-09-pr-templates.md`
+      cannot be checked from a cloud container: that GitHub pre-fills the body
+      with no `?template=` parameter, and that nothing blocks a merge. The
+      pre-fill is the one that matters — it is the entire reason a single
+      default template was chosen over a chooser directory.
+- [ ] **Record the CORE 1.5 roster-autodeploy work in this list** — commit
+      `ab95eef` (`bootstrap.mjs`, `roster-manifest.json`, the `dcoe-roster`
+      `SessionStart` hook, CORE 1.4 → 1.5) is on `main` in both repos with no
+      Done entry here, in breach of hard rule 5. Two knock-on drifts to fix in
+      the same pass: `CLAUDE.md`'s session-start block still names
+      `bootstrap.sh` as the fix for a missing roster, and the Open item above
+      about re-running `bootstrap.sh` by hand describes the manual step 1.5
+      was built to obsolete.
+- [ ] **Reconcile the branch-triage count** — `docs/specs/2026-08-08-branch-triage-verdicts.md`
+      records 3 held-open config-repo branches; a check on 2026-08-09 found 4
+      (`repo-status-update-n5z63h`, `config-audit-gap-report-aew9g7`,
+      `continuation-yon8p3`, `continuation-utn4f5`). The hub's 13 matches.
+      Establish which is right before acting on the deletion item below.
+
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
       images are tracked today), and the contradiction between the hub's
