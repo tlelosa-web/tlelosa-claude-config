@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.3 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.4 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -170,8 +170,18 @@ Set per-agent in frontmatter: `model: claude-haiku-4-5`
 Use worktrees for all parallel Executor tasks.
 Never run concurrent agents on the same branch.
 
+**Agent executors: isolation is frontmatter, not `cd`.** The `executor` agent
+carries `isolation: worktree` — Claude Code gives each executor a temporary
+worktree and (since v2.1.203) confines its shell commands to it. Never rely on
+an agent `cd`-ing into a worktree: inside a subagent, `cd` does not persist
+between Bash calls, so a `cd`-based executor silently edits the main checkout.
+Two caveats: auto-worktrees branch from the **default branch** (not the
+session's HEAD) — for work stacked on an unmerged feature branch use the
+manual flow below — and they are auto-removed if the executor makes no changes.
+
 ```bash
-# Spawn isolated worktrees
+# Manual worktrees — human-driven parallel branches, or executor work that
+# must build on an unmerged feature branch:
 git worktree add ../worktree-feature-auth -b feature/auth
 git worktree add ../worktree-bugfix-bom   -b bugfix/bom-lookup
 
@@ -184,13 +194,14 @@ git cherry-pick <​commit-hash>
 
 **Rules:**
 
-- One agent per worktree.
+- One agent per worktree (`isolation: worktree` enforces this for agents).
 - Each Executor commits its own work atomically before stopping.
 - Orchestrator reviews and integrates; never commits unreviewed code.
-- Clean up worktrees after merge.
-- Executors run in a shared session by default — confirm the executor agent's
-  first action `cd`s into its assigned worktree path before it touches files,
-  rather than assuming worktree isolation is automatic.
+  Executors run in the **background by default** (Claude Code v2.1.198+) —
+  wait for each executor's completion notification before reviewing; never
+  merge a worktree whose executor hasn't reported done.
+- Clean up manual worktrees after merge; auto-worktrees clean themselves up
+  when unchanged.
 
 -----
 
@@ -282,15 +293,23 @@ Follow **TDD** for all new features:
 
 Quality gates fire automatically. Do not disable without deliberate decision.
 
-|Hook           |Trigger     |Action                                  |
-|---------------|------------|----------------------------------------|
-|`pre-commit`   |`git commit`|Run lint + format check. Block if fails.|
-|`pre-push`     |`git push`  |Run full test suite. Block if fails.    |
-|`post-task`    |Agent stops |Log summary to `docs/session-log.md`    |
-|`session-start`|New session |Load `docs/todo.md` into context        |
-|spec approval  |`/codex-review`|Codex cross-family second opinion — warn only, never block (optional, per machine)|
+Hooks are **registered in `.claude/settings.json`** (`hooks` key) —
+`.claude/hooks/` only stores the scripts. Gates and their real events:
 
-Hook configs: `.claude/hooks/`
+|Gate           |Event → matcher                        |Action                                   |
+|---------------|---------------------------------------|-----------------------------------------|
+|`secret-scan`  |`PreToolUse` → `Bash\|Edit\|Write`     |Block tool input containing secrets      |
+|`auto-format`  |`PostToolUse` → `Edit\|Write`          |black/ruff or prettier on the edited file|
+|`pre-commit`   |`PreToolUse` → `Bash(git commit*)`     |Lint + format check. Block if fails.     |
+|`pre-push`     |`PreToolUse` → `Bash(git push*)`       |Run full test suite. Block if fails.     |
+|`post-task`    |`SubagentStop`                         |Log summary to `docs/session-log.md`     |
+|`session-start`|`SessionStart`                         |Inject `docs/todo.md` as additionalContext|
+|spec approval  |`/codex-review` (manual, not a hook)   |Codex cross-family second opinion — warn only, never block (optional, per machine)|
+
+`secret-scan` and `auto-format` ship ready-made: copy scripts + settings
+snippet from the config repo's `hub-template/hooks/` (steps in its README).
+A hook blocks by exiting 2 — stderr goes back to Claude; PreToolUse blocks
+the call, PostToolUse only reports. Verify with `/hooks` in a session.
 
 **Philosophy:** Block at commit time, not write time.
 Let agents complete their work before the gate fires.
@@ -479,4 +498,12 @@ blocks), the "only deterministic local gates may block" hooks rule, and the
 default-deny rule for external-model payloads. Spec:
 `docs/specs/2026-07-21-codex-gate-spec.md` in `tlelosa-claude-config`.*
 
-*Last review: July 2026 — Tebello Lelosa*
+*v3.4 change (see `docs/research/claude-code-config-audit.md`): executor
+isolation via `isolation: worktree` — the shared-session/`cd` rule is removed
+because `cd` does not persist between a subagent's Bash calls; HOOKS mapped to
+real Claude Code events and to `settings.json` registration, with ready-made
+scripts in `hub-template/hooks/`. Written against v3.3 in July 2026, landed
+2026-08-08 after being recovered from an unmerged branch — v3.3 had been taken
+by the codex-gate change in the meantime.*
+
+*Last review: August 2026 — Tebello Lelosa*
