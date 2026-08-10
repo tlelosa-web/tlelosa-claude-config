@@ -109,20 +109,36 @@ naming convention `/continue`'s Step 0 uses when renaming *other* stale
 sessions, so a later `/continue` run doesn't have to reverse-engineer one
 from `list_events`.
 
-**On some tool surfaces this step is not merely unreliable — it is
-impossible, and cannot even be attempted.** Confirmed on the CCD desktop
-surface (2026-08-06, this command's first real run): `set_session_title`
-rejects the current session *and* `list_sessions` excludes it, so a session
-has no way to obtain its own ID. There is no call to make and therefore no
-error to report.
+**Whether this is possible is surface-dependent — establish which case you
+are in before deciding it can't be done.**
 
-So don't frame this as "try it and handle the failure":
+- **CCD desktop** (confirmed 2026-08-06, this command's first real run):
+  `set_session_title` rejects the current session *and* `list_sessions`
+  excludes it, so a session has no way to obtain its own ID. There is no
+  call to make and therefore no error to report.
+- **Claude Code Remote / web** (confirmed 2026-08-10): the opposite on both
+  counts. The session ID appears verbatim in the session URL
+  (`.../session_<id>`), and `list_sessions` **includes** the current session
+  — it comes back as the first row, not excluded. `get_session` and
+  `set_session_title` both accept that ID. Self-titling has demonstrably
+  worked here: sessions titled `Cont-"…"` exist in the list. The call may
+  still be gated on an ordinary tool-permission approval, which is a normal
+  failure to report — not an impossibility.
 
-- **Self-titling reachable** → set the title.
-- **No way to identify this session** (as above) → report
+So there are three outcomes, not two:
+
+- **Title set** → report it.
+- **Call attempted and refused** (permission denied, tool error) → report
+  what happened. This is an ordinary failure; don't relabel it
+  "not available in this environment", which claims something stronger.
+- **No way to identify this session at all** (the CCD desktop case) → report
   `not available in this environment` in Step 4 and move on. This is
   expected, not a failure, and not something to work around — do not go
   hunting for the session ID in logs, config, or transcripts.
+
+Before concluding you're in the third case, check the cheap sources: the
+session URL, and one `list_sessions` call. The earlier version of this step
+told sessions on *every* surface not to try, on evidence gathered from one.
 
 Never call `archive_session` on this session either way. Setting a clear
 title, *where possible*, is what "prepares this session for archiving" — a
@@ -139,7 +155,7 @@ makes that later run's judgment easy, which is most of the value anyway.
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
 **Branch state:** [all commits reachable from <default> | N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated]
-**Title set:** [Cont-"<title>" | not available in this environment]
+**Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```
 

@@ -260,6 +260,52 @@ completed task; one task = one commit.
       both counts. No version bump; `hub-template/` is copy-source, not a
       plugin (2026-08-09)
 
+- [x] **Landed the hub's `/retro` install — the half of the 2026-08-09 entry
+      two above that never merged.** That entry states "Landed in the hub:
+      `.claude/commands/retro.md`, tailored per ADR-008 … `docs/retro-log.md`
+      wired in as the hub's fourth contention file … `CLAUDE.md` now names
+      `/retro` as periodic." **None of it was on the hub's `main`** when this
+      session started. Both repos had a branch named
+      `claude/continuation-45sy98`; the config-repo half merged as PR #20, the
+      hub half never got a PR, so all five files sat unmerged for a day while
+      this queue recorded them done. Exactly the shape of the PR-template entry
+      before it, and the **sixth** entry in three days asserting state it did
+      not have — in the item installing the command written to detect that.
+      Found by `/continue` Step 1.5's second measure (files present on a branch
+      and absent from `main`): across 15 unmerged hub branches, `retro.md` was
+      the only file `main` lacked; the ancestry check alone said "15 unmerged"
+      and nothing more. **Landed by cherry-pick, not hand extraction** — unlike
+      the PR-template branch, this one was **0 commits behind `main`**, so the
+      commit applied verbatim; the triage's extract-don't-merge rule still holds
+      for the other 14, which are genuinely stale. Content unchanged from what
+      was reviewed on 2026-08-09, original commit date preserved. Recovery
+      recorded in the hub's `docs/session-log.md`; its `docs/todo.md` needed no
+      entry, since the cherry-pick carries the original. No version bump —
+      `.claude/commands/` ships in no manifest (2026-08-10)
+
+- [x] **Corrected the self-titling claim in all three `/session-end`
+      instances** — `hub-template/session-end.md` Step 3, this repo's Step 3,
+      and the hub's Step 5 all stated a session has **no way to obtain its own
+      ID**, so "no call can be constructed and there is no error to report."
+      True of the CCD desktop surface it was confirmed on (2026-08-06); false
+      on Claude Code Remote. **Verified live before rewriting, per hard rule
+      10, and the claim was wrong on both of its two counts** — not just the
+      one the open item recorded. The session ID is in the session URL
+      verbatim, `get_session` accepts it, and `list_sessions` does **not**
+      exclude the current session: it comes back as the *first* row. Direct
+      proof it has always worked on this surface: sessions titled
+      `Cont-"Branch triage reconciled, retro landed"` and `Cont-"Systems check
+      + maintenance Phases 1-6"` are in the account's own list. Each file now
+      splits the two surfaces explicitly and reports **three** outcomes rather
+      than two — set / attempted-and-refused / genuinely unidentifiable — since
+      a permission denial is an ordinary failure and calling it "not available
+      in this environment" claims something stronger than what happened. The
+      Step 4/6 report line gained the third outcome to match. The hub's
+      instance also dropped its "this hub's usual surface" framing, which named
+      the desktop case as typical while most of the hub's sessions run remote.
+      No version bump; `hub-template/` is copy-source and `.claude/commands/`
+      ships in no manifest (2026-08-10)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -326,7 +372,14 @@ completed task; one task = one commit.
       held the only file either repo's branches still had that `main` lacked —
       and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
       branches are cleared**, re-measured at 0 unique files each after the
-      merge. The other held decision this used to wait on (`/overwatch`) is
+      merge.
+      **Corrected 2026-08-10:** the hub count is **15, not 14** — this item was
+      written before `claude/continuation-45sy98` existed, and that branch then
+      became the new sole exclusion, holding `.claude/commands/retro.md`. It
+      landed on the hub's `main` today (`72fbd19`), so 45sy98 is cleared too and
+      **all 15 are now safe to delete**. Re-measure before running the sheet
+      rather than trusting this number: two counts in a row have gone stale
+      because a session pushed a branch after they were written. The other held decision this used to wait on (`/overwatch`) is
       resolved. The four config-repo branches are cleared too, but **by
       verdict, not by measuring zero** — three still carry `dcoe-roster/agents/*`
       (deliberately stripped 2026-07-29) and one also carries `end-session.md`
@@ -405,20 +458,6 @@ completed task; one task = one commit.
       machines), but it means the roster is never present on the surface that
       does most of this repo's work, and nothing says so at session start.
 
-- [ ] **Correct the self-titling claim in both `/session-end` instances** —
-      found 2026-08-09. `hub-template/session-end.md` Step 3, this repo's
-      Step 3, and the hub's Step 5 all state that a session has **no way to
-      obtain its own ID**, so "no call can be constructed and there is no error
-      to report." That is true of the CCD desktop surface it was confirmed on
-      (2026-08-06) but **false on Claude Code Remote**, where the session ID is
-      present verbatim in the session URL and `set_session_title` accepts it.
-      The call constructs fine here; it is gated on an ordinary tool-permission
-      approval instead — a different outcome needing different wording, since
-      the current text tells a session not to try. Fix is one paragraph in each
-      of the three files: keep the desktop case, add the remote case
-      (ID reachable from the session URL, may still need approval), and stop
-      framing "not available" as the only alternative to success.
-
 - [ ] **Run `/retro` for the first time in the `Claude-Code` hub** — installed
       2026-08-09, never run. Its first run is deliberately **unbounded**: with
       no `docs/retro-log.md` yet, Step 1 reviews the full `session-log.md`
@@ -427,6 +466,67 @@ completed task; one task = one commit.
       first marker exists. Worth doing soon while the evidence is dense — the
       week of 2026-08-08/09 alone produced five queue entries asserting state
       they did not have, which is precisely Step 2's first signal.
+
+### From the first `/retro` run (2026-08-10)
+
+> First run in the `Claude-Code` hub, unbounded per its Step 1 — all 47
+> `session-log.md` entries (2026-07-28 → 2026-08-10) plus the full hub queue.
+> Six patterns proposed, all six selected. The four below are **universal**
+> and land here per ADR-008; two hub-scoped ones (count hygiene, known-risks
+> deferral) are queued in the hub's own `docs/todo.md`. Run recorded in
+> `Claude-Code/docs/retro-log.md`.
+
+- [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
+      spec required, core version bump.** The highest-evidence pattern in the
+      whole log, and the only one the log had already diagnosed itself, four
+      separate times (`session-log.md` l.2343, 2406, 2466, 2866) — and which
+      recurred anyway after each. Shape: a session records a lesson in
+      `knowledge/` or a commit message, nothing executable changes, and the
+      next session cannot act on it. Concrete cases: `ef247bc`'s message said
+      the cross-repo staleness check "moved to `/continue`" — it moved into
+      `knowledge/hub-process.md`, and the command file went untouched for
+      three more sessions; and the 2026-08-08 note that agent bodies "need a
+      `bootstrap.sh` re-run to actually land", which was correct and simply
+      never happened, leaving Pappa T with no `~/.claude/agents/` for six
+      weeks. Proposed rule: a session that records a lesson must either install
+      it somewhere executable (command file, hook, manifest) **in the same
+      session**, or file a queue item naming the exact file to change. A
+      `knowledge/` note never discharges the obligation on its own.
+
+- [ ] **Make `/session-end` Step 1.5 per-repo, not per-session** — both
+      half-landed pairs of the last two days came from sessions that pushed
+      **two** repos and opened a PR for **one**. The PR template (2026-08-09)
+      and `/retro` itself (2026-08-10) each sat stranded for a day while the
+      queue recorded them done; the 2026-08-09 roster entry independently calls
+      "a branch with no PR" the documented stranding failure. Step 1.5 exists
+      precisely to stop this and did not fire, because a session that opened
+      *a* PR looks finished. Fix: iterate every repo in the session. Applies to
+      `hub-template/session-end.md` and both instances. Small.
+
+- [ ] **Require a Done entry to cite a SHA on `main`** — six entries in three
+      days asserted a landing they did not have (ADR-010, false twice over; the
+      PR template; `/retro`; the "byte-identical" claim; the `/overwatch` item
+      held on a branch that no longer existed; the branch-check addendum stale
+      when written). Every one was a care failure, and care has now failed six
+      times, so the fix should be mechanical: a Done entry claiming a file
+      landed cites the commit, verified with
+      `git log origin/main --oneline -- <path>`. One command, kills the class.
+      Goes in `/session-end` (all three instances) alongside the item above.
+
+- [ ] **Get the roster onto cloud sessions** — **structural, spec required.**
+      Supersedes and absorbs the second half of the "record the cloud-session
+      ref-deletion blocker" item below, which noted the same gap. A cloud
+      container has no `~/.claude/agents/` and the Core 1.5 `SessionStart` hook
+      cannot fire there: the hook ships inside the `dcoe-roster` **plugin**, and
+      a cloud session clones the source repo without ever installing the
+      marketplace. So every delegation on the surface doing most of this repo's
+      work silently falls back to Claude Code's built-ins, with `Explore` at the
+      session model rather than Haiku. **The 2026-08-10 session that produced
+      this item ran start to finish with no roster** — landing `/retro`, fixing
+      three `/session-end` instances and running a full retrospective, all
+      un-delegated. Core 1.5 is not defective (it targets the two real machines);
+      the gap is that it targets only them. Options to weigh in the spec: commit
+      `.claude/agents/` into the repos, or move the hook to repo level.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
