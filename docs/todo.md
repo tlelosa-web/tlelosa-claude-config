@@ -260,6 +260,29 @@ completed task; one task = one commit.
       both counts. No version bump; `hub-template/` is copy-source, not a
       plugin (2026-08-09)
 
+- [x] **Landed the hub's `/retro` install — the half of the 2026-08-09 entry
+      two above that never merged.** That entry states "Landed in the hub:
+      `.claude/commands/retro.md`, tailored per ADR-008 … `docs/retro-log.md`
+      wired in as the hub's fourth contention file … `CLAUDE.md` now names
+      `/retro` as periodic." **None of it was on the hub's `main`** when this
+      session started. Both repos had a branch named
+      `claude/continuation-45sy98`; the config-repo half merged as PR #20, the
+      hub half never got a PR, so all five files sat unmerged for a day while
+      this queue recorded them done. Exactly the shape of the PR-template entry
+      before it, and the **sixth** entry in three days asserting state it did
+      not have — in the item installing the command written to detect that.
+      Found by `/continue` Step 1.5's second measure (files present on a branch
+      and absent from `main`): across 15 unmerged hub branches, `retro.md` was
+      the only file `main` lacked; the ancestry check alone said "15 unmerged"
+      and nothing more. **Landed by cherry-pick, not hand extraction** — unlike
+      the PR-template branch, this one was **0 commits behind `main`**, so the
+      commit applied verbatim; the triage's extract-don't-merge rule still holds
+      for the other 14, which are genuinely stale. Content unchanged from what
+      was reviewed on 2026-08-09, original commit date preserved. Recovery
+      recorded in the hub's `docs/session-log.md`; its `docs/todo.md` needed no
+      entry, since the cherry-pick carries the original. No version bump —
+      `.claude/commands/` ships in no manifest (2026-08-10)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -326,7 +349,14 @@ completed task; one task = one commit.
       held the only file either repo's branches still had that `main` lacked —
       and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
       branches are cleared**, re-measured at 0 unique files each after the
-      merge. The other held decision this used to wait on (`/overwatch`) is
+      merge.
+      **Corrected 2026-08-10:** the hub count is **15, not 14** — this item was
+      written before `claude/continuation-45sy98` existed, and that branch then
+      became the new sole exclusion, holding `.claude/commands/retro.md`. It
+      landed on the hub's `main` today (`72fbd19`), so 45sy98 is cleared too and
+      **all 15 are now safe to delete**. Re-measure before running the sheet
+      rather than trusting this number: two counts in a row have gone stale
+      because a session pushed a branch after they were written. The other held decision this used to wait on (`/overwatch`) is
       resolved. The four config-repo branches are cleared too, but **by
       verdict, not by measuring zero** — three still carry `dcoe-roster/agents/*`
       (deliberately stripped 2026-07-29) and one also carries `end-session.md`
