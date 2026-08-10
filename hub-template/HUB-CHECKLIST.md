@@ -51,6 +51,30 @@ project-to-project.
       template hasn't been given. Fold each difference the correct way
       (vault-specific → stays local; generally useful → promote upstream)
       instead of overwriting one side with the other.
+- [ ] **`.claude/commands/session-end.md` exists and is referenced.** The
+      other half of ADR-008's resume/close-out pair, and **not optional** —
+      `/continue` reads state a session left behind, `/session-end` is what
+      leaves it. A vault with only `continue.md` gets resume reports built on
+      whatever the last session happened to remember to write by hand. If it's
+      missing, copy `hub-template/session-end.md` into place at
+      `<hub-root>/.claude/commands/session-end.md`. **If it already exists,
+      diff it against the template** rather than assuming it's current — same
+      reasoning as the `continue.md` item above, and the drift runs in both
+      directions for the same reason. Fold each difference the correct way
+      (vault-specific → stays local; generally useful → promote upstream).
+      Two things to check in the copy specifically, because a hub instance
+      typically adds steps the template lacks and the numbering then drifts
+      out from under its own cross-references: that every "report it in Step
+      N" pointer names the **report** step rather than whatever now sits at
+      that number, and that the vault has supplied its own answers where the
+      template is deliberately generic (whether it keeps a session log at all,
+      whether it keeps a knowledge cache, and which contention files to pull
+      before writing). This item exists because it was missing: until
+      2026-08-09 the checklist named `session-end.md` only in passing, inside
+      the branch-checks item below, which assumes it is already installed — so
+      a vault worked through this list end to end installed half the pair and
+      passed every check. The same class of silent gap the checklist was
+      written to catch for Pappa T.
 - [ ] **`.claude/commands/retro.md` exists** (added 2026-08-09), if this
       vault wants the backward-looking counterpart to `/continue`. Copy
       `hub-template/retro.md` verbatim — vault-agnostic, same treatment as

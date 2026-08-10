@@ -239,6 +239,27 @@ completed task; one task = one commit.
       No version bump; `hub-template/` is copy-source, not a plugin
       (2026-08-09)
 
+- [x] **Gave `HUB-CHECKLIST.md` an install item for `session-end.md`** — it
+      had one for `continue.md` and one for `retro.md`, but named
+      `session-end.md` exactly once in the whole file, in passing, inside the
+      branch-checks item that assumes it is already installed. A vault worked
+      through the list end to end therefore installed **half of ADR-008's
+      resume/close-out pair and passed every check** — the same class of silent
+      gap the checklist was written to catch for Pappa T, reproduced inside the
+      checklist itself. New item placed second, next to `continue.md`, since
+      the two are a pair and only `retro.md` is optional. It mirrors the
+      `continue.md` item's copy-or-diff structure and adds the two failure
+      modes specific to this file: a hub instance typically adds steps the
+      template lacks, so every "report it in Step N" cross-reference has to be
+      re-checked against the *report* step rather than trusted (the hub's own
+      copy had exactly this off-by-one, pointing Step 1's findings at its title
+      step until 2026-08-09), and the template is deliberately generic about
+      whether a vault keeps a session log, a knowledge cache, or which
+      contention files to pull before writing — all of which the copy must
+      answer. Verified against the hub's instance, which passes the new item on
+      both counts. No version bump; `hub-template/` is copy-source, not a
+      plugin (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -363,16 +384,6 @@ completed task; one task = one commit.
       `bootstrap.sh` as the fix for a missing roster, and the Open item above
       about re-running `bootstrap.sh` by hand describes the manual step 1.5
       was built to obsolete.
-
-- [ ] **`HUB-CHECKLIST.md` has no install item for `session-end.md`** —
-      spotted 2026-08-09 while adding the `retro.md` item. There is an item for
-      `continue.md` and one for `retro.md`, but `session-end.md` appears only
-      in passing, inside the branch-checks item that assumes it already exists.
-      A vault worked through this checklist end to end therefore installs half
-      of ADR-008's resume/close-out pair and passes every check. Same class of
-      silent gap the checklist was written to catch for Pappa T. Small fix:
-      one item mirroring the `continue.md` one, including the same
-      diff-don't-assume rule.
 
 - [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
       cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
