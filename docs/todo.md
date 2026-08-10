@@ -207,6 +207,59 @@ completed task; one task = one commit.
       useful in a vault with no session history. No version bump;
       `hub-template/` is copy-source, not a plugin (2026-08-09)
 
+- [x] **Installed `/retro` in the `Claude-Code` hub and re-ran
+      `HUB-CHECKLIST.md` against it** — closing the "adopt the Phase 6 branch
+      checks in the hub" item, which was **half stale when its own addendum was
+      written**. The hub adopted `/continue` Step 1.8 and `/session-end`
+      Step 1.5 on 2026-08-09, recorded in both the hub's `docs/todo.md` and its
+      `docs/session-log.md`; the addendum added here later that day said "one
+      pass over three commands, not two" without re-reading the sentence above
+      it. One command was outstanding, not three. Fifth instance this week of a
+      queue entry asserting state it did not have — and the first signal
+      `/retro`'s own Step 2 is written to detect, in the item that sent a
+      session to redo finished work the day before `/retro` existed.
+      Landed in the hub: `.claude/commands/retro.md`, tailored per ADR-008
+      (its real paths, the "most recent last" log convention with the
+      `grep -n "^## " | tail` idiom since that file is 3,000 lines, the
+      hub-and-spoke boundary on whose friction counts, and the
+      `hub-template/`-is-copy-source note); `docs/retro-log.md` wired in as
+      the hub's **fourth** contention file across Hard Rule 6, `/continue`
+      Step 1.75 and `/retro` Step 5; and `CLAUDE.md` now names `/retro` as
+      periodic rather than part of the routine pair.
+      **The checklist's diff-don't-assume rule found three drifts unrelated to
+      the task**, which is the point of running it rather than trusting a copy
+      made 12 days ago. Two folded into the hub: the mobile slash-command
+      known-gap note (template-only since 2026-07-19, never copied to a hub
+      whose owner uses the mobile app) and Step 1.75's
+      conflicts-≠-misordering caveat. One folded the other way — the hub's
+      `--include=*.md` grep gotcha was a local improvement the template
+      lacked, now **promoted upstream** into `hub-template/continue.md`, the
+      only change in this repo. ADR-008's file-copy distribution makes drift in
+      both directions the expected state; only running the diff surfaces it.
+      No version bump; `hub-template/` is copy-source, not a plugin
+      (2026-08-09)
+
+- [x] **Gave `HUB-CHECKLIST.md` an install item for `session-end.md`** — it
+      had one for `continue.md` and one for `retro.md`, but named
+      `session-end.md` exactly once in the whole file, in passing, inside the
+      branch-checks item that assumes it is already installed. A vault worked
+      through the list end to end therefore installed **half of ADR-008's
+      resume/close-out pair and passed every check** — the same class of silent
+      gap the checklist was written to catch for Pappa T, reproduced inside the
+      checklist itself. New item placed second, next to `continue.md`, since
+      the two are a pair and only `retro.md` is optional. It mirrors the
+      `continue.md` item's copy-or-diff structure and adds the two failure
+      modes specific to this file: a hub instance typically adds steps the
+      template lacks, so every "report it in Step N" cross-reference has to be
+      re-checked against the *report* step rather than trusted (the hub's own
+      copy had exactly this off-by-one, pointing Step 1's findings at its title
+      step until 2026-08-09), and the template is deliberately generic about
+      whether a vault keeps a session log, a knowledge cache, or which
+      contention files to pull before writing — all of which the copy must
+      answer. Verified against the hub's instance, which passes the new item on
+      both counts. No version bump; `hub-template/` is copy-source, not a
+      plugin (2026-08-09)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -305,12 +358,7 @@ completed task; one task = one commit.
       batch jobs before that date. 22 days out as of 2026-08-08 and
       unverified — deliberately left out of the model-routing spec as a
       separate factual question.
-- [ ] **Adopt the Phase 6 branch checks in the `Claude-Code` hub's own
-      `.claude/commands/` copies** — the templates here have them as of
-      2026-08-08; the hub's instances are separate files in a separate repo
-      and do not yet. Run `HUB-CHECKLIST.md` against that vault.
-      **Note while doing it:** the hub now needs `retro.md` copied in as well
-      (landed 2026-08-09), so this is one pass over three commands, not two.
+
 ### From 2026-08-09
 
 - [ ] **Evaluate feasibility of adopting Linear** for project management —
@@ -337,16 +385,6 @@ completed task; one task = one commit.
       about re-running `bootstrap.sh` by hand describes the manual step 1.5
       was built to obsolete.
 
-- [ ] **`HUB-CHECKLIST.md` has no install item for `session-end.md`** —
-      spotted 2026-08-09 while adding the `retro.md` item. There is an item for
-      `continue.md` and one for `retro.md`, but `session-end.md` appears only
-      in passing, inside the branch-checks item that assumes it already exists.
-      A vault worked through this checklist end to end therefore installs half
-      of ADR-008's resume/close-out pair and passes every check. Same class of
-      silent gap the checklist was written to catch for Pappa T. Small fix:
-      one item mirroring the `continue.md` one, including the same
-      diff-don't-assume rule.
-
 - [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
       cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
       cloud container for every branch, while ordinary pushes to the same
@@ -357,6 +395,38 @@ completed task; one task = one commit.
       holds the "HTTP 000 is not an empty page" entry), not here — logged in
       this queue only so it isn't lost, since this repo keeps no knowledge
       cache and this session's `/session-end` has no step for one.
+      **Second entry for the same file, found 2026-08-09:** a cloud container
+      has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
+      hook does not fire there — the hook ships inside the `dcoe-roster`
+      *plugin*, and a cloud session clones the source repo without installing
+      the marketplace. So every delegation in a cloud session silently falls
+      back to Claude Code's built-ins, with `Explore` at the session model
+      rather than Haiku. Not a defect in 1.5 (which targets the two real
+      machines), but it means the roster is never present on the surface that
+      does most of this repo's work, and nothing says so at session start.
+
+- [ ] **Correct the self-titling claim in both `/session-end` instances** —
+      found 2026-08-09. `hub-template/session-end.md` Step 3, this repo's
+      Step 3, and the hub's Step 5 all state that a session has **no way to
+      obtain its own ID**, so "no call can be constructed and there is no error
+      to report." That is true of the CCD desktop surface it was confirmed on
+      (2026-08-06) but **false on Claude Code Remote**, where the session ID is
+      present verbatim in the session URL and `set_session_title` accepts it.
+      The call constructs fine here; it is gated on an ordinary tool-permission
+      approval instead — a different outcome needing different wording, since
+      the current text tells a session not to try. Fix is one paragraph in each
+      of the three files: keep the desktop case, add the remote case
+      (ID reachable from the session URL, may still need approval), and stop
+      framing "not available" as the only alternative to success.
+
+- [ ] **Run `/retro` for the first time in the `Claude-Code` hub** — installed
+      2026-08-09, never run. Its first run is deliberately **unbounded**: with
+      no `docs/retro-log.md` yet, Step 1 reviews the full `session-log.md`
+      history (3,000+ lines) rather than a window, so it is a real piece of
+      work rather than a quick check, and it will not be cheap again until the
+      first marker exists. Worth doing soon while the evidence is dense — the
+      week of 2026-08-08/09 alone produced five queue entries asserting state
+      they did not have, which is precisely Step 2's first signal.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
