@@ -384,6 +384,38 @@ completed task; one task = one commit.
       holds the "HTTP 000 is not an empty page" entry), not here — logged in
       this queue only so it isn't lost, since this repo keeps no knowledge
       cache and this session's `/session-end` has no step for one.
+      **Second entry for the same file, found 2026-08-09:** a cloud container
+      has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
+      hook does not fire there — the hook ships inside the `dcoe-roster`
+      *plugin*, and a cloud session clones the source repo without installing
+      the marketplace. So every delegation in a cloud session silently falls
+      back to Claude Code's built-ins, with `Explore` at the session model
+      rather than Haiku. Not a defect in 1.5 (which targets the two real
+      machines), but it means the roster is never present on the surface that
+      does most of this repo's work, and nothing says so at session start.
+
+- [ ] **Correct the self-titling claim in both `/session-end` instances** —
+      found 2026-08-09. `hub-template/session-end.md` Step 3, this repo's
+      Step 3, and the hub's Step 5 all state that a session has **no way to
+      obtain its own ID**, so "no call can be constructed and there is no error
+      to report." That is true of the CCD desktop surface it was confirmed on
+      (2026-08-06) but **false on Claude Code Remote**, where the session ID is
+      present verbatim in the session URL and `set_session_title` accepts it.
+      The call constructs fine here; it is gated on an ordinary tool-permission
+      approval instead — a different outcome needing different wording, since
+      the current text tells a session not to try. Fix is one paragraph in each
+      of the three files: keep the desktop case, add the remote case
+      (ID reachable from the session URL, may still need approval), and stop
+      framing "not available" as the only alternative to success.
+
+- [ ] **Run `/retro` for the first time in the `Claude-Code` hub** — installed
+      2026-08-09, never run. Its first run is deliberately **unbounded**: with
+      no `docs/retro-log.md` yet, Step 1 reviews the full `session-log.md`
+      history (3,000+ lines) rather than a window, so it is a real piece of
+      work rather than a quick check, and it will not be cheap again until the
+      first marker exists. Worth doing soon while the evidence is dense — the
+      week of 2026-08-08/09 alone produced five queue entries asserting state
+      they did not have, which is precisely Step 2's first signal.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
