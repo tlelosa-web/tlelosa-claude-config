@@ -467,6 +467,67 @@ completed task; one task = one commit.
       week of 2026-08-08/09 alone produced five queue entries asserting state
       they did not have, which is precisely Step 2's first signal.
 
+### From the first `/retro` run (2026-08-10)
+
+> First run in the `Claude-Code` hub, unbounded per its Step 1 — all 47
+> `session-log.md` entries (2026-07-28 → 2026-08-10) plus the full hub queue.
+> Six patterns proposed, all six selected. The four below are **universal**
+> and land here per ADR-008; two hub-scoped ones (count hygiene, known-risks
+> deferral) are queued in the hub's own `docs/todo.md`. Run recorded in
+> `Claude-Code/docs/retro-log.md`.
+
+- [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
+      spec required, core version bump.** The highest-evidence pattern in the
+      whole log, and the only one the log had already diagnosed itself, four
+      separate times (`session-log.md` l.2343, 2406, 2466, 2866) — and which
+      recurred anyway after each. Shape: a session records a lesson in
+      `knowledge/` or a commit message, nothing executable changes, and the
+      next session cannot act on it. Concrete cases: `ef247bc`'s message said
+      the cross-repo staleness check "moved to `/continue`" — it moved into
+      `knowledge/hub-process.md`, and the command file went untouched for
+      three more sessions; and the 2026-08-08 note that agent bodies "need a
+      `bootstrap.sh` re-run to actually land", which was correct and simply
+      never happened, leaving Pappa T with no `~/.claude/agents/` for six
+      weeks. Proposed rule: a session that records a lesson must either install
+      it somewhere executable (command file, hook, manifest) **in the same
+      session**, or file a queue item naming the exact file to change. A
+      `knowledge/` note never discharges the obligation on its own.
+
+- [ ] **Make `/session-end` Step 1.5 per-repo, not per-session** — both
+      half-landed pairs of the last two days came from sessions that pushed
+      **two** repos and opened a PR for **one**. The PR template (2026-08-09)
+      and `/retro` itself (2026-08-10) each sat stranded for a day while the
+      queue recorded them done; the 2026-08-09 roster entry independently calls
+      "a branch with no PR" the documented stranding failure. Step 1.5 exists
+      precisely to stop this and did not fire, because a session that opened
+      *a* PR looks finished. Fix: iterate every repo in the session. Applies to
+      `hub-template/session-end.md` and both instances. Small.
+
+- [ ] **Require a Done entry to cite a SHA on `main`** — six entries in three
+      days asserted a landing they did not have (ADR-010, false twice over; the
+      PR template; `/retro`; the "byte-identical" claim; the `/overwatch` item
+      held on a branch that no longer existed; the branch-check addendum stale
+      when written). Every one was a care failure, and care has now failed six
+      times, so the fix should be mechanical: a Done entry claiming a file
+      landed cites the commit, verified with
+      `git log origin/main --oneline -- <path>`. One command, kills the class.
+      Goes in `/session-end` (all three instances) alongside the item above.
+
+- [ ] **Get the roster onto cloud sessions** — **structural, spec required.**
+      Supersedes and absorbs the second half of the "record the cloud-session
+      ref-deletion blocker" item below, which noted the same gap. A cloud
+      container has no `~/.claude/agents/` and the Core 1.5 `SessionStart` hook
+      cannot fire there: the hook ships inside the `dcoe-roster` **plugin**, and
+      a cloud session clones the source repo without ever installing the
+      marketplace. So every delegation on the surface doing most of this repo's
+      work silently falls back to Claude Code's built-ins, with `Explore` at the
+      session model rather than Haiku. **The 2026-08-10 session that produced
+      this item ran start to finish with no roster** — landing `/retro`, fixing
+      three `/session-end` instances and running a full retrospective, all
+      un-delegated. Core 1.5 is not defective (it targets the two real machines);
+      the gap is that it targets only them. Options to weigh in the spec: commit
+      `.claude/agents/` into the repos, or move the hook to repo level.
+
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
       images are tracked today), and the contradiction between the hub's
