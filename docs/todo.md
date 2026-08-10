@@ -283,6 +283,29 @@ completed task; one task = one commit.
       entry, since the cherry-pick carries the original. No version bump —
       `.claude/commands/` ships in no manifest (2026-08-10)
 
+- [x] **Corrected the self-titling claim in all three `/session-end`
+      instances** — `hub-template/session-end.md` Step 3, this repo's Step 3,
+      and the hub's Step 5 all stated a session has **no way to obtain its own
+      ID**, so "no call can be constructed and there is no error to report."
+      True of the CCD desktop surface it was confirmed on (2026-08-06); false
+      on Claude Code Remote. **Verified live before rewriting, per hard rule
+      10, and the claim was wrong on both of its two counts** — not just the
+      one the open item recorded. The session ID is in the session URL
+      verbatim, `get_session` accepts it, and `list_sessions` does **not**
+      exclude the current session: it comes back as the *first* row. Direct
+      proof it has always worked on this surface: sessions titled
+      `Cont-"Branch triage reconciled, retro landed"` and `Cont-"Systems check
+      + maintenance Phases 1-6"` are in the account's own list. Each file now
+      splits the two surfaces explicitly and reports **three** outcomes rather
+      than two — set / attempted-and-refused / genuinely unidentifiable — since
+      a permission denial is an ordinary failure and calling it "not available
+      in this environment" claims something stronger than what happened. The
+      Step 4/6 report line gained the third outcome to match. The hub's
+      instance also dropped its "this hub's usual surface" framing, which named
+      the desktop case as typical while most of the hub's sessions run remote.
+      No version bump; `hub-template/` is copy-source and `.claude/commands/`
+      ships in no manifest (2026-08-10)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -434,20 +457,6 @@ completed task; one task = one commit.
       rather than Haiku. Not a defect in 1.5 (which targets the two real
       machines), but it means the roster is never present on the surface that
       does most of this repo's work, and nothing says so at session start.
-
-- [ ] **Correct the self-titling claim in both `/session-end` instances** —
-      found 2026-08-09. `hub-template/session-end.md` Step 3, this repo's
-      Step 3, and the hub's Step 5 all state that a session has **no way to
-      obtain its own ID**, so "no call can be constructed and there is no error
-      to report." That is true of the CCD desktop surface it was confirmed on
-      (2026-08-06) but **false on Claude Code Remote**, where the session ID is
-      present verbatim in the session URL and `set_session_title` accepts it.
-      The call constructs fine here; it is gated on an ordinary tool-permission
-      approval instead — a different outcome needing different wording, since
-      the current text tells a session not to try. Fix is one paragraph in each
-      of the three files: keep the desktop case, add the remote case
-      (ID reachable from the session URL, may still need approval), and stop
-      framing "not available" as the only alternative to success.
 
 - [ ] **Run `/retro` for the first time in the `Claude-Code` hub** — installed
       2026-08-09, never run. Its first run is deliberately **unbounded**: with

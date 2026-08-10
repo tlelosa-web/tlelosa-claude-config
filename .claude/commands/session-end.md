@@ -57,16 +57,25 @@ session's title to `Cont-"<3-6 word context-based title>"` describing what
 this session did — so a later `/continue` run doesn't have to
 reverse-engineer one from the transcript.
 
-On some tool surfaces this is impossible rather than merely unreliable, and
-cannot even be attempted (see `hub-template/continue.md` Step 0 point 5).
-Confirmed on the CCD desktop surface 2026-08-06: `set_session_title`
-rejects the current session *and* `list_sessions` excludes it, so a session
-has no way to obtain its own ID — no call to make, no error to report. In
-that case report `not available in this environment` in Step 4 and move on;
-don't go hunting for the ID elsewhere. Never call `archive_session` on this
-session either way. Setting a title *where possible* is what "prepares the
-session for archiving": a later `/continue` run (or Tebello directly) does
-the actual archiving.
+Whether this is possible is surface-dependent (see `hub-template/continue.md`
+Step 0 point 5). On the **CCD desktop** surface it is impossible rather than
+merely unreliable, and cannot even be attempted — confirmed 2026-08-06:
+`set_session_title` rejects the current session *and* `list_sessions`
+excludes it, so a session has no way to obtain its own ID; no call to make,
+no error to report. On **Claude Code Remote / web** the opposite holds on
+both counts (confirmed 2026-08-10): the session ID is in the session URL
+verbatim, `list_sessions` returns the current session as its first row rather
+than excluding it, and `get_session`/`set_session_title` accept that ID. The
+call may still hit an ordinary tool-permission approval — that's a normal
+failure to report, not an impossibility.
+
+So report one of three, not two: title set; attempted and refused (say what
+happened); or genuinely unidentifiable, which is the only case that warrants
+`not available in this environment`. Check the session URL and one
+`list_sessions` call before concluding the last. Never call
+`archive_session` on this session in any case. Setting a title *where
+possible* is what "prepares the session for archiving": a later `/continue`
+run (or Tebello directly) does the actual archiving.
 
 ## Step 4 — Report Close-Out
 
@@ -77,7 +86,7 @@ the actual archiving.
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
 **Branch state:** [all commits reachable from main | N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated]
-**Title set:** [Cont-"<title>" | not available in this environment]
+**Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```
 
