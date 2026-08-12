@@ -467,25 +467,27 @@ completed task; one task = one commit.
       session**, or file a queue item naming the exact file to change. A
       `knowledge/` note never discharges the obligation on its own.
 
-- [ ] **Make `/session-end` Step 1.5 per-repo, not per-session** — both
+- [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
       **two** repos and opened a PR for **one**. The PR template (2026-08-09)
       and `/retro` itself (2026-08-10) each sat stranded for a day while the
-      queue recorded them done; the 2026-08-09 roster entry independently calls
-      "a branch with no PR" the documented stranding failure. Step 1.5 exists
-      precisely to stop this and did not fire, because a session that opened
-      *a* PR looks finished. Fix: iterate every repo in the session. Applies to
-      `hub-template/session-end.md` and both instances. Small.
+      queue recorded them done. Added an explicit "run this per repo, not
+      once per session" note to Step 1.5 in `hub-template/session-end.md`,
+      this repo's `.claude/commands/session-end.md`, and the hub's
+      `.claude/commands/session-end.md` (the hub instance's note also covers
+      its existing 📍 live-sub-project caveat as a special case of the same
+      rule). No spec — mechanical, three files, no schema/manifest change
+      (2026-08-12).
 
-- [ ] **Require a Done entry to cite a SHA on `main`** — six entries in three
-      days asserted a landing they did not have (ADR-010, false twice over; the
-      PR template; `/retro`; the "byte-identical" claim; the `/overwatch` item
-      held on a branch that no longer existed; the branch-check addendum stale
-      when written). Every one was a care failure, and care has now failed six
-      times, so the fix should be mechanical: a Done entry claiming a file
-      landed cites the commit, verified with
-      `git log origin/main --oneline -- <path>`. One command, kills the class.
-      Goes in `/session-end` (all three instances) alongside the item above.
+- [x] **Required a Done entry to cite a SHA on `main`** — six entries in
+      three days asserted a landing they did not have (ADR-010, false twice
+      over; the PR template; `/retro`; the "byte-identical" claim; the
+      `/overwatch` item held on a branch that no longer existed; the
+      branch-check addendum stale when written). Added a bullet to Step 2 in
+      all three `/session-end` instances (`hub-template/`, this repo's, the
+      hub's): a Done entry claiming a file landed must verify with
+      `git log origin/<default> --oneline -- <path>` and cite the SHA. No
+      spec — mechanical, three files, no schema/manifest change (2026-08-12).
 
 - [ ] **Get the roster onto cloud sessions** — **structural, spec required.**
       Supersedes and absorbs the second half of the "record the cloud-session

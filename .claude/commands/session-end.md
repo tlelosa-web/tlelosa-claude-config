@@ -40,6 +40,13 @@ look identical.
 Naming the branch is the whole job — a branch that has been named is one
 somebody can find again.
 
+**Run this per repo, not once per session.** This session may have touched
+more than this repo alone — e.g. the `Claude-Code` hub, if it's attached.
+Repeat the check in **each** repo touched, not just this one. Two commits
+landed 2026-08-09/10 got a PR in one repo and sat stranded with no PR in the
+other, each recorded done in a `docs/todo.md` anyway — a session that
+finishes *a* PR still looks finished from inside a single repo.
+
 ## Step 2 — Reconcile `docs/todo.md`
 
 - Move anything actually finished this session from Open → Done, with a
@@ -49,6 +56,11 @@ somebody can find again.
   tracked yet.
 - Leave untouched items alone — this reconciles, it doesn't re-audit the
   whole backlog.
+- **Any Done entry claiming a file landed cites the commit it landed in** —
+  verify with `git log origin/main --oneline -- <path>` and put the SHA in
+  the entry. Six entries in three days claimed a landing that wasn't
+  actually on `main`; a cited, verified SHA kills that class of error
+  mechanically instead of relying on care.
 
 ## Step 3 — Set This Session's Title
 

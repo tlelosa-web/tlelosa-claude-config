@@ -56,6 +56,14 @@ can find stranded work, but only after it has already been stranded, and it
 has no idea which branch mattered. This step costs one command and catches
 it at the source.
 
+**Run this per repo, not once per session.** If this session touched more
+than one repo — this vault plus a linked config/hub repo, or any second repo
+opened during the session — repeat the check in **each** one, not just
+whichever is currently checked out. Two commits landed 2026-08-09/10 (the PR
+template, `/retro`) each got a PR in one repo and were left stranded with no
+PR in the other, and both got recorded as done in `docs/todo.md` anyway — a
+session that finishes *a* PR still looks finished from inside a single repo.
+
 ## Step 2 — Reconcile the Task Queue
 
 Open this vault's `docs/todo.md`:
@@ -67,6 +75,11 @@ Open this vault's `docs/todo.md`:
   isn't tracked yet.
 - Don't touch items untouched this session — this step reconciles, it
   doesn't re-audit the whole backlog.
+- **Any Done entry claiming a file landed cites the commit it landed in** —
+  verify with `git log origin/<default-branch> --oneline -- <path>` and put
+  the SHA in the entry. Six entries in three days claimed a landing that
+  wasn't actually on the default branch; a cited, verified SHA kills that
+  class of error mechanically instead of relying on care.
 
 If this vault keeps a `docs/session-log.md` (hub roots do; single-repo
 vaults like a plugin/marketplace repo typically don't — check whether
