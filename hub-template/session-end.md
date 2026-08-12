@@ -29,7 +29,17 @@ branch — and nothing about that state looks wrong: the tree is clean, the
 commits are pushed, and this close-out reads like a success.
 
 This session is the only one that knows what it just built, and this is the
-last moment anyone will look at that branch on purpose. So check:
+last moment anyone will look at that branch on purpose.
+
+**Run this in every repo this session touched, not just the one you're
+sitting in.** A session that pushes two repos and opens a PR for one looks
+finished — the PR it did open reads as success, and the repo it didn't touch
+again is easy to forget checking. Two real cases landed this way: a PR
+template and a `/retro` install each sat stranded in a second repo for a day
+while the queue recorded both as done, because the session that built them
+only ran this check where it happened to end up. If this session has more
+than one repo checked out or referenced, list them explicitly before
+running the check, then run it — and Step 4's report — once per repo:
 
 ```bash
 git rev-parse --abbrev-ref HEAD
@@ -37,7 +47,7 @@ git log --oneline origin/<default-branch>..HEAD
 ```
 
 If HEAD is not the default branch and the second command returns commits,
-report it in Step 4:
+report it in Step 4, once per repo checked:
 
 > **Branch state:** N commit(s) on `<branch>` not reachable from
 > `<default>`. Invisible to any session starting from `<default>` until
@@ -153,7 +163,7 @@ makes that later run's judgment easy, which is most of the value anyway.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
-**Branch state:** [all commits reachable from <default> | N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
+**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from <default> | <repo>: N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
