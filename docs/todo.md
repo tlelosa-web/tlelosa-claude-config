@@ -418,6 +418,8 @@ completed task; one task = one commit.
       environment" on a Default-type mobile session (2026-07-19). If the CLI
       is affected too, the note now in `hub-template/continue.md` needs
       upgrading from a surface quirk to a much bigger problem.
+      **Test plan prepared at `docs/research/slash-command-environment-restriction.md`**
+      — requires testing on desktop CLI (Operations or Pappa T machine).
 - [x] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec at `docs/specs/2026-08-05-json-validation-hook.md` (Codex-reviewed).
       **Implemented 2026-08-12:** `.githooks/pre-commit` created, CLAUDE.md
@@ -443,15 +445,12 @@ completed task; one task = one commit.
 
 ### From 2026-08-09
 
-- [ ] **Evaluate feasibility of adopting Linear** for project management —
-      raised alongside the PR-template task and deliberately left unstarted;
-      explicitly out of scope in
-      `docs/specs/2026-08-09-pr-templates.md`. Wants a findings doc
-      (recommendation, blockers, open questions) in the shape of the
-      2026-07-21 codex-gate readiness audit, covering whether it replaces or
-      merely duplicates the `docs/todo.md` + `docs/session-log.md` pair, how
-      it behaves with two machines plus concurrent cloud sessions, and what
-      changed for it now the Fan Movement contract has terminated.
+- [x] **Evaluate feasibility of adopting Linear** for project management —
+      Findings at `docs/specs/2026-08-12-linear-adoption-feasibility.md` (2026-08-12).
+      Recommendation: status quo maintained until blockers 1 (network dependency) and
+      4 (vendor lock-in, multi-machine state) are resolved by owner decision. Five
+      open questions for owner; detailed analysis of functional fit, multi-machine
+      behavior, and post-Fan-Movement implications included. No implementation.
 - [ ] **Confirm the PR templates behave on the next real PR in each repo** —
       two acceptance criteria from `docs/specs/2026-08-09-pr-templates.md`
       cannot be checked from a cloud container: that GitHub pre-fills the body
