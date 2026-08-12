@@ -27,14 +27,23 @@ with no PR is invisible to every session that starts from `main`, and nothing
 about that state looks wrong — clean tree, commits pushed, close-out reading
 like a success.
 
+**Run this in every repo this session touched, not just this one.** A cloud
+session commonly has this repo plus `Claude-Code` and/or `ai-product-factory`
+checked out together — a session that pushes two of them and opens a PR for
+one looks finished, and the repo it didn't return to is easy to forget. Two
+real cases landed this way: a PR template and a `/retro` install each sat
+stranded in a second repo for a day while the queue recorded both as done.
+List every repo this session touched, then run this — and report it in
+Step 4 — once per repo:
+
 ```bash
 git rev-parse --abbrev-ref HEAD
 git log --oneline origin/main..HEAD
 ```
 
 If HEAD is not `main` and commits come back, say so in Step 4, naming the
-branch and the count. Report a pass in one line too — silence and never-ran
-look identical.
+repo, branch, and count. Report a pass in one line too, per repo — silence
+and never-ran look identical.
 
 **Never open the PR, merge, or push** to resolve it: same rule as Step 1.
 Naming the branch is the whole job — a branch that has been named is one
@@ -84,7 +93,7 @@ run (or Tebello directly) does the actual archiving.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
-**Branch state:** [all commits reachable from main | N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
+**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from main | <repo>: N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]

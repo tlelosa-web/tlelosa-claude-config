@@ -518,15 +518,21 @@ completed task; one task = one commit.
       session**, or file a queue item naming the exact file to change. A
       `knowledge/` note never discharges the obligation on its own.
 
-- [ ] **Make `/session-end` Step 1.5 per-repo, not per-session** — both
+- [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
       **two** repos and opened a PR for **one**. The PR template (2026-08-09)
       and `/retro` itself (2026-08-10) each sat stranded for a day while the
       queue recorded them done; the 2026-08-09 roster entry independently calls
-      "a branch with no PR" the documented stranding failure. Step 1.5 exists
+      "a branch with no PR" the documented stranding failure. Step 1.5 existed
       precisely to stop this and did not fire, because a session that opened
-      *a* PR looks finished. Fix: iterate every repo in the session. Applies to
-      `hub-template/session-end.md` and both instances. Small.
+      *a* PR looks finished. Fixed in all three instances —
+      `hub-template/session-end.md`, this repo's `.claude/commands/session-end.md`,
+      and the `Claude-Code` hub's `.claude/commands/session-end.md` — Step 1.5
+      now explicitly says to list every repo the session touched and run the
+      reachability check (and Step 4/6's report) once per repo, not once for
+      wherever the session happens to be sitting. No version bump;
+      `hub-template/` is copy-source and `.claude/commands/` ships in no
+      manifest (2026-08-12)
 
 - [ ] **Require a Done entry to cite a SHA on `main`** — six entries in three
       days asserted a landing they did not have (ADR-010, false twice over; the
