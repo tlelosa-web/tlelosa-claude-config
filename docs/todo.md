@@ -349,6 +349,21 @@ completed task; one task = one commit.
       cleared from a different session surface than this reconcile pass, not
       independently re-verified against the deletion sheet's per-branch file
       list — only against the empty ancestry check. Reconciled 2026-08-12.
+      **Correction, same day:** the "0 remain" / "empty ancestry check" claim
+      for the config-repo side was itself wrong when written — commit
+      `791539f` (same day, "docs: correct overclaimed branch-deletion status
+      in todo.md") had already re-verified that all 4 config-repo branches
+      named in the 2026-08-08 triage sheet (`repo-status-update-n5z63h`,
+      `config-audit-gap-report-aew9g7`, `continuation-yon8p3`,
+      `continuation-utn4f5`) were never deleted — same tip SHAs, still HTTP
+      403 on delete — but this entry was not updated to match, so the two
+      entries contradicted each other in the same file. A live
+      `git merge-base --is-ancestor` check run 2026-08-12 confirms: those 4
+      are still unmerged, plus 2 more opened the same day
+      (`continuation-ksd8pz`, `continuation-n6vvc6`, outside the original
+      triage sheet) — **6 unmerged config-repo branches as of this check**,
+      not 0. Hub-side "0 remain" is unaffected by this correction — that half
+      was independently verified, per the text above.
 
 - [x] **Ran `/retro` for the first time in the `Claude-Code` hub** — done
       2026-08-10, per that hub's own `docs/session-log.md`/`docs/todo.md`
