@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.5** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.6** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -122,6 +122,21 @@ authoritative. Every delegation had been falling back to Claude Code's
 built-ins, with `Explore` inheriting the session model rather than Haiku. A
 missing agent raises no error; it just makes sessions quieter and more
 expensive. Hence a hook rather than a documented step.
+
+**A third surface, covered since Core 1.6.** The Core 1.5 hook ships inside
+the `dcoe-roster` *plugin*, so it only fires on a machine that has actually
+installed the marketplace — Operations and Pappa T. A Claude Code cloud/web
+session clones the target repo fresh and never installs the marketplace, so
+`~/.claude/agents/` doesn't exist there either, silently, same failure mode
+as the pre-1.5 Pappa T gap. Cloud sessions get a **repo-level** `SessionStart`
+hook instead — `hub-template/hooks/cloud-roster-bootstrap.sh`, copied into
+each opted-in project's own `.claude/hooks/` and registered in its
+`.claude/settings.json` (steps in that folder's `README.md`). It checks
+`$CLAUDE_CODE_REMOTE`, no-ops on Operations/Pappa T, and otherwise clones
+`tlelosa-claude-config` shallow and runs the same `bootstrap.mjs` the plugin
+hook uses — one bootstrap implementation, two delivery paths. Missing-only
+semantics carry over unchanged. Spec:
+`docs/specs/2026-08-12-roster-cloud-sessions.md`.
 
 |Agent       |Default file                  |When to Use                            |
 |------------|-------------------------------|----------------------------------------|
