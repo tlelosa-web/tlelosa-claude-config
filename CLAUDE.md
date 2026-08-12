@@ -121,6 +121,9 @@ scaled to the work:
    `dcoe-roster`'s `SessionStart` hook (missing-only — a local edit isn't
    silently reverted, but it also isn't silently updated), so an agent edit
    here reaches other machines on their next session start there, not on
-   this push. A cloud session is the one surface this doesn't reach: it
-   clones the source repo without installing the marketplace, so the hook
-   never fires — see the "Get the roster onto cloud sessions" open item.
+   this push. A cloud session used to be the one surface this didn't reach
+   (it clones the source repo without installing the marketplace, so the
+   plugin hook never fires) — closed 2026-08-12 by a repo-level hook,
+   `hub-template/hooks/cloud-roster-bootstrap.sh`, copy-installed into each
+   opted-in project same as the other `hub-template/hooks/` scripts. See
+   `docs/specs/2026-08-12-roster-cloud-sessions.md`.

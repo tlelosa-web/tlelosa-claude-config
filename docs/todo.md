@@ -373,10 +373,13 @@ completed task; one task = one commit.
       this pass. Reviewer Loop: both `codex-gate` and the roster's own
       `reviewer` agent are unavailable on this cloud session — the exact gap
       the task closes — so the review was self-conducted and logged as
-      retrospective, same handling as the 2026-08-08 specs. **Installing the
-      hook into the consumer repos (`Claude-Code`, `ai-product-factory`) is
-      a separate step**, tracked immediately below rather than assumed done
-      here — this entry covers `tlelosa-claude-config` only.
+      retrospective, same handling as the 2026-08-08 specs. **Consumer-repo
+      installs landed the same session:** `Claude-Code` commit `f343869`,
+      `ai-product-factory` commit `a691620`, both on branch
+      `claude/continuation-ksd8pz` in their own repos — not yet merged to
+      either repo's `main`, so verify with
+      `git merge-base --is-ancestor <sha> origin/main` before assuming this
+      reached those repos' default branch.
 
 ## Open
 
