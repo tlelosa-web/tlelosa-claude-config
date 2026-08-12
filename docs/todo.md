@@ -404,6 +404,14 @@ completed task; one task = one commit.
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
+- [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
+      protection on all 5 wired repos already requires code-owner review,
+      but no CODEOWNERS file existed anywhere, so that requirement had no
+      owners to match). PR opened 2026-08-12 against this repo, not yet
+      merged: `tlelosa-claude-config` PR #28 (`e1f86e0`, `* @tlelosa-web`).
+      Same change opened in parallel across the other 4 wired repos — see
+      `ai-product-factory`'s `docs/todo.md` for the full cross-repo list.
+
 ### From the 2026-08-08 systems check
 
 - [x] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
