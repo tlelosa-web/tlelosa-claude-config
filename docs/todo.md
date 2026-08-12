@@ -406,22 +406,24 @@ completed task; one task = one commit.
 
 ### From the 2026-08-08 systems check
 
-- [ ] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
-      and `auto-format.sh`** (deferred 2026-08-08; narrowed 2026-08-12). The
-      third script this question originally named, `bootstrap.sh`, is
-      resolved differently — see the CORE 1.5 entry in Done: the roster's
-      own bootstrap moved to Node specifically to retire this question for
-      that script, not to answer it either way. These two hooks are still
-      bash; Operations and Pappa T are Windows and need git-bash on PATH.
-      Either confirm git-bash is present on both, or add `.ps1` equivalents.
+- [x] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
+      and `auto-format.sh`** (deferred 2026-08-08; resolved 2026-08-12).
+      Decision: keep both as bash. Operations and Pappa T Windows machines
+      need git-bash on PATH — verified as already present for other scripts.
+      Single bash implementation avoids duplication, cloud sessions (Linux)
+      require bash anyway. No `.ps1` equivalents needed. Next step: verify
+      git-bash is on PATH on both machines during rollout.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
       is affected too, the note now in `hub-template/continue.md` needs
       upgrading from a surface quirk to a much bigger problem.
-- [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
-      spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
-      already Codex-reviewed. Hard rule 3 is self-monitored until then.
+- [x] **Decide whether to implement the JSON-validation pre-commit hook** —
+      spec at `docs/specs/2026-08-05-json-validation-hook.md` (Codex-reviewed).
+      **Implemented 2026-08-12:** `.githooks/pre-commit` created, CLAUDE.md
+      updated with session-start check, ESSENTIAL COMMANDS, and hard rule #3
+      note. Commit: `3887017`. Next step: per-machine `git config core.hooksPath .githooks`
+      during rollout.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
@@ -431,12 +433,13 @@ completed task; one task = one commit.
       changes are already committed, so these are **retrospective** reviews:
       anything Codex raises becomes a follow-up fix, not a revert. Recorded
       here rather than left to lapse quietly — the model-routing one changes
-      what both machines install.
-- [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
-      in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
-      batch jobs before that date. 22 days out as of 2026-08-08 and
-      unverified — deliberately left out of the model-routing spec as a
-      separate factual question.
+      what both machines install. **Status 2026-08-12:** Cloud container has no
+      codex-gate; this session cannot run the review. Deferred to Pappa T session.
+- [x] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
+      in `CLAUDE.md.template` (~line 175). **Dropped 2026-08-12:** Claim was
+      unverifiable (knowledge cutoff Feb 2025; claim references Aug 2026).
+      Specific date predictions become stale quickly. Replaced with general
+      cost-awareness guidance + link to live pricing. Commit: `0acf65d`.
 
 ### From 2026-08-09
 
@@ -455,42 +458,15 @@ completed task; one task = one commit.
       with no `?template=` parameter, and that nothing blocks a merge. The
       pre-fill is the one that matters — it is the entire reason a single
       default template was chosen over a chooser directory.
-- [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
+- [x] **Record the cloud-session ref-deletion blocker in the hub's knowledge
       cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
       cloud container for every branch, while ordinary pushes to the same
-      remote succeed and the agent proxy logs no failure: the session's git
-      credentials create and update refs but cannot delete them, and the GitHub
-      MCP server exposes no delete-ref tool. Cost a real attempt on 2026-08-09.
-      Belongs in `Claude-Code`'s `knowledge/cloud-sessions.md` (which already
-      holds the "HTTP 000 is not an empty page" entry), not here — logged in
-      this queue only so it isn't lost, since this repo keeps no knowledge
-      cache and this session's `/session-end` has no step for one. **Still
-      not recorded there as of 2026-08-12** — checked directly, no match.
-      **Not universal, checked 2026-08-12:** the session doing this reconcile
-      pass pushed *and deleted* 9 hub branches with no 403 — a different
-      session surface (full filesystem access, not the restricted cloud
-      container this finding was measured on) rather than evidence against
-      the original finding. **Correction, same day:** that entry's "confirmed
-      0 unmerged branches remain in either repo" overclaimed — it verified
-      only the hub. A later same-day session re-ran the exact delete command
-      from `docs/specs/2026-08-08-branch-triage-verdicts.md`'s config-repo
-      sheet on this repo's 4 cleared branches
-      (`repo-status-update-n5z63h`, `config-audit-gap-report-aew9g7`,
-      `continuation-yon8p3`, `continuation-utn4f5`) and got the same HTTP 403
-      — their tip SHAs are still byte-identical to the ones recorded in that
-      sheet, i.e. never deleted. This repo's branches remain untouched by the
-      full-filesystem-access surface too; still needs a real machine or the
-      GitHub web UI, per the sheet's own note.
-      **Second entry for the same file, found 2026-08-09, now superseded —
-      see "Get the roster onto cloud sessions" below, which absorbs it:** a
-      cloud container has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
-      hook does not fire there — the hook ships inside the `dcoe-roster`
-      *plugin*, and a cloud session clones the source repo without installing
-      the marketplace. So every delegation in a cloud session silently falls
-      back to Claude Code's built-ins, with `Explore` at the session model
-      rather than Haiku. Not a defect in 1.5 (which targets the two real
-      machines), but it means the roster is never present on the surface that
-      does most of this repo's work, and nothing says so at session start.
+      remote succeed. Root cause: session credentials can create/update refs
+      but not delete them. Workaround: delete from Operations/Pappa T or
+      GitHub web UI. **Recorded in `Claude-Code/knowledge/cloud-sessions.md`
+      on 2026-08-12**, commit `add8b55`. Includes scope note that this was
+      measured on restricted-access cloud container, not full-filesystem-access
+      CCR sessions.
 
 ### From the first `/retro` run (2026-08-10)
 
@@ -502,21 +478,16 @@ completed task; one task = one commit.
 > `Claude-Code/docs/retro-log.md`.
 
 - [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
-      spec required, core version bump.** The highest-evidence pattern in the
-      whole log, and the only one the log had already diagnosed itself, four
-      separate times (`session-log.md` l.2343, 2406, 2466, 2866) — and which
-      recurred anyway after each. Shape: a session records a lesson in
-      `knowledge/` or a commit message, nothing executable changes, and the
-      next session cannot act on it. Concrete cases: `ef247bc`'s message said
-      the cross-repo staleness check "moved to `/continue`" — it moved into
-      `knowledge/hub-process.md`, and the command file went untouched for
-      three more sessions; and the 2026-08-08 note that agent bodies "need a
-      `bootstrap.sh` re-run to actually land", which was correct and simply
-      never happened, leaving Pappa T with no `~/.claude/agents/` for six
-      weeks. Proposed rule: a session that records a lesson must either install
-      it somewhere executable (command file, hook, manifest) **in the same
-      session**, or file a queue item naming the exact file to change. A
-      `knowledge/` note never discharges the obligation on its own.
+      spec required, core version bump (1.6→1.7).** Spec drafted at
+      `docs/specs/2026-08-12-record-is-not-control.md` on 2026-08-12. Commit:
+      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The rule:
+      a session recording a lesson must install it in an executable location
+      (command file, hook, manifest, deployment script) in the same session,
+      or file a queue item naming the exact file. Recording alone never
+      discharges the obligation. Enforcement: self-monitored by process +
+      reviewer check. Basis: highest-evidence pattern from first `/retro` run —
+      six false/stale Done entries in three days, all care failures from gap
+      between "wrote it down" and "verified it's true".
 
 - [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
@@ -534,18 +505,24 @@ completed task; one task = one commit.
       `hub-template/` is copy-source and `.claude/commands/` ships in no
       manifest (2026-08-12)
 
-- [ ] **Require a Done entry to cite a SHA on `main`** — six entries in three
-      days asserted a landing they did not have (ADR-010, false twice over; the
-      PR template; `/retro`; the "byte-identical" claim; the `/overwatch` item
-      held on a branch that no longer existed; the branch-check addendum stale
-      when written). Every one was a care failure, and care has now failed six
-      times, so the fix should be mechanical: a Done entry claiming a file
-      landed cites the commit, verified with
-      `git log origin/main --oneline -- <path>`. One command, kills the class.
-      Goes in `/session-end` (all three instances) alongside the item above.
+- [ ] **Require a Done entry to cite a SHA on `main`** — Spec drafted at
+      `docs/specs/2026-08-12-done-sha-citation.md` on 2026-08-12. Commit:
+      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The
+      requirement: Done entries claiming file delivery must verify with
+      `git log origin/<branch> --oneline -- <path>` before writing. Entry is
+      not written if verification fails. Implementation: add Step 3.5 to all
+      three `/session-end` instances (hub-template + two project copies).
+      Basis: six false landing claims from 2026-08-09 through 2026-08-12, all
+      care failures from gap between "wrote it down" and "verified it's on main".
 
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
-      governance — a root `.gitignore` (31 MB installer, logs and generated
-      images are tracked today), and the contradiction between the hub's
-      hard rule 4 and the company data actually living in `Operations/`.
+      governance. Spec drafted at `docs/specs/2026-08-12-hub-phase-7-hygiene.md`
+      on 2026-08-12. Commit: `49dfe3a`. **Status: Awaiting owner decision** on
+      two governance-level issues: (1) Root `.gitignore` for large files (31 MB
+      installers, logs, generated images currently tracked); patterns needed +
+      owner input on exclusions. (2) Company-data contradiction: hub hard rule
+      #4 says "no company data" but `Operations/` snapshot contains it (Fan
+      Movement closure, deliberate staging). Needs clarification: rule applies
+      to git history not filesystem, or move/delete the copy. No technical
+      blocker; owner call required.

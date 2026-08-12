@@ -35,6 +35,11 @@ one-line warning naming which files are missing and pointing at
 for a machine where the plugin genuinely can't load (e.g. a cloud session
 that cloned this repo without installing the marketplace).
 
+**Verify the JSON pre-commit hook is active:** run `git config core.hooksPath`
+and confirm it returns `.githooks`. If not set or different, print a one-line
+warning: `core.hooksPath is not set on this machine — JSON pre-commit hook is
+inactive; run: git config core.hooksPath .githooks`
+
 -----
 
 ## PROJECT OVERVIEW
@@ -72,7 +77,10 @@ Content:     Shared tooling only — NEVER project content or company data
 ## ESSENTIAL COMMANDS
 
 ```bash
-# Validate JSON before every commit that touches it
+# One-time setup on each machine (activates JSON pre-commit hook)
+git config core.hooksPath .githooks
+
+# Validate JSON before every commit that touches it (automated via hook once above is set)
 python -m json.tool .claude-plugin/marketplace.json
 python -m json.tool dcoe-roster/plugin.json
 python -m json.tool shared-skills/plugin.json
@@ -110,8 +118,11 @@ scaled to the work:
    personal and an employer machine — keep it deliberately generic.
 2. **`CLAUDE.md.template` is the master for other projects** — edits to it
    are template maintenance, never this repo's own setup.
-3. **Validate JSON** (`python -m json.tool`) before committing catalog or
-   plugin manifest changes; a broken manifest breaks installs on both machines.
+3. **Validate JSON** before committing catalog or plugin manifest changes;
+   a broken manifest breaks installs on both machines. A `pre-commit` hook at
+   `.githooks/pre-commit` enforces this automatically once `core.hooksPath`
+   is set (one-time setup per machine, per clone). The session-start check
+   above monitors drift; hard rule stands as documentation of intent.
 4. **No `CLAUDE.md` inside plugin folders** — Claude Code ignores it there
    by design; per-project config stays a per-project file.
 5. **Changes to `dcoe-roster/CORE.md` or to `agent-bodies-reference/` affect
