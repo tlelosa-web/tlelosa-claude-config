@@ -398,6 +398,14 @@ completed task; one task = one commit.
       `git merge-base --is-ancestor <sha> origin/<default-branch>` after a
       fresh fetch.
 
+- [x] **Implement hard rule: "A record is not a control"** — Spec at
+      `docs/specs/2026-08-12-record-is-not-control.md`, approved by reviewer
+      agent 2026-08-12. New CORE hard rule #11: sessions recording lessons must
+      install them in executable locations (commands, hooks, manifests, scripts)
+      or file queue items naming the exact file to change. Recording alone never
+      discharges the obligation. CORE version bumped 1.6 → 1.7. Commit: `fe88c2b`
+      (2026-08-12)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -512,15 +520,16 @@ completed task; one task = one commit.
       `hub-template/` is copy-source and `.claude/commands/` ships in no
       manifest (2026-08-12)
 
-- [ ] **Require a Done entry to cite a SHA on `main`** — Spec drafted at
-      `docs/specs/2026-08-12-done-sha-citation.md` on 2026-08-12. Commit:
-      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The
-      requirement: Done entries claiming file delivery must verify with
-      `git log origin/<branch> --oneline -- <path>` before writing. Entry is
-      not written if verification fails. Implementation: add Step 3.5 to all
-      three `/session-end` instances (hub-template + two project copies).
-      Basis: six false landing claims from 2026-08-09 through 2026-08-12, all
-      care failures from gap between "wrote it down" and "verified it's on main".
+- [ ] **Require a Done entry to cite a SHA on `main`** — Spec at
+      `docs/specs/2026-08-12-done-sha-citation.md` (2026-08-12). **Status:
+      BLOCKED by reviewer (2026-08-12).** Routed to planner for revision;
+      defects: git log returns history for any touched file (misses changed-file
+      cases), violates Hard Rule 10 (defends uncached origin/main reads),
+      example cites nonexistent SHA, no pending state for PR-merge lag. Fixes
+      required before re-review: swap verification command to one that works
+      (git diff or merge-base ancestry check), require fresh fetch, use real
+      example SHA, add pending state distinct from Done, note two-file scope
+      (this repo's two session-end instances, not Claude-Code's separate copy).
 
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
