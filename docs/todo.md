@@ -425,11 +425,20 @@ completed task; one task = one commit.
       cache and this session's `/session-end` has no step for one. **Still
       not recorded there as of 2026-08-12** — checked directly, no match.
       **Not universal, checked 2026-08-12:** the session doing this reconcile
-      pass pushed *and deleted* 9 hub branches and confirmed 0 unmerged
-      branches remain in either repo, with no 403 — a different session
-      surface (full filesystem access, not the restricted cloud container
-      this finding was measured on) rather than evidence against the
-      original finding.
+      pass pushed *and deleted* 9 hub branches with no 403 — a different
+      session surface (full filesystem access, not the restricted cloud
+      container this finding was measured on) rather than evidence against
+      the original finding. **Correction, same day:** that entry's "confirmed
+      0 unmerged branches remain in either repo" overclaimed — it verified
+      only the hub. A later same-day session re-ran the exact delete command
+      from `docs/specs/2026-08-08-branch-triage-verdicts.md`'s config-repo
+      sheet on this repo's 4 cleared branches
+      (`repo-status-update-n5z63h`, `config-audit-gap-report-aew9g7`,
+      `continuation-yon8p3`, `continuation-utn4f5`) and got the same HTTP 403
+      — their tip SHAs are still byte-identical to the ones recorded in that
+      sheet, i.e. never deleted. This repo's branches remain untouched by the
+      full-filesystem-access surface too; still needs a real machine or the
+      GitHub web UI, per the sheet's own note.
       **Second entry for the same file, found 2026-08-09, now superseded —
       see "Get the roster onto cloud sessions" below, which absorbs it:** a
       cloud container has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
