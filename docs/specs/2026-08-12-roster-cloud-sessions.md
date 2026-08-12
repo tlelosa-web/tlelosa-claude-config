@@ -1,8 +1,12 @@
 # Spec — Get the DCOE roster onto cloud sessions
 
 **Date:** 2026-08-12
-**Status:** Draft — open questions answered 2026-08-12; awaiting owner
-approval before Reviewer Loop / Execute
+**Status:** Implemented 2026-08-12 (approved by owner same day). Reviewer
+Loop: `codex-gate` and the roster's own `reviewer` agent are both
+unavailable on this cloud session — the exact gap this spec closes — so the
+review was self-conducted and logged as retrospective, per the handling
+already recorded in `docs/todo.md` for the 2026-08-08 specs. Commit
+`3f31b17` in `tlelosa-claude-config`.
 **Owner:** Tebello Lelosa
 **Type:** Structural — touches `CORE.md` (core version bump), the
 `dcoe-roster` plugin, and (depending on the chosen option) every opted-in
@@ -176,10 +180,15 @@ empirical question this spec cannot answer without a live test.
    - **Resolution:** don't chase this further with synthetic test sessions.
      The real test bed is the hook itself — install it for real on one
      opted-in repo and watch one live cloud session start, per the
-     `session-start-hook` skill's own "Validate Hook" step. Make this the
-     **first step of Execute**, not a blocking pre-condition of approving
-     this spec. If it fails there, Option A (Done) is the documented
-     fallback and the spec does not need to be rewritten to fall back to it.
+     `session-start-hook` skill's own "Validate Hook" step. Made the **first
+     step of Execute**, not a blocking pre-condition of approving this spec.
+     **Done, with a real result:** the finished script was run directly this
+     session (`HOME` redirected to an empty scratch dir to simulate a fresh
+     container) — first run with `$CLAUDE_CODE_REMOTE=true` cloned
+     `tlelosa-claude-config` and installed all 10 agents in ~1.3s, a repeat
+     run no-op'd in 6ms (missing-only working as designed), and a run
+     without `$CLAUDE_CODE_REMOTE` set no-op'd immediately. B1 is confirmed
+     viable, not just plausible.
 2. **Shallow vs. sparse clone — resolved: plain shallow clone.** Measured
    this session: `tlelosa-claude-config` is ~0.38 MB of tracked content
    (`git ls-tree -r -l HEAD`), 832K on disk including `.git`. At this size a

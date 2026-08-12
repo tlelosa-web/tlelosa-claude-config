@@ -356,6 +356,28 @@ completed task; one task = one commit.
       six proposed patterns were selected; the four universal ones are the
       "From the first `/retro` run" section below. Reconciled 2026-08-12.
 
+- [x] **Get the roster onto cloud sessions** — spec at
+      `docs/specs/2026-08-12-roster-cloud-sessions.md`, approved and
+      implemented same day, commit `3f31b17`. Chose Option B1 (repo-level
+      hook, not vendoring agent bodies per-repo): new
+      `hub-template/hooks/cloud-roster-bootstrap.sh`, copy-installed same as
+      `secret-scan.sh`/`auto-format.sh`, no-ops unless `$CLAUDE_CODE_REMOTE`
+      is set, otherwise clones `tlelosa-claude-config` shallow and runs the
+      existing `bootstrap.mjs` — one implementation, two delivery paths
+      (plugin hook for Operations/Pappa T, this hook for cloud sessions).
+      **Live-tested in this session, not just described:** first run
+      installed all 10 agents in ~1.3s, a repeat run no-op'd in 6ms, a
+      non-remote run no-op'd immediately. CORE 1.5 → 1.6, template 3.5 →
+      3.6, `dcoe-roster` plugin 3.7.0 → 3.8.0; also fixed
+      `roster-manifest.json`'s `coreVersion`, found stale at `"1.4"` during
+      this pass. Reviewer Loop: both `codex-gate` and the roster's own
+      `reviewer` agent are unavailable on this cloud session — the exact gap
+      the task closes — so the review was self-conducted and logged as
+      retrospective, same handling as the 2026-08-08 specs. **Installing the
+      hook into the consumer repos (`Claude-Code`, `ai-product-factory`) is
+      a separate step**, tracked immediately below rather than assumed done
+      here — this entry covers `tlelosa-claude-config` only.
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
@@ -496,20 +518,6 @@ completed task; one task = one commit.
       `git log origin/main --oneline -- <path>`. One command, kills the class.
       Goes in `/session-end` (all three instances) alongside the item above.
 
-- [ ] **Get the roster onto cloud sessions** — **structural, spec required.**
-      Supersedes and absorbs the second half of the "record the cloud-session
-      ref-deletion blocker" item below, which noted the same gap. A cloud
-      container has no `~/.claude/agents/` and the Core 1.5 `SessionStart` hook
-      cannot fire there: the hook ships inside the `dcoe-roster` **plugin**, and
-      a cloud session clones the source repo without ever installing the
-      marketplace. So every delegation on the surface doing most of this repo's
-      work silently falls back to Claude Code's built-ins, with `Explore` at the
-      session model rather than Haiku. **The 2026-08-10 session that produced
-      this item ran start to finish with no roster** — landing `/retro`, fixing
-      three `/session-end` instances and running a full retrospective, all
-      un-delegated. Core 1.5 is not defective (it targets the two real machines);
-      the gap is that it targets only them. Options to weigh in the spec: commit
-      `.claude/agents/` into the repos, or move the hook to repo level.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
       governance — a root `.gitignore` (31 MB installer, logs and generated
