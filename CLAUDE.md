@@ -24,9 +24,16 @@ may lag behind the branch being edited.
 Also check whether `~/.claude/agents/` (user-level only) contains all 10
 expected roster filenames (`architect.md`, `data-agent.md`, `debugger.md`,
 `doc-writer.md`, `domain.md`, `executor.md`, `explore.md`, `planner.md`,
-`reviewer.md`, `tester.md` — e.g. via `ls ~/.claude/agents/`). If any are
-missing, print a one-line warning naming which ones, pointing at
-`agent-bodies-reference/bootstrap.sh` as the fix.
+`reviewer.md`, `tester.md` — e.g. via `ls ~/.claude/agents/`). As of CORE 1.5
+this deploys itself: the `dcoe-roster` plugin's `SessionStart` hook runs
+`agent-bodies-reference/bootstrap.mjs` on every session, missing-only so
+local agent edits survive. If any are still missing after that ran, the
+plugin itself is likely not installed/loaded on this machine — print a
+one-line warning naming which files are missing and pointing at
+`/plugin marketplace update` + `/plugin install dcoe-roster@tlelosa-claude-config`.
+`agent-bodies-reference/bootstrap.sh` is the pre-1.5 manual fallback, kept
+for a machine where the plugin genuinely can't load (e.g. a cloud session
+that cloned this repo without installing the marketplace).
 
 -----
 
@@ -43,8 +50,10 @@ Content:     Shared tooling only — NEVER project content or company data
 - `.claude-plugin/marketplace.json` — the catalog Claude Code reads.
 - `dcoe-roster/` — ships `CORE.md` only (shared core, ADR-007). Does **not**
   ship agent bodies; those were stripped 2026-07-29.
-- `agent-bodies-reference/` — the 10 roster agent bodies + `bootstrap.sh`,
-  the copy-source for a new machine's `~/.claude/agents/`.
+- `agent-bodies-reference/` — the 10 roster agent bodies, the copy-source
+  for a new machine's `~/.claude/agents/`. Deployed automatically by
+  `dcoe-roster`'s `SessionStart` hook (`bootstrap.mjs`, CORE 1.5+);
+  `bootstrap.sh` is the pre-1.5 manual fallback.
 - `codex-gate/` — `/codex-review`, advisory cross-family second opinion on a
   spec. Per-machine install; Pappa T only until Operations OpenAI clearance.
 - `shared-skills/` — cross-project Skills plugin.
@@ -108,5 +117,10 @@ scaled to the work:
 5. **Changes to `dcoe-roster/CORE.md` or to `agent-bodies-reference/` affect
    every opted-in project on both machines** — treat edits to them as
    structural (spec first), and bump the core version noted at the top of
-   `CORE.md`. Note the agent bodies reach a machine by `bootstrap.sh`, not by
-   the plugin, so an agent edit needs a re-run there as well as a push here.
+   `CORE.md`. As of CORE 1.5 the agent bodies reach a machine via
+   `dcoe-roster`'s `SessionStart` hook (missing-only — a local edit isn't
+   silently reverted, but it also isn't silently updated), so an agent edit
+   here reaches other machines on their next session start there, not on
+   this push. A cloud session is the one surface this doesn't reach: it
+   clones the source repo without installing the marketplace, so the hook
+   never fires — see the "Get the roster onto cloud sessions" open item.

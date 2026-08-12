@@ -306,53 +306,72 @@ completed task; one task = one commit.
       No version bump; `hub-template/` is copy-source and `.claude/commands/`
       ships in no manifest (2026-08-10)
 
+- [x] **Closed the three remaining codex-gate rollout items** — install +
+      network-off smoke-test on Pappa T, the ADR copy into the Operations
+      hub's `docs/decisions/`, and the Fan Movement IT egress question. All
+      three resolved in the `Claude-Code` hub, not here: smoke-test closed
+      2026-08-03 (that hub's `docs/todo.md` Done section), ADR copy done
+      2026-07-29 directly via git (recorded as
+      `ADR-009-codex-second-opinion-gate.md`), IT egress confirmed covered
+      2026-07-28 — the last of these recovered 2026-08-12 from a stranded
+      branch (`claude/continuation-sqlkfd`), 15 days after it was originally
+      answered. **Caveat on the IT answer's practical weight, not its
+      settledness:** the Fan Movement contract was terminated 2026-08-03,
+      five days after IT confirmed the egress question — the answer stands,
+      what it was for changed. Reconciled here 2026-08-12.
+
+- [x] **Recorded the CORE 1.5 roster-autodeploy work, and fixed the two
+      knock-on drifts it left.** Commit `ab95eef` (`bootstrap.mjs`,
+      `roster-manifest.json`, the `dcoe-roster` `SessionStart` hook, CORE
+      1.4 → 1.5) landed 2026-08-09 with no Done entry here — closing that
+      gap closes two Open items that described the pre-1.5 world:
+      **"Run `bootstrap.sh` on the Downloads-cloned machine"** and
+      **"Roll out dcoe-roster 3.6.0 + CORE 1.4 + template v3.5 on both
+      machines"** both described a manual per-machine step 1.5 was built to
+      obsolete — the roster now deploys itself on `SessionStart`,
+      missing-only, wherever the `dcoe-roster` plugin loads. Also fixed
+      `CLAUDE.md`'s three stale references (the session-start check, the
+      project-overview bullet, the agent-edit-propagation note) that still
+      named `bootstrap.sh` as *the* fix — it is now documented as the
+      pre-1.5 manual fallback, not the live mechanism. Reconciled 2026-08-12.
+
+- [x] **Delete the triaged branches — both halves, verified directly rather
+      than by re-running the deletion sheet.** `git branch -r --no-merged
+      origin/main` returns empty in both this repo and the `Claude-Code` hub
+      as of 2026-08-12. Hub side: 0 remain — the last 9 (the 2026-08-10
+      session-log-recovery triage's 8, plus `new-game-drivers-update-1hp4dq`
+      found during that cleanup) were deleted 2026-08-12 after their unique
+      `docs/session-log.md` entries were recovered into `main` first, on top
+      of whatever this item's own last recorded count (15) had already
+      brought toward zero. Config-repo side: 0 remain too — this item's own
+      text recorded that half as **machine-bound** (`git push origin
+      --delete` returning HTTP 403 from a cloud container), so it was
+      cleared from a different session surface than this reconcile pass, not
+      independently re-verified against the deletion sheet's per-branch file
+      list — only against the empty ancestry check. Reconciled 2026-08-12.
+
+- [x] **Ran `/retro` for the first time in the `Claude-Code` hub** — done
+      2026-08-10, per that hub's own `docs/session-log.md`/`docs/todo.md`
+      Done entries ("First `/retro` run: six patterns, six selected"). All
+      six proposed patterns were selected; the four universal ones are the
+      "From the first `/retro` run" section below. Reconciled 2026-08-12.
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
-- [ ] Install + smoke-test codex-gate on Pappa T (Codex CLI authed at
-      `~/.codex/`, then `/plugin install codex-gate@tlelosa-claude-config`;
-      run `/codex-review` on a real spec and confirm the fail-warn path by
-      running it once with the network off) — acceptance criteria in
-      `docs/specs/2026-07-21-codex-gate-spec.md`
-- [ ] Record the codex-gate ADR in the Operations hub's `docs/decisions/`
-      (vault-side) — draft ready to copy over at
-      `docs/specs/2026-07-21-codex-gate-adr-draft.md`
-- [ ] Ask Fan Movement IT whether OpenAI egress from the Operations machine
-      is covered — until then codex-gate stays off the work PC
-
-- [ ] **Run `agent-bodies-reference/bootstrap.sh` on the machine this repo
-      was cloned to under `C:\Users\tlelo\Downloads\`** — and check whether
-      Operations and Pappa T ever had it run either. Logged 2026-08-03 as a
-      manual "copy these files" step after
-      `docs/specs/2026-07-29-strip-dcoe-roster-agent-bodies.md` stopped the
-      plugin shipping agent bodies; discovered when dispatching the
-      `reviewer` agent found no agent files anywhere on that machine.
-      **As of 2026-08-08 there is a script for it** — recovered from a
-      stranded branch, idempotent and rerun-safe — so this is one command
-      now, not a copy-by-hand. Two things changed with it: the roster is
-      **10 files, not 9** (`explore.md` was added the same day, and a
-      machine missing it silently falls back to Sonnet-priced search), and
-      `CLAUDE.md`'s session-start check now warns when any are missing.
-      Note this is the same command the pending rollout item needs, so doing
-      the rollout covers this for Operations and Pappa T.
-
 ### From the 2026-08-08 systems check
 
-- [ ] **Roll out dcoe-roster 3.6.0 + CORE 1.4 + template v3.5 on both
-      machines** (was 3.5.0/1.3/v3.4 before the model-routing change landed
-      on top — nothing has shipped yet, so it all goes in one pass) — `/plugin marketplace update` + `/plugin update
-      dcoe-roster@tlelosa-claude-config` + `/reload-plugins`, then **re-run
-      `agent-bodies-reference/bootstrap.sh`** so `explore.md` and the
-      executor's `isolation: worktree` actually reach `~/.claude/agents/`.
-      The plugin update alone does not deliver agent bodies.
-- [ ] **Decide: bash vs PowerShell for the shipped scripts** (deferred
-      2026-08-08). `bootstrap.sh`, `hub-template/hooks/secret-scan.sh` and
-      `auto-format.sh` are all bash; Operations and Pappa T are Windows and
-      need git-bash on PATH. Either confirm git-bash is present on both, or
-      add `.ps1` equivalents.
+- [ ] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
+      and `auto-format.sh`** (deferred 2026-08-08; narrowed 2026-08-12). The
+      third script this question originally named, `bootstrap.sh`, is
+      resolved differently — see the CORE 1.5 entry in Done: the roster's
+      own bootstrap moved to Node specifically to retire this question for
+      that script, not to answer it either way. These two hooks are still
+      bash; Operations and Pappa T are Windows and need git-bash on PATH.
+      Either confirm git-bash is present on both, or add `.ps1` equivalents.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
@@ -361,41 +380,6 @@ completed task; one task = one commit.
 - [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
       already Codex-reviewed. Hard rule 3 is self-monitored until then.
-- [ ] **Delete the triaged branches** — **now fully unblocked**, both halves.
-      `retro.md` landed 2026-08-09, which was the last held decision.
-      **4 config-repo branches and 14 hub branches** (corrected
-      2026-08-09; the spec's original 3 and 13 were both wrong). Verdicts and
-      live per-branch figures in
-      `docs/specs/2026-08-08-branch-triage-verdicts.md`, whose 2026-08-09
-      amendment supersedes its own summary tables. The hub's
-      `claude/pr-template-linear-planning-40hnrd` was the one exclusion — it
-      held the only file either repo's branches still had that `main` lacked —
-      and that file landed on the hub's `main` (`8a3fd14`), so **all 14 hub
-      branches are cleared**, re-measured at 0 unique files each after the
-      merge.
-      **Corrected 2026-08-10:** the hub count is **15, not 14** — this item was
-      written before `claude/continuation-45sy98` existed, and that branch then
-      became the new sole exclusion, holding `.claude/commands/retro.md`. It
-      landed on the hub's `main` today (`72fbd19`), so 45sy98 is cleared too and
-      **all 15 are now safe to delete**. Re-measure before running the sheet
-      rather than trusting this number: two counts in a row have gone stale
-      because a session pushed a branch after they were written. The other held decision this used to wait on (`/overwatch`) is
-      resolved. The four config-repo branches are cleared too, but **by
-      verdict, not by measuring zero** — three still carry `dcoe-roster/agents/*`
-      (deliberately stripped 2026-07-29) and one also carries `end-session.md`
-      and `session-log.md` (both superseded). The spec's config deletion sheet
-      tabulates exactly which files are expected on each; confirm the remaining
-      files match it and nothing new has appeared, since the hub's "0 unique"
-      check does **not** apply on this side.
-      **Machine-bound — a cloud session cannot do this half.** `git push origin
-      --delete` returns HTTP 403 for all 14: not the egress policy (the proxy
-      logged no failure and ordinary pushes succeed), but the session's git
-      credentials, which create and update refs but cannot delete them, with no
-      delete-ref tool on the GitHub MCP server either. Run it from Operations
-      or Pappa T, or from the GitHub web UI. **Ready-to-paste command and every
-      branch's tip SHA are in the spec's "Deletion sheet" section** — the SHAs
-      are what make the deletion reversible, so use that block rather than
-      re-deriving the list.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
@@ -429,15 +413,6 @@ completed task; one task = one commit.
       with no `?template=` parameter, and that nothing blocks a merge. The
       pre-fill is the one that matters — it is the entire reason a single
       default template was chosen over a chooser directory.
-- [ ] **Record the CORE 1.5 roster-autodeploy work in this list** — commit
-      `ab95eef` (`bootstrap.mjs`, `roster-manifest.json`, the `dcoe-roster`
-      `SessionStart` hook, CORE 1.4 → 1.5) is on `main` in both repos with no
-      Done entry here, in breach of hard rule 5. Two knock-on drifts to fix in
-      the same pass: `CLAUDE.md`'s session-start block still names
-      `bootstrap.sh` as the fix for a missing roster, and the Open item above
-      about re-running `bootstrap.sh` by hand describes the manual step 1.5
-      was built to obsolete.
-
 - [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
       cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
       cloud container for every branch, while ordinary pushes to the same
@@ -447,9 +422,17 @@ completed task; one task = one commit.
       Belongs in `Claude-Code`'s `knowledge/cloud-sessions.md` (which already
       holds the "HTTP 000 is not an empty page" entry), not here — logged in
       this queue only so it isn't lost, since this repo keeps no knowledge
-      cache and this session's `/session-end` has no step for one.
-      **Second entry for the same file, found 2026-08-09:** a cloud container
-      has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
+      cache and this session's `/session-end` has no step for one. **Still
+      not recorded there as of 2026-08-12** — checked directly, no match.
+      **Not universal, checked 2026-08-12:** the session doing this reconcile
+      pass pushed *and deleted* 9 hub branches and confirmed 0 unmerged
+      branches remain in either repo, with no 403 — a different session
+      surface (full filesystem access, not the restricted cloud container
+      this finding was measured on) rather than evidence against the
+      original finding.
+      **Second entry for the same file, found 2026-08-09, now superseded —
+      see "Get the roster onto cloud sessions" below, which absorbs it:** a
+      cloud container has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
       hook does not fire there — the hook ships inside the `dcoe-roster`
       *plugin*, and a cloud session clones the source repo without installing
       the marketplace. So every delegation in a cloud session silently falls
@@ -457,15 +440,6 @@ completed task; one task = one commit.
       rather than Haiku. Not a defect in 1.5 (which targets the two real
       machines), but it means the roster is never present on the surface that
       does most of this repo's work, and nothing says so at session start.
-
-- [ ] **Run `/retro` for the first time in the `Claude-Code` hub** — installed
-      2026-08-09, never run. Its first run is deliberately **unbounded**: with
-      no `docs/retro-log.md` yet, Step 1 reviews the full `session-log.md`
-      history (3,000+ lines) rather than a window, so it is a real piece of
-      work rather than a quick check, and it will not be cheap again until the
-      first marker exists. Worth doing soon while the evidence is dense — the
-      week of 2026-08-08/09 alone produced five queue entries asserting state
-      they did not have, which is precisely Step 2's first signal.
 
 ### From the first `/retro` run (2026-08-10)
 
