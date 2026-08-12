@@ -418,6 +418,8 @@ completed task; one task = one commit.
       environment" on a Default-type mobile session (2026-07-19). If the CLI
       is affected too, the note now in `hub-template/continue.md` needs
       upgrading from a surface quirk to a much bigger problem.
+      **Test plan prepared at `docs/research/slash-command-environment-restriction.md`**
+      — requires testing on desktop CLI (Operations or Pappa T machine).
 - [x] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec at `docs/specs/2026-08-05-json-validation-hook.md` (Codex-reviewed).
       **Implemented 2026-08-12:** `.githooks/pre-commit` created, CLAUDE.md
