@@ -1,7 +1,8 @@
 # Spec — Get the DCOE roster onto cloud sessions
 
 **Date:** 2026-08-12
-**Status:** Draft — awaiting owner approval before build
+**Status:** Draft — open questions answered 2026-08-12; awaiting owner
+approval before Reviewer Loop / Execute
 **Owner:** Tebello Lelosa
 **Type:** Structural — touches `CORE.md` (core version bump), the
 `dcoe-roster` plugin, and (depending on the chosen option) every opted-in
@@ -150,26 +151,62 @@ fallback if B1's clone-at-session-start step turns out to be blocked by
 network policy on a meaningful share of cloud sessions — that is an
 empirical question this spec cannot answer without a live test.
 
-## Open questions (must be answered before Execute)
+## Open questions — answered 2026-08-12
 
-1. Does a Claude Code cloud/web session's default network policy permit an
-   outbound `git clone`/fetch of a private GitHub repo (`tlelosa-web/tlelosa-claude-config`)
-   during `SessionStart`? Needs a live test, not a guess.
-2. If B1 is viable, does the hook clone the whole repo (simple, but pulls
-   `Operations/`/`Pappa T/`-scale history/content into every cloud
-   container) or a shallow/sparse checkout of just
-   `agent-bodies-reference/`?
-3. Which repos are actually "opted-in" for this purpose? At minimum this
-   repo, `Claude-Code`, and `ai-product-factory` per the current GitHub
-   scope — confirm the full list before writing per-repo hook files.
-4. Async vs sync hook mode (per the `session-start-hook` skill): sync
-   guarantees the roster is present before the first delegation but delays
-   session start; async starts faster but risks a delegation racing ahead
-   of the bootstrap. Given the cost of a silent built-in fallback (this
-   whole problem), sync is the strong default — confirm.
-5. Core version bump: this changes what `CORE.md` describes as the
-   deployment mechanism (a third surface, a new "SESSION START" note per
-   opted-in `CLAUDE.md`) — 1.5 → 1.6, documented same as prior bumps.
+1. **Network policy for an outbound clone during `SessionStart` — partially
+   verified, one gap remains for Execute.** Two things were actually tested
+   this session, not guessed:
+   - A same-session `git clone --depth 1` of `tlelosa-claude-config` (a repo
+     already in this session's attached sources) succeeded in ~1.4s with no
+     `add_repo` call for that specific git operation — the credentials the
+     proxy hands the session are ambient at the git level, not gated per
+     command.
+   - The real B1 scenario — a **cold** cross-repo clone, from a session
+     whose sources never included `tlelosa-claude-config` — was attempted
+     twice via spawned test sessions and both were inconclusive for reasons
+     worth recording rather than discarding: attempt 1 was intercepted by
+     the target repo's own `CLAUDE.md` session-start ritual before the raw
+     command ran (the session followed its host repo's instructions instead
+     of the one-off diagnostic prompt); attempt 2 used an explicit
+     system-prompt override to skip that ritual, and the child session
+     correctly treated an unverified override as suspicious and stopped to
+     ask for reconfirmation rather than proceed. That is the right behavior
+     from that session, not a bug — but it means neither attempt produced a
+     clean yes/no.
+   - **Resolution:** don't chase this further with synthetic test sessions.
+     The real test bed is the hook itself — install it for real on one
+     opted-in repo and watch one live cloud session start, per the
+     `session-start-hook` skill's own "Validate Hook" step. Make this the
+     **first step of Execute**, not a blocking pre-condition of approving
+     this spec. If it fails there, Option A (Done) is the documented
+     fallback and the spec does not need to be rewritten to fall back to it.
+2. **Shallow vs. sparse clone — resolved: plain shallow clone.** Measured
+   this session: `tlelosa-claude-config` is ~0.38 MB of tracked content
+   (`git ls-tree -r -l HEAD`), 832K on disk including `.git`. At this size a
+   sparse checkout of just `agent-bodies-reference/` buys nothing worth its
+   added complexity over `git clone --depth 1` of the whole repo.
+3. **Opted-in repo list — resolved for now, re-check at Execute.** Per the
+   current GitHub scope for this account: `Claude-Code` and
+   `ai-product-factory` are the two consumers that need the new hook.
+   `tlelosa-claude-config` itself does not — it already has
+   `agent-bodies-reference/` locally by definition, and its own `CLAUDE.md`
+   SESSION START section already points at the local working copy, not a
+   bootstrap step. Re-confirm the list hasn't grown before writing the
+   per-repo hook files, since scope can change between sessions.
+4. **Sync vs. async — resolved: sync.** Matches the `session-start-hook`
+   skill's own default ("don't use async in the first iteration") and the
+   cost asymmetry here is lopsided: a silent built-in-agent fallback is
+   exactly the failure this spec exists to close, so a session start that's
+   a few seconds slower but guarantees the roster is present beats a faster
+   start that can silently race a delegation ahead of the bootstrap.
+5. **Core version bump — resolved: 1.5 → 1.6, plus one pre-existing drift to
+   fix in the same commit.** Checked `agent-bodies-reference/roster-manifest.json`
+   this session: its `coreVersion` field still reads `"1.4"`, even though
+   `CORE.md` has been at 1.5 since before this spec was written — a drift
+   that predates this task. Bumping to 1.6 without correcting the manifest
+   would leave it two versions stale instead of one. Bundle the manifest fix
+   into whichever Execute commit does the 1.6 bump; it does not need its own
+   task or spec (single-field JSON correction, hard rule 0's trivial case).
 
 ## Explicitly out of scope
 
