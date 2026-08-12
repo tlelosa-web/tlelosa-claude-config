@@ -104,5 +104,5 @@ It is a **governance rule** about how sessions conduct themselves.
 - The `/session-end` command's Step 1.5 (check that all touched repos have outbound PRs or
   merged commits) is a different gate — it catches work that's not *shipped*, whereas this rule
   catches work that's not *executable*.
-- Hard rule 10 in this repo's CLAUDE.md ("Verify remote state before asserting it") is a
+- CORE hard rule 10 ("Verify remote state before asserting it") is a
   related discipline — don't assume a change is live just because you wrote about it; verify it.

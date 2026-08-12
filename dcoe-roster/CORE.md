@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.6** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.7** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -229,6 +229,13 @@ relax these.
    locally cached branch ref that may be stale. This applies to any external
    state a session doesn't control alone (remote branches, deployed
    versions, other sessions' in-progress work), not git specifically.
+11. **A record is not a control.** A session that records a lesson learned must
+   install it in an executable location (command file, hook, manifest, deployment
+   script) in the same session, or file a queue item in `docs/todo.md` naming the
+   exact file that needs to change. Recording alone never discharges the obligation.
+   A finding is passive; executable change is what alters behavior. Applies to
+   commit messages that describe lessons, knowledge-cache entries, and notes that
+   describe future behavior (not past-tense descriptions or in-function comments).
 
 -----
 
