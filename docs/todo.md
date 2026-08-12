@@ -388,13 +388,15 @@ completed task; one task = one commit.
       this pass. Reviewer Loop: both `codex-gate` and the roster's own
       `reviewer` agent are unavailable on this cloud session — the exact gap
       the task closes — so the review was self-conducted and logged as
-      retrospective, same handling as the 2026-08-08 specs. **Consumer-repo
-      installs landed the same session:** `Claude-Code` commit `f343869`,
-      `ai-product-factory` commit `a691620`, both on branch
-      `claude/continuation-ksd8pz` in their own repos — not yet merged to
-      either repo's `main`, so verify with
-      `git merge-base --is-ancestor <sha> origin/main` before assuming this
-      reached those repos' default branch.
+      retrospective, same handling as the 2026-08-08 specs. **All three PRs
+      merged and independently verified against each repo's fetched default
+      branch (not just the merge API response):** `tlelosa-claude-config`
+      PR #25 (`3f31b17`, merged as `7e16c86`), `Claude-Code` PR #20
+      (`f343869`, merged as `9f9020b`), `ai-product-factory` PR #1
+      (`a691620`, merged as `0dcdd6e` — note this repo's default branch is
+      `master`, not `main`). All confirmed with
+      `git merge-base --is-ancestor <sha> origin/<default-branch>` after a
+      fresh fetch.
 
 ## Open
 
