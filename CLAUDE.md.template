@@ -172,7 +172,10 @@ model. No override deployed = search runs at Sonnet 5 prices.
 
 **Effort tiers** map onto the Thinking Levels table below — low effort pairs with *(none)*/`think`, medium with `think hard`, high with `think harder`/`ultrathink`.
 
-**Bulk batch jobs** (large multi-file refactors, project-wide sweeps, mass research runs) should be scheduled **before 31 August 2026** — introductory pricing on current models ends after that date.
+**Cost awareness for bulk batch work:** Large multi-file refactors, project-wide sweeps, and
+mass research runs accumulate token usage quickly. Watch Anthropic pricing announcements and
+schedule cost-heavy work ahead of any price changes. The current model costs on
+[OpenRouter](https://openrouter.ai/models) reflect live pricing.
 
 -----
 
