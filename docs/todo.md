@@ -404,7 +404,11 @@ completed task; one task = one commit.
       install them in executable locations (commands, hooks, manifests, scripts)
       or file queue items naming the exact file to change. Recording alone never
       discharges the obligation. CORE version bumped 1.6 → 1.7. Commit: `fe88c2b`
-      (2026-08-12)
+      (2026-08-12). **Cleanup (2026-08-16):** this item's own stale Open
+      duplicate — the pre-approval "Draft, awaiting reviewer agent approval"
+      entry under the first-`/retro`-run section — was still sitting in Open
+      after this Done entry landed, exactly the drift hard rule #11 exists to
+      catch. Removed; this Done entry is now the only record.
 
 ## Open
 
@@ -491,18 +495,6 @@ completed task; one task = one commit.
 > and land here per ADR-008; two hub-scoped ones (count hygiene, known-risks
 > deferral) are queued in the hub's own `docs/todo.md`. Run recorded in
 > `Claude-Code/docs/retro-log.md`.
-
-- [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
-      spec required, core version bump (1.6→1.7).** Spec drafted at
-      `docs/specs/2026-08-12-record-is-not-control.md` on 2026-08-12. Commit:
-      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The rule:
-      a session recording a lesson must install it in an executable location
-      (command file, hook, manifest, deployment script) in the same session,
-      or file a queue item naming the exact file. Recording alone never
-      discharges the obligation. Enforcement: self-monitored by process +
-      reviewer check. Basis: highest-evidence pattern from first `/retro` run —
-      six false/stale Done entries in three days, all care failures from gap
-      between "wrote it down" and "verified it's true".
 
 - [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
