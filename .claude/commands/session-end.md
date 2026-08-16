@@ -27,25 +27,27 @@ with no PR is invisible to every session that starts from `main`, and nothing
 about that state looks wrong — clean tree, commits pushed, close-out reading
 like a success.
 
+**Run this in every repo this session touched, not just this one.** A cloud
+session commonly has this repo plus `Claude-Code` and/or `ai-product-factory`
+checked out together — a session that pushes two of them and opens a PR for
+one looks finished, and the repo it didn't return to is easy to forget. Two
+real cases landed this way: a PR template and a `/retro` install each sat
+stranded in a second repo for a day while the queue recorded both as done.
+List every repo this session touched, then run this — and report it in
+Step 4 — once per repo:
+
 ```bash
 git rev-parse --abbrev-ref HEAD
 git log --oneline origin/main..HEAD
 ```
 
 If HEAD is not `main` and commits come back, say so in Step 4, naming the
-branch and the count. Report a pass in one line too — silence and never-ran
-look identical.
+repo, branch, and count. Report a pass in one line too, per repo — silence
+and never-ran look identical.
 
 **Never open the PR, merge, or push** to resolve it: same rule as Step 1.
 Naming the branch is the whole job — a branch that has been named is one
 somebody can find again.
-
-**Run this per repo, not once per session.** This session may have touched
-more than this repo alone — e.g. the `Claude-Code` hub, if it's attached.
-Repeat the check in **each** repo touched, not just this one. Two commits
-landed 2026-08-09/10 got a PR in one repo and sat stranded with no PR in the
-other, each recorded done in a `docs/todo.md` anyway — a session that
-finishes *a* PR still looks finished from inside a single repo.
 
 ## Step 2 — Reconcile `docs/todo.md`
 
@@ -56,11 +58,12 @@ finishes *a* PR still looks finished from inside a single repo.
   tracked yet.
 - Leave untouched items alone — this reconciles, it doesn't re-audit the
   whole backlog.
-- **Any Done entry claiming a file landed cites the commit it landed in** —
-  verify with `git log origin/main --oneline -- <path>` and put the SHA in
-  the entry. Six entries in three days claimed a landing that wasn't
-  actually on `main`; a cited, verified SHA kills that class of error
-  mechanically instead of relying on care.
+
+> SHA-citation for Done entries is proposed but not yet live here — spec at
+> `docs/specs/2026-08-12-done-sha-citation.md` is BLOCKED by reviewer
+> (defects: `git log` misses changed-file cases, needs a fresh-fetch guard
+> per Hard Rule 10, needs a pending state for PR-merge lag). Don't add the
+> requirement here until that spec is revised and approved.
 
 ## Step 3 — Set This Session's Title
 
@@ -96,7 +99,7 @@ run (or Tebello directly) does the actual archiving.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
-**Branch state:** [all commits reachable from main | N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
+**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from main | <repo>: N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
 **Logged:** [docs/todo.md updated]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]

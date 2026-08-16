@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.5 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.6 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -172,7 +172,10 @@ model. No override deployed = search runs at Sonnet 5 prices.
 
 **Effort tiers** map onto the Thinking Levels table below — low effort pairs with *(none)*/`think`, medium with `think hard`, high with `think harder`/`ultrathink`.
 
-**Bulk batch jobs** (large multi-file refactors, project-wide sweeps, mass research runs) should be scheduled **before 31 August 2026** — introductory pricing on current models ends after that date.
+**Cost awareness for bulk batch work:** Large multi-file refactors, project-wide sweeps, and
+mass research runs accumulate token usage quickly. Watch Anthropic pricing announcements and
+schedule cost-heavy work ahead of any price changes. The current model costs on
+[OpenRouter](https://openrouter.ai/models) reflect live pricing.
 
 -----
 
@@ -315,10 +318,14 @@ Hooks are **registered in `.claude/settings.json`** (`hooks` key) —
 |`pre-push`     |`PreToolUse` → `Bash(git push*)`       |Run full test suite. Block if fails.     |
 |`post-task`    |`SubagentStop`                         |Log summary to `docs/session-log.md`     |
 |`session-start`|`SessionStart`                         |Inject `docs/todo.md` as additionalContext|
+|`roster-bootstrap`|`SessionStart`, cloud sessions only |Populate `~/.claude/agents/` on Claude Code cloud/web sessions, where the `dcoe-roster` plugin's own bootstrap hook never fires|
 |spec approval  |`/codex-review` (manual, not a hook)   |Codex cross-family second opinion — warn only, never block (optional, per machine)|
 
-`secret-scan` and `auto-format` ship ready-made: copy scripts + settings
-snippet from the config repo's `hub-template/hooks/` (steps in its README).
+`secret-scan`, `auto-format`, and `roster-bootstrap` ship ready-made: copy
+scripts + settings snippets from the config repo's `hub-template/hooks/`
+(steps in its README). `roster-bootstrap` matters only if this project runs
+Claude Code cloud/web sessions — Operations/Pappa T already get the roster
+via the `dcoe-roster` plugin.
 A hook blocks by exiting 2 — stderr goes back to Claude; PreToolUse blocks
 the call, PostToolUse only reports. Verify with `/hooks` in a session.
 

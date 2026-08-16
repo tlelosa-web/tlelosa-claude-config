@@ -349,6 +349,21 @@ completed task; one task = one commit.
       cleared from a different session surface than this reconcile pass, not
       independently re-verified against the deletion sheet's per-branch file
       list — only against the empty ancestry check. Reconciled 2026-08-12.
+      **Correction, same day:** the "0 remain" / "empty ancestry check" claim
+      for the config-repo side was itself wrong when written — commit
+      `791539f` (same day, "docs: correct overclaimed branch-deletion status
+      in todo.md") had already re-verified that all 4 config-repo branches
+      named in the 2026-08-08 triage sheet (`repo-status-update-n5z63h`,
+      `config-audit-gap-report-aew9g7`, `continuation-yon8p3`,
+      `continuation-utn4f5`) were never deleted — same tip SHAs, still HTTP
+      403 on delete — but this entry was not updated to match, so the two
+      entries contradicted each other in the same file. A live
+      `git merge-base --is-ancestor` check run 2026-08-12 confirms: those 4
+      are still unmerged, plus 2 more opened the same day
+      (`continuation-ksd8pz`, `continuation-n6vvc6`, outside the original
+      triage sheet) — **6 unmerged config-repo branches as of this check**,
+      not 0. Hub-side "0 remain" is unaffected by this correction — that half
+      was independently verified, per the text above.
 
 - [x] **Ran `/retro` for the first time in the `Claude-Code` hub** — done
       2026-08-10, per that hub's own `docs/session-log.md`/`docs/todo.md`
@@ -356,30 +371,77 @@ completed task; one task = one commit.
       six proposed patterns were selected; the four universal ones are the
       "From the first `/retro` run" section below. Reconciled 2026-08-12.
 
+- [x] **Get the roster onto cloud sessions** — spec at
+      `docs/specs/2026-08-12-roster-cloud-sessions.md`, approved and
+      implemented same day, commit `3f31b17`. Chose Option B1 (repo-level
+      hook, not vendoring agent bodies per-repo): new
+      `hub-template/hooks/cloud-roster-bootstrap.sh`, copy-installed same as
+      `secret-scan.sh`/`auto-format.sh`, no-ops unless `$CLAUDE_CODE_REMOTE`
+      is set, otherwise clones `tlelosa-claude-config` shallow and runs the
+      existing `bootstrap.mjs` — one implementation, two delivery paths
+      (plugin hook for Operations/Pappa T, this hook for cloud sessions).
+      **Live-tested in this session, not just described:** first run
+      installed all 10 agents in ~1.3s, a repeat run no-op'd in 6ms, a
+      non-remote run no-op'd immediately. CORE 1.5 → 1.6, template 3.5 →
+      3.6, `dcoe-roster` plugin 3.7.0 → 3.8.0; also fixed
+      `roster-manifest.json`'s `coreVersion`, found stale at `"1.4"` during
+      this pass. Reviewer Loop: both `codex-gate` and the roster's own
+      `reviewer` agent are unavailable on this cloud session — the exact gap
+      the task closes — so the review was self-conducted and logged as
+      retrospective, same handling as the 2026-08-08 specs. **All three PRs
+      merged and independently verified against each repo's fetched default
+      branch (not just the merge API response):** `tlelosa-claude-config`
+      PR #25 (`3f31b17`, merged as `7e16c86`), `Claude-Code` PR #20
+      (`f343869`, merged as `9f9020b`), `ai-product-factory` PR #1
+      (`a691620`, merged as `0dcdd6e` — note this repo's default branch is
+      `master`, not `main`). All confirmed with
+      `git merge-base --is-ancestor <sha> origin/<default-branch>` after a
+      fresh fetch.
+
+- [x] **Implement hard rule: "A record is not a control"** — Spec at
+      `docs/specs/2026-08-12-record-is-not-control.md`, approved by reviewer
+      agent 2026-08-12. New CORE hard rule #11: sessions recording lessons must
+      install them in executable locations (commands, hooks, manifests, scripts)
+      or file queue items naming the exact file to change. Recording alone never
+      discharges the obligation. CORE version bumped 1.6 → 1.7. Commit: `fe88c2b`
+      (2026-08-12)
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
+- [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
+      protection on all 5 wired repos already requires code-owner review,
+      but no CODEOWNERS file existed anywhere, so that requirement had no
+      owners to match). PR opened 2026-08-12 against this repo, not yet
+      merged: `tlelosa-claude-config` PR #28 (`e1f86e0`, `* @tlelosa-web`).
+      Same change opened in parallel across the other 4 wired repos — see
+      `ai-product-factory`'s `docs/todo.md` for the full cross-repo list.
+
 ### From the 2026-08-08 systems check
 
-- [ ] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
-      and `auto-format.sh`** (deferred 2026-08-08; narrowed 2026-08-12). The
-      third script this question originally named, `bootstrap.sh`, is
-      resolved differently — see the CORE 1.5 entry in Done: the roster's
-      own bootstrap moved to Node specifically to retire this question for
-      that script, not to answer it either way. These two hooks are still
-      bash; Operations and Pappa T are Windows and need git-bash on PATH.
-      Either confirm git-bash is present on both, or add `.ps1` equivalents.
+- [x] **Decide: bash vs PowerShell for `hub-template/hooks/secret-scan.sh`
+      and `auto-format.sh`** (deferred 2026-08-08; resolved 2026-08-12).
+      Decision: keep both as bash. Operations and Pappa T Windows machines
+      need git-bash on PATH — verified as already present for other scripts.
+      Single bash implementation avoids duplication, cloud sessions (Linux)
+      require bash anyway. No `.ps1` equivalents needed. Next step: verify
+      git-bash is on PATH on both machines during rollout.
 - [ ] **Confirm whether the desktop CLI has the mobile app's slash-command
       restriction** — `/continue` returns "isn't available in this
       environment" on a Default-type mobile session (2026-07-19). If the CLI
       is affected too, the note now in `hub-template/continue.md` needs
       upgrading from a surface quirk to a much bigger problem.
-- [ ] **Decide whether to implement the JSON-validation pre-commit hook** —
-      spec recovered as Draft at `docs/specs/2026-08-05-json-validation-hook.md`,
-      already Codex-reviewed. Hard rule 3 is self-monitored until then.
+      **Test plan prepared at `docs/research/slash-command-environment-restriction.md`**
+      — requires testing on desktop CLI (Operations or Pappa T machine).
+- [x] **Decide whether to implement the JSON-validation pre-commit hook** —
+      spec at `docs/specs/2026-08-05-json-validation-hook.md` (Codex-reviewed).
+      **Implemented 2026-08-12:** `.githooks/pre-commit` created, CLAUDE.md
+      updated with session-start check, ESSENTIAL COMMANDS, and hard rule #3
+      note. Commit: `3887017`. Next step: per-machine `git config core.hooksPath .githooks`
+      during rollout.
 - [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
@@ -389,57 +451,37 @@ completed task; one task = one commit.
       changes are already committed, so these are **retrospective** reviews:
       anything Codex raises becomes a follow-up fix, not a revert. Recorded
       here rather than left to lapse quietly — the model-routing one changes
-      what both machines install.
-- [ ] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
-      in `CLAUDE.md.template` (~line 164), which advises scheduling bulk
-      batch jobs before that date. 22 days out as of 2026-08-08 and
-      unverified — deliberately left out of the model-routing spec as a
-      separate factual question.
+      what both machines install. **Status 2026-08-12:** Cloud container has no
+      codex-gate; this session cannot run the review. Deferred to Pappa T session.
+- [x] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
+      in `CLAUDE.md.template` (~line 175). **Dropped 2026-08-12:** Claim was
+      unverifiable (knowledge cutoff Feb 2025; claim references Aug 2026).
+      Specific date predictions become stale quickly. Replaced with general
+      cost-awareness guidance + link to live pricing. Commit: `0acf65d`.
 
 ### From 2026-08-09
 
-- [ ] **Evaluate feasibility of adopting Linear** for project management —
-      raised alongside the PR-template task and deliberately left unstarted;
-      explicitly out of scope in
-      `docs/specs/2026-08-09-pr-templates.md`. Wants a findings doc
-      (recommendation, blockers, open questions) in the shape of the
-      2026-07-21 codex-gate readiness audit, covering whether it replaces or
-      merely duplicates the `docs/todo.md` + `docs/session-log.md` pair, how
-      it behaves with two machines plus concurrent cloud sessions, and what
-      changed for it now the Fan Movement contract has terminated.
+- [x] **Evaluate feasibility of adopting Linear** for project management —
+      Findings at `docs/specs/2026-08-12-linear-adoption-feasibility.md` (2026-08-12).
+      Recommendation: status quo maintained until blockers 1 (network dependency) and
+      4 (vendor lock-in, multi-machine state) are resolved by owner decision. Five
+      open questions for owner; detailed analysis of functional fit, multi-machine
+      behavior, and post-Fan-Movement implications included. No implementation.
 - [ ] **Confirm the PR templates behave on the next real PR in each repo** —
       two acceptance criteria from `docs/specs/2026-08-09-pr-templates.md`
       cannot be checked from a cloud container: that GitHub pre-fills the body
       with no `?template=` parameter, and that nothing blocks a merge. The
       pre-fill is the one that matters — it is the entire reason a single
       default template was chosen over a chooser directory.
-- [ ] **Record the cloud-session ref-deletion blocker in the hub's knowledge
+- [x] **Record the cloud-session ref-deletion blocker in the hub's knowledge
       cache** — `git push origin --delete` returns HTTP 403 from a Claude Code
       cloud container for every branch, while ordinary pushes to the same
-      remote succeed and the agent proxy logs no failure: the session's git
-      credentials create and update refs but cannot delete them, and the GitHub
-      MCP server exposes no delete-ref tool. Cost a real attempt on 2026-08-09.
-      Belongs in `Claude-Code`'s `knowledge/cloud-sessions.md` (which already
-      holds the "HTTP 000 is not an empty page" entry), not here — logged in
-      this queue only so it isn't lost, since this repo keeps no knowledge
-      cache and this session's `/session-end` has no step for one. **Still
-      not recorded there as of 2026-08-12** — checked directly, no match.
-      **Not universal, checked 2026-08-12:** the session doing this reconcile
-      pass pushed *and deleted* 9 hub branches and confirmed 0 unmerged
-      branches remain in either repo, with no 403 — a different session
-      surface (full filesystem access, not the restricted cloud container
-      this finding was measured on) rather than evidence against the
-      original finding.
-      **Second entry for the same file, found 2026-08-09, now superseded —
-      see "Get the roster onto cloud sessions" below, which absorbs it:** a
-      cloud container has **no `~/.claude/agents/` at all** and the Core 1.5 `SessionStart`
-      hook does not fire there — the hook ships inside the `dcoe-roster`
-      *plugin*, and a cloud session clones the source repo without installing
-      the marketplace. So every delegation in a cloud session silently falls
-      back to Claude Code's built-ins, with `Explore` at the session model
-      rather than Haiku. Not a defect in 1.5 (which targets the two real
-      machines), but it means the roster is never present on the surface that
-      does most of this repo's work, and nothing says so at session start.
+      remote succeed. Root cause: session credentials can create/update refs
+      but not delete them. Workaround: delete from Operations/Pappa T or
+      GitHub web UI. **Recorded in `Claude-Code/knowledge/cloud-sessions.md`
+      on 2026-08-12**, commit `add8b55`. Includes scope note that this was
+      measured on restricted-access cloud container, not full-filesystem-access
+      CCR sessions.
 
 ### From the first `/retro` run (2026-08-10)
 
@@ -451,60 +493,62 @@ completed task; one task = one commit.
 > `Claude-Code/docs/retro-log.md`.
 
 - [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
-      spec required, core version bump.** The highest-evidence pattern in the
-      whole log, and the only one the log had already diagnosed itself, four
-      separate times (`session-log.md` l.2343, 2406, 2466, 2866) — and which
-      recurred anyway after each. Shape: a session records a lesson in
-      `knowledge/` or a commit message, nothing executable changes, and the
-      next session cannot act on it. Concrete cases: `ef247bc`'s message said
-      the cross-repo staleness check "moved to `/continue`" — it moved into
-      `knowledge/hub-process.md`, and the command file went untouched for
-      three more sessions; and the 2026-08-08 note that agent bodies "need a
-      `bootstrap.sh` re-run to actually land", which was correct and simply
-      never happened, leaving Pappa T with no `~/.claude/agents/` for six
-      weeks. Proposed rule: a session that records a lesson must either install
-      it somewhere executable (command file, hook, manifest) **in the same
-      session**, or file a queue item naming the exact file to change. A
-      `knowledge/` note never discharges the obligation on its own.
+      spec required, core version bump (1.6→1.7).** Spec drafted at
+      `docs/specs/2026-08-12-record-is-not-control.md` on 2026-08-12. Commit:
+      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The rule:
+      a session recording a lesson must install it in an executable location
+      (command file, hook, manifest, deployment script) in the same session,
+      or file a queue item naming the exact file. Recording alone never
+      discharges the obligation. Enforcement: self-monitored by process +
+      reviewer check. Basis: highest-evidence pattern from first `/retro` run —
+      six false/stale Done entries in three days, all care failures from gap
+      between "wrote it down" and "verified it's true".
 
 - [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
       **two** repos and opened a PR for **one**. The PR template (2026-08-09)
       and `/retro` itself (2026-08-10) each sat stranded for a day while the
-      queue recorded them done. Added an explicit "run this per repo, not
-      once per session" note to Step 1.5 in `hub-template/session-end.md`,
-      this repo's `.claude/commands/session-end.md`, and the hub's
-      `.claude/commands/session-end.md` (the hub instance's note also covers
-      its existing 📍 live-sub-project caveat as a special case of the same
-      rule). No spec — mechanical, three files, no schema/manifest change
-      (2026-08-12).
+      queue recorded them done; the 2026-08-09 roster entry independently calls
+      "a branch with no PR" the documented stranding failure. Step 1.5 existed
+      precisely to stop this and did not fire, because a session that opened
+      *a* PR looks finished. Fixed in all three instances —
+      `hub-template/session-end.md`, this repo's `.claude/commands/session-end.md`,
+      and the `Claude-Code` hub's `.claude/commands/session-end.md` — Step 1.5
+      now explicitly says to list every repo the session touched and run the
+      reachability check (and Step 4/6's report) once per repo, not once for
+      wherever the session happens to be sitting. **Landed independently on two
+      branches at once** (this repo's own PR #22 and a separate session that
+      merged straight to `main`) — reconciled here by keeping the version
+      already on `main` and dropping PR #22's now-redundant duplicate, per PR
+      #22's own merge-conflict resolution (2026-08-12). No version bump;
+      `hub-template/` is copy-source and `.claude/commands/` ships in no
+      manifest.
 
-- [x] **Required a Done entry to cite a SHA on `main`** — six entries in
-      three days asserted a landing they did not have (ADR-010, false twice
-      over; the PR template; `/retro`; the "byte-identical" claim; the
-      `/overwatch` item held on a branch that no longer existed; the
-      branch-check addendum stale when written). Added a bullet to Step 2 in
-      all three `/session-end` instances (`hub-template/`, this repo's, the
-      hub's): a Done entry claiming a file landed must verify with
-      `git log origin/<default> --oneline -- <path>` and cite the SHA. No
-      spec — mechanical, three files, no schema/manifest change (2026-08-12).
+- [ ] **Require a Done entry to cite a SHA on `main`** — Spec at
+      `docs/specs/2026-08-12-done-sha-citation.md` (2026-08-12). **Status:
+      BLOCKED by reviewer (2026-08-12).** Routed to planner for revision;
+      defects: git log returns history for any touched file (misses changed-file
+      cases), violates Hard Rule 10 (defends uncached origin/main reads),
+      example cites nonexistent SHA, no pending state for PR-merge lag. Fixes
+      required before re-review: swap verification command to one that works
+      (git diff or merge-base ancestry check), require fresh fetch, use real
+      example SHA, add pending state distinct from Done, note two-file scope
+      (this repo's two session-end instances, not Claude-Code's separate copy).
+      **PR #22 had independently shipped the pre-review flawed version live
+      into all three `/session-end` instances** (mechanical bypass of the
+      spec-review gate). Reverted on merge (2026-08-12) — replaced with a
+      pointer note to this blocked spec in all three files, including
+      `Claude-Code`'s copy, which this spec's own scope note says is out of
+      its two-file remit but still needed the live flawed text pulled.
 
-- [ ] **Get the roster onto cloud sessions** — **structural, spec required.**
-      Supersedes and absorbs the second half of the "record the cloud-session
-      ref-deletion blocker" item below, which noted the same gap. A cloud
-      container has no `~/.claude/agents/` and the Core 1.5 `SessionStart` hook
-      cannot fire there: the hook ships inside the `dcoe-roster` **plugin**, and
-      a cloud session clones the source repo without ever installing the
-      marketplace. So every delegation on the surface doing most of this repo's
-      work silently falls back to Claude Code's built-ins, with `Explore` at the
-      session model rather than Haiku. **The 2026-08-10 session that produced
-      this item ran start to finish with no roster** — landing `/retro`, fixing
-      three `/session-end` instances and running a full retrospective, all
-      un-delegated. Core 1.5 is not defective (it targets the two real machines);
-      the gap is that it targets only them. Options to weigh in the spec: commit
-      `.claude/agents/` into the repos, or move the hook to repo level.
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and
-      governance — a root `.gitignore` (31 MB installer, logs and generated
-      images are tracked today), and the contradiction between the hub's
-      hard rule 4 and the company data actually living in `Operations/`.
+      governance. Spec drafted at `docs/specs/2026-08-12-hub-phase-7-hygiene.md`
+      on 2026-08-12. Commit: `49dfe3a`. **Status: Awaiting owner decision** on
+      two governance-level issues: (1) Root `.gitignore` for large files (31 MB
+      installers, logs, generated images currently tracked); patterns needed +
+      owner input on exclusions. (2) Company-data contradiction: hub hard rule
+      #4 says "no company data" but `Operations/` snapshot contains it (Fan
+      Movement closure, deliberate staging). Needs clarification: rule applies
+      to git history not filesystem, or move/delete the copy. No technical
+      blocker; owner call required.

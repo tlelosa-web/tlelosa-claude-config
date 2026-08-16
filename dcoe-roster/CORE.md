@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.5** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.7** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -123,6 +123,21 @@ built-ins, with `Explore` inheriting the session model rather than Haiku. A
 missing agent raises no error; it just makes sessions quieter and more
 expensive. Hence a hook rather than a documented step.
 
+**A third surface, covered since Core 1.6.** The Core 1.5 hook ships inside
+the `dcoe-roster` *plugin*, so it only fires on a machine that has actually
+installed the marketplace — Operations and Pappa T. A Claude Code cloud/web
+session clones the target repo fresh and never installs the marketplace, so
+`~/.claude/agents/` doesn't exist there either, silently, same failure mode
+as the pre-1.5 Pappa T gap. Cloud sessions get a **repo-level** `SessionStart`
+hook instead — `hub-template/hooks/cloud-roster-bootstrap.sh`, copied into
+each opted-in project's own `.claude/hooks/` and registered in its
+`.claude/settings.json` (steps in that folder's `README.md`). It checks
+`$CLAUDE_CODE_REMOTE`, no-ops on Operations/Pappa T, and otherwise clones
+`tlelosa-claude-config` shallow and runs the same `bootstrap.mjs` the plugin
+hook uses — one bootstrap implementation, two delivery paths. Missing-only
+semantics carry over unchanged. Spec:
+`docs/specs/2026-08-12-roster-cloud-sessions.md`.
+
 |Agent       |Default file                  |When to Use                            |
 |------------|-------------------------------|----------------------------------------|
 |`domain`    |`~/.claude/agents/domain.md`    |Session start, scope confirmation      |
@@ -214,6 +229,13 @@ relax these.
    locally cached branch ref that may be stale. This applies to any external
    state a session doesn't control alone (remote branches, deployed
    versions, other sessions' in-progress work), not git specifically.
+11. **A record is not a control.** A session that records a lesson learned must
+   install it in an executable location (command file, hook, manifest, deployment
+   script) in the same session, or file a queue item in `docs/todo.md` naming the
+   exact file that needs to change. Recording alone never discharges the obligation.
+   A finding is passive; executable change is what alters behavior. Applies to
+   commit messages that describe lessons, knowledge-cache entries, and notes that
+   describe future behavior (not past-tense descriptions or in-function comments).
 
 -----
 
