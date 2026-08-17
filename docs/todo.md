@@ -404,7 +404,11 @@ completed task; one task = one commit.
       install them in executable locations (commands, hooks, manifests, scripts)
       or file queue items naming the exact file to change. Recording alone never
       discharges the obligation. CORE version bumped 1.6 → 1.7. Commit: `fe88c2b`
-      (2026-08-12)
+      (2026-08-12). **Cleanup (2026-08-16):** this item's own stale Open
+      duplicate — the pre-approval "Draft, awaiting reviewer agent approval"
+      entry under the first-`/retro`-run section — was still sitting in Open
+      after this Done entry landed, exactly the drift hard rule #11 exists to
+      catch. Removed; this Done entry is now the only record.
 
 ## Open
 
@@ -492,18 +496,6 @@ completed task; one task = one commit.
 > deferral) are queued in the hub's own `docs/todo.md`. Run recorded in
 > `Claude-Code/docs/retro-log.md`.
 
-- [ ] **New `CORE.md` hard rule: a record is not a control** — **structural,
-      spec required, core version bump (1.6→1.7).** Spec drafted at
-      `docs/specs/2026-08-12-record-is-not-control.md` on 2026-08-12. Commit:
-      `34d85fa`. **Status: Draft, awaiting reviewer agent approval.** The rule:
-      a session recording a lesson must install it in an executable location
-      (command file, hook, manifest, deployment script) in the same session,
-      or file a queue item naming the exact file. Recording alone never
-      discharges the obligation. Enforcement: self-monitored by process +
-      reviewer check. Basis: highest-evidence pattern from first `/retro` run —
-      six false/stale Done entries in three days, all care failures from gap
-      between "wrote it down" and "verified it's true".
-
 - [x] **Made `/session-end` Step 1.5 per-repo, not per-session** — both
       half-landed pairs of the last two days came from sessions that pushed
       **two** repos and opened a PR for **one**. The PR template (2026-08-09)
@@ -516,9 +508,13 @@ completed task; one task = one commit.
       and the `Claude-Code` hub's `.claude/commands/session-end.md` — Step 1.5
       now explicitly says to list every repo the session touched and run the
       reachability check (and Step 4/6's report) once per repo, not once for
-      wherever the session happens to be sitting. No version bump;
+      wherever the session happens to be sitting. **Landed independently on two
+      branches at once** (this repo's own PR #22 and a separate session that
+      merged straight to `main`) — reconciled here by keeping the version
+      already on `main` and dropping PR #22's now-redundant duplicate, per PR
+      #22's own merge-conflict resolution (2026-08-12). No version bump;
       `hub-template/` is copy-source and `.claude/commands/` ships in no
-      manifest (2026-08-12)
+      manifest.
 
 - [ ] **Require a Done entry to cite a SHA on `main`** — Spec at
       `docs/specs/2026-08-12-done-sha-citation.md` (2026-08-12). **Status:
@@ -530,6 +526,12 @@ completed task; one task = one commit.
       (git diff or merge-base ancestry check), require fresh fetch, use real
       example SHA, add pending state distinct from Done, note two-file scope
       (this repo's two session-end instances, not Claude-Code's separate copy).
+      **PR #22 had independently shipped the pre-review flawed version live
+      into all three `/session-end` instances** (mechanical bypass of the
+      spec-review gate). Reverted on merge (2026-08-12) — replaced with a
+      pointer note to this blocked spec in all three files, including
+      `Claude-Code`'s copy, which this spec's own scope note says is out of
+      its two-file remit but still needed the live flawed text pulled.
 
 
 - [ ] **Phase 7 of the maintenance plan remains**: hub hygiene and

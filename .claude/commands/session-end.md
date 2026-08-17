@@ -59,6 +59,12 @@ somebody can find again.
 - Leave untouched items alone — this reconciles, it doesn't re-audit the
   whole backlog.
 
+> SHA-citation for Done entries is proposed but not yet live here — spec at
+> `docs/specs/2026-08-12-done-sha-citation.md` is BLOCKED by reviewer
+> (defects: `git log` misses changed-file cases, needs a fresh-fetch guard
+> per Hard Rule 10, needs a pending state for PR-merge lag). Don't add the
+> requirement here until that spec is revised and approved.
+
 ## Step 3 — Set This Session's Title
 
 If `set_session_title` is available in this environment, set this

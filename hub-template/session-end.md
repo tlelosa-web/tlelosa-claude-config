@@ -78,6 +78,13 @@ Open this vault's `docs/todo.md`:
 - Don't touch items untouched this session — this step reconciles, it
   doesn't re-audit the whole backlog.
 
+> SHA-citation for Done entries is proposed but not yet live here — spec at
+> `docs/specs/2026-08-12-done-sha-citation.md` (in `tlelosa-claude-config`)
+> is BLOCKED by reviewer (defects: `git log` misses changed-file cases,
+> needs a fresh-fetch guard per Hard Rule 10, needs a pending state for
+> PR-merge lag). Don't add the requirement here until that spec is revised
+> and approved.
+
 If this vault keeps a `docs/session-log.md` (hub roots do; single-repo
 vaults like a plugin/marketplace repo typically don't — check whether
 `CLAUDE.md` references one before assuming), make sure it ends with a
