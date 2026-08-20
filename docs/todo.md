@@ -434,7 +434,9 @@ completed task; one task = one commit.
       `git ls-remote --heads origin` as ground truth when a tracking ref's
       existence is itself part of what's being verified (e.g. "did that
       branch get pushed"). Full incident detail:
-      `Claude-Code/knowledge/cloud-sessions.md` (2026-08-12 entry).
+      `Claude-Code/knowledge/cloud-sessions.md` (2026-08-12 entry). **Spec:**
+      `docs/specs/2026-08-20-verify-fetch-succeeded-hard-rule-10.md` —
+      Draft, awaiting reviewer approval.
 
 - [ ] **Cross-project knowledge-cache checklist item in close-out
       commands.** From `Claude-Code`'s second `/retro` run (2026-08-20),
@@ -450,7 +452,9 @@ completed task; one task = one commit.
       relevant beyond this repo?" and, if yes, requires landing it in
       `Claude-Code/knowledge/` (with an `INDEX.md` update) in the same
       session — not deferred to a manual sweep. Promote via ADR-008 once
-      proven on one instance.
+      proven on one instance. **Spec:**
+      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md` — Draft,
+      awaiting reviewer approval.
 
 - [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
       protection on all 5 wired repos already requires code-owner review,
