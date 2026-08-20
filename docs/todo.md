@@ -436,7 +436,11 @@ completed task; one task = one commit.
       branch get pushed"). Full incident detail:
       `Claude-Code/knowledge/cloud-sessions.md` (2026-08-12 entry). **Spec:**
       `docs/specs/2026-08-20-verify-fetch-succeeded-hard-rule-10.md` —
-      Draft, awaiting reviewer approval.
+      **Approved with nits (reviewer pass, 2026-08-20), ready for
+      implementation.** Reviewer also found a second, currently-open
+      `coreVersion` drift (`roster-manifest.json`/`plugin.json` still say
+      `1.6` against `CORE.md`'s `1.7`, open since `fe88c2b`) — folded into
+      this spec's Touches, to close in the same implementing commit.
 
 - [ ] **Cross-project knowledge-cache checklist item in close-out
       commands.** From `Claude-Code`'s second `/retro` run (2026-08-20),
@@ -453,8 +457,13 @@ completed task; one task = one commit.
       `Claude-Code/knowledge/` (with an `INDEX.md` update) in the same
       session — not deferred to a manual sweep. Promote via ADR-008 once
       proven on one instance. **Spec:**
-      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md` — Draft,
-      awaiting reviewer approval.
+      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md` —
+      **BLOCKED by reviewer (2026-08-20), revised same day, awaiting
+      re-review.** First draft proposed no actual text for the three files
+      it changes and misstated `hub-template/session-end.md`'s existing
+      state; revision quotes exact current/proposed text per file and
+      corrects a wrong knowledge-file citation and an internally
+      inconsistent timing claim in the original evidence.
 
 - [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
       protection on all 5 wired repos already requires code-owner review,
