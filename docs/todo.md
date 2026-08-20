@@ -398,6 +398,42 @@ completed task; one task = one commit.
       `git merge-base --is-ancestor <sha> origin/<default-branch>` after a
       fresh fetch.
 
+- [x] **Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself
+      succeeded, not just that one was run.** Spec at
+      `docs/specs/2026-08-20-verify-fetch-succeeded-hard-rule-10.md`,
+      approved with nits by reviewer agent 2026-08-20 (from `Claude-Code`'s
+      second `/retro` run). Rule now requires checking a `git fetch`'s own
+      exit status before trusting any derived comparison (a single fetch
+      naming multiple refs can abort atomically on one bad ref, leaving
+      every ref's cache stale with no separate error), and using
+      `git ls-remote --heads origin` — not `git branch -a` — as ground
+      truth for whether a tracking ref actually exists on the remote. CORE
+      version bumped 1.7 → 1.8. Also closed a second, currently-open
+      `coreVersion` drift the reviewer found while re-verifying this spec's
+      own evidence: `roster-manifest.json`/`plugin.json` still said `1.6`
+      against `CORE.md`'s `1.7` (open since `fe88c2b`, never caught) — both
+      bumped to `1.8` in the same commit, `plugin.json`'s own version
+      3.8.1 → 3.9.0. Commit: `48badc5` (2026-08-20).
+
+- [x] **Cross-project knowledge-cache checklist item in close-out
+      commands.** Spec at
+      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md`, approved
+      with nits by reviewer agent 2026-08-20 (third pass — two prior BLOCKs
+      resolved: draft 1 proposed no actual text for any of the three files
+      it changed, draft 2 fixed that but had wrong timing evidence and told
+      `/session-end` to commit/push against every file's own no-auto-commit
+      rule). `hub-template/session-end.md`'s Step 2 and this repo's own
+      `.claude/commands/session-end.md` Step 2 now both ask, alongside the
+      existing local-reusable-fact question, whether a finding is relevant
+      beyond the repo it was found in — if so, write it into `Claude-Code`'s
+      `knowledge/` (pulling that repo first, since `knowledge/INDEX.md` is
+      one of its own contention files) in the same session, commit/push
+      still gated on explicit confirmation. `ai-product-factory`'s own
+      `.claude/commands/session-end.md` Step 4 carries the same addition
+      (implemented there directly, `bba8e9e`). All three report-line
+      templates extended to report the outcome either way. Commit here:
+      `6c97232` (2026-08-20).
+
 - [x] **Implement hard rule: "A record is not a control"** — Spec at
       `docs/specs/2026-08-12-record-is-not-control.md`, approved by reviewer
       agent 2026-08-12. New CORE hard rule #11: sessions recording lessons must
@@ -415,6 +451,12 @@ completed task; one task = one commit.
 > Machine-side items below are consolidated into one ordered run per
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
+
+*(Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself succeeded —
+implemented; see Done.)*
+
+*(Cross-project knowledge-cache checklist item in close-out commands —
+implemented; see Done.)*
 
 - [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
       protection on all 5 wired repos already requires code-owner review,
@@ -528,7 +570,11 @@ completed task; one task = one commit.
       (this repo's two session-end instances, not Claude-Code's separate copy).
       **PR #22 had independently shipped the pre-review flawed version live
       into all three `/session-end` instances** (mechanical bypass of the
-      spec-review gate). Reverted on merge (2026-08-12) — replaced with a
+      spec-review gate). Reverted 2026-08-16 (`94c9351`/`02462dd`) — not
+      2026-08-12, which is when the flawed text was originally authored
+      (`cfb4767`); corrected 2026-08-20 while dating
+      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md`'s own
+      evidence. Replaced with a
       pointer note to this blocked spec in all three files, including
       `Claude-Code`'s copy, which this spec's own scope note says is out of
       its two-file remit but still needed the live flawed text pulled.

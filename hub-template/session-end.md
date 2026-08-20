@@ -117,6 +117,23 @@ Ask explicitly, even if the answer is no: **did this session surface a
 reusable fact not yet in `knowledge/`?** If yes, capture it now before
 closing out.
 
+Then ask a second, separate question: **is this fact relevant beyond this
+vault** — a bug or gap in a shared plugin/core (`dcoe-roster`, `CORE.md`,
+`hub-template/`), or a process/governance finding about how DCOE mechanics
+behave in practice? If yes, it also belongs in the `Claude-Code` hub's
+cross-project `knowledge/` cache — `git fetch` + pull `Claude-Code` first
+(its own Hard Rule 6 names `knowledge/INDEX.md` as a contention file other
+concurrent sessions write too), then write a dated entry to the matching
+`knowledge/<topic>.md` and update `knowledge/INDEX.md` now, in this
+session, if `Claude-Code` is checked out alongside this vault, rather than
+deferring to a later sweep. **Committing and pushing that write follows the
+same rule as everything else in this command: only on this session's
+explicit confirmation this turn, never automatically because this step
+ran.** If `Claude-Code` isn't checked out this session, file a queue item
+in this vault naming the exact fact and the target `knowledge/<topic>.md`
+file instead — per Hard Rule 11, a queue item naming the exact change still
+discharges the obligation.
+
 ## Step 3 — Set This Session's Title
 
 If a session-title tool (e.g. `set_session_title`) is available in this
@@ -171,7 +188,7 @@ makes that later run's judgment easy, which is most of the value anyway.
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
 **Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from <default> | <repo>: N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
-**Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated]
+**Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | cross-project: none this session]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```

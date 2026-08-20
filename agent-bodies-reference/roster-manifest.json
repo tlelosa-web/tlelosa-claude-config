@@ -1,7 +1,7 @@
 {
   "$comment": "Single source of truth for what the DCOE roster IS. Consumed by bootstrap.mjs. Keep in step with CORE.md's roster and model-routing tables — spec: docs/specs/2026-08-09-universal-roster-and-codex-gate.md (in the Claude-Code hub).",
   "manifestVersion": 1,
-  "coreVersion": "1.6",
+  "coreVersion": "1.8",
   "agents": [
     { "file": "domain.md",     "model": "claude-sonnet-5",  "effort": "medium", "role": "Session start, scope confirmation" },
     { "file": "planner.md",    "model": "claude-sonnet-5",  "effort": "medium", "role": "Break features into spec + tasks" },

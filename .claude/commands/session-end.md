@@ -6,8 +6,10 @@ description: Close out a session on tlelosa-claude-config and prep it for archiv
 
 Minimal adaptation of `hub-template/session-end.md` for this repo itself.
 The `session-log.md` step is omitted (this repo keeps no session log, same
-as `.claude/commands/continue.md`'s local copy), as is the `knowledge/`
-cache step (that lives in the `Claude-Code` hub, not here).
+as `.claude/commands/continue.md`'s local copy). The local `knowledge/`
+cache step is also omitted (that cache lives in the `Claude-Code` hub, not
+here) — but Step 2 below still checks whether this session's finding
+belongs there.
 
 ## Step 1 — Check Working Tree State
 
@@ -59,6 +61,22 @@ somebody can find again.
 - Leave untouched items alone — this reconciles, it doesn't re-audit the
   whole backlog.
 
+Before finishing, ask: **did this session find something relevant beyond
+this repo** — a bug or gap in a plugin/core this repo ships (`dcoe-roster`,
+`CORE.md`, `agent-bodies-reference/`), or a process/governance finding (a
+spec-review-gate miss, a session-mechanics bug)? If yes, `git fetch` + pull
+`Claude-Code` first (its Hard Rule 6 names `knowledge/INDEX.md` as a
+contention file), then write a dated entry to `Claude-Code/knowledge/<topic>.md`
+(+ `INDEX.md`) in this same session — a session working here commonly has
+`Claude-Code` checked out alongside this repo (see Step 1.5 above), so this
+is a normal cross-repo write, not a hand-off. **Committing and pushing that
+write follows Step 1's existing rule: only on explicit confirmation this
+turn, never automatically because this step ran.** If `Claude-Code` isn't
+checked out this session, file a `docs/todo.md` item naming the exact fact
+and pointing at the target `knowledge/<topic>.md` file instead — per Hard
+Rule 11, a queue item naming the exact change still discharges the
+obligation.
+
 > SHA-citation for Done entries is proposed but not yet live here — spec at
 > `docs/specs/2026-08-12-done-sha-citation.md` is BLOCKED by reviewer
 > (defects: `git log` misses changed-file cases, needs a fresh-fetch guard
@@ -100,7 +118,7 @@ run (or Tebello directly) does the actual archiving.
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
 **Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from main | <repo>: N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
-**Logged:** [docs/todo.md updated]
+**Logged:** [docs/todo.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | cross-project: none this session]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```
