@@ -416,31 +416,8 @@ completed task; one task = one commit.
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
-- [ ] **Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself
-      succeeded, not just that one was run.** From `Claude-Code`'s second
-      `/retro` run (2026-08-20), evidence: a cloud session's checkout sat 13
-      commits behind `origin/main` while every existing signal (clean tree,
-      cached `origin/main` == `HEAD`, empty `git log origin/main..HEAD`) read
-      as current. Root cause: `git fetch origin main <bad-ref>` aborted
-      atomically on the bad ref, leaving `origin/main`'s local cache stale
-      without erroring loud enough to notice, and a phantom tracking ref
-      (`git branch -a` showed it, `git ls-remote --heads origin` didn't)
-      manufactured false confidence that a push had landed. Hard Rule 10
-      currently says "fetch the relevant ref and check it" but doesn't cover
-      confirming the fetch's own exit status or cross-verifying a suspicious
-      tracking ref. **Structural, spec required, core version bump.** Fix
-      shape: amend Hard Rule 10 to require (a) checking the fetch command's
-      exit status before trusting any resulting comparison, and (b) running
-      `git ls-remote --heads origin` as ground truth when a tracking ref's
-      existence is itself part of what's being verified (e.g. "did that
-      branch get pushed"). Full incident detail:
-      `Claude-Code/knowledge/cloud-sessions.md` (2026-08-12 entry). **Spec:**
-      `docs/specs/2026-08-20-verify-fetch-succeeded-hard-rule-10.md` —
-      **Approved with nits (reviewer pass, 2026-08-20), ready for
-      implementation.** Reviewer also found a second, currently-open
-      `coreVersion` drift (`roster-manifest.json`/`plugin.json` still say
-      `1.6` against `CORE.md`'s `1.7`, open since `fe88c2b`) — folded into
-      this spec's Touches, to close in the same implementing commit.
+*(Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself succeeded —
+implemented; see Done.)*
 
 - [ ] **Cross-project knowledge-cache checklist item in close-out
       commands.** From `Claude-Code`'s second `/retro` run (2026-08-20),

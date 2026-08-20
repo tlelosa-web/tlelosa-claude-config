@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.7** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.8** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -228,7 +228,18 @@ relax these.
    rebase), `git fetch` the relevant ref and check it — never answer from a
    locally cached branch ref that may be stale. This applies to any external
    state a session doesn't control alone (remote branches, deployed
-   versions, other sessions' in-progress work), not git specifically.
+   versions, other sessions' in-progress work), not git specifically. **A
+   fetch that runs is not evidence it succeeded** — check its own exit
+   status before trusting any comparison derived from it; a single `git
+   fetch` invocation naming multiple refs can abort atomically on one bad
+   ref, leaving every ref's local cache exactly as stale as before the
+   command ran, with no separate error on the refs that would otherwise
+   have updated. And when the fact being verified is a tracking ref's own
+   existence on the remote (e.g. "did this branch actually get pushed"), a
+   local `git branch -a` entry is not evidence of that — cross-verify with
+   `git ls-remote --heads origin`, since that is the only one of the two
+   commands that actually asks the remote rather than reading a local
+   cache.
 11. **A record is not a control.** A session that records a lesson learned must
    install it in an executable location (command file, hook, manifest, deployment
    script) in the same session, or file a queue item in `docs/todo.md` naming the
