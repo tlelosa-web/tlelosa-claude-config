@@ -121,18 +121,87 @@ Then ask a second, separate question: **is this fact relevant beyond this
 vault** — a bug or gap in a shared plugin/core (`dcoe-roster`, `CORE.md`,
 `hub-template/`), or a process/governance finding about how DCOE mechanics
 behave in practice? If yes, it also belongs in the `Claude-Code` hub's
-cross-project `knowledge/` cache — `git fetch` + pull `Claude-Code` first
-(its own Hard Rule 6 names `knowledge/INDEX.md` as a contention file other
-concurrent sessions write too), then write a dated entry to the matching
-`knowledge/<topic>.md` and update `knowledge/INDEX.md` now, in this
-session, if `Claude-Code` is checked out alongside this vault, rather than
-deferring to a later sweep. **Committing and pushing that write follows the
-same rule as everything else in this command: only on this session's
-explicit confirmation this turn, never automatically because this step
-ran.** If `Claude-Code` isn't checked out this session, file a queue item
-in this vault naming the exact fact and the target `knowledge/<topic>.md`
-file instead — per Hard Rule 11, a queue item naming the exact change still
-discharges the obligation.
+cross-project `knowledge/` cache — but only if two preconditions both hold,
+checked in this order:
+
+1. `Claude-Code` is checked out this session — commonly a sibling directory
+   of this vault's own working directory in a cloud session; check where
+   this session's other repos are checked out if unsure.
+2. Its checkout is on `main` (`git -C "<Claude-Code path>" rev-parse
+   --abbrev-ref HEAD`).
+
+If either doesn't hold, skip straight to filing a queue item in this vault
+naming the exact fact and the target `knowledge/<topic>.md` file — say
+which precondition failed if it was the second one — per Hard Rule 11, a
+queue item naming the exact change still discharges the obligation.
+
+If both hold, confirm `Claude-Code` is current before writing: `git -C
+"<Claude-Code path>" fetch origin main --quiet`, checking the fetch's own
+exit status rather than assuming success (an unreachable remote leaves the
+cached ref stale and gives no other sign of it); only if the fetch
+succeeded, compare `git -C "<Claude-Code path>" rev-list --count
+HEAD..origin/main` — pull (`git -C "<Claude-Code path>" pull origin main`)
+if nonzero and re-run both checks before writing. Then write a dated entry
+to the matching `knowledge/<topic>.md` and update `knowledge/INDEX.md` now,
+in this session, rather than deferring to a later sweep — preferring a
+surgical edit to `INDEX.md`'s one row over rewriting the file, since it is
+a named `Claude-Code` Hard Rule 6 contention file other concurrent sessions
+write too.
+
+**Committing that write is deferred to this session's explicit
+confirmation, same as everything else in this command — but state plainly
+in Step 4's report that the write is pending, and give the exact command
+that commits it when confirmation comes.** Write a one-line commit message
+to a scratch file first (`<msg-file>` — this session's own scratch/temp
+location; e.g. `knowledge: <short summary> (cross-project write from this
+vault)` is enough), then use:
+
+```
+if [ "$(git -C "<Claude-Code path>" rev-parse --abbrev-ref HEAD)" != "main" ]; then
+  echo "Claude-Code is no longer on main — stop, do not commit. Re-check the two preconditions above; if it's still not on main, use the queue-item path instead."
+else
+  git -C "<Claude-Code path>" fetch origin main --quiet
+  if [ $? -ne 0 ]; then
+    echo "Fetch failed — Claude-Code's remote is unreachable or misconfigured; diagnose that before doing anything else. Do not commit."
+  else
+    count="$(git -C "<Claude-Code path>" rev-list --count HEAD..origin/main)"
+    if [ -z "$count" ]; then
+      echo "rev-list produced no output after a successful fetch — investigate directly rather than trusting this command further."
+    elif [ "$count" != "0" ]; then
+      echo "Claude-Code is $count commit(s) behind origin/main — see the pull note below, then retry this command."
+    else
+      git -C "<Claude-Code path>" add knowledge/<topic>.md knowledge/INDEX.md && \
+      git -C "<Claude-Code path>" commit -F "<msg-file>" && \
+      git -C "<Claude-Code path>" push origin main || \
+      echo "Commit or push failed after a fetch that showed Claude-Code current on main — most likely not staleness; read the error above directly (a push rejected as non-fast-forward does mean the remote moved — see the pull note below)."
+    fi
+  fi
+fi
+```
+
+**If the count is nonzero** the knowledge write is still uncommitted at
+this point, so a plain `pull` can fail with "local changes would be
+overwritten." Stash it first (`git -C "<Claude-Code path>" stash`), pull
+(`git -C "<Claude-Code path>" pull origin main`), then pop (`git -C
+"<Claude-Code path>" stash pop`) — if the pop itself conflicts, resolve by
+hand and `git -C "<Claude-Code path>" stash drop` once resolved, since a
+conflicting pop leaves the stash entry in place — before retrying the
+command above.
+
+**If instead the final branch's push is rejected as non-fast-forward**, the
+write is already committed (that branch only runs after `add && commit`
+succeeded), so there is nothing to stash — a plain `git -C "<Claude-Code
+path>" pull origin main` is enough, then retry the command above to push.
+
+Written for a POSIX shell (bash/sh); on a machine without git-bash on
+`PATH`, translate the same three-outcome structure — fetch, check its own
+exit status, then compare the count — into PowerShell rather than assuming
+this block runs as-is. Each of the three branches names a distinct cause
+instead of one catch-all guess. Deferring the commit like this necessarily
+widens the race window `Claude-Code/knowledge/hub-process.md`'s own source
+entry warns about (it separately recommends committing immediately to
+shrink that window) — accepted here openly as the cost of this file's
+existing confirmation-gate rule, not silently traded away.
 
 ## Step 3 — Set This Session's Title
 
@@ -188,7 +257,7 @@ makes that later run's judgment easy, which is most of the value anyway.
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
 **Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from <default> | <repo>: N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
-**Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | cross-project: none this session]
+**Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | + Claude-Code write pending commit (command given in Step 2) | cross-project: none this session]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
 ```
