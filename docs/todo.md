@@ -452,6 +452,23 @@ completed task; one task = one commit.
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
+- [ ] **Full Operations/Pappa T historical-reference sweep — deferred, not
+      done.** 2026-08-20's retirement fix was scoped narrowly to rollout
+      mechanics only (this repo's `CLAUDE.md` Project Overview/Essential
+      Commands, `docs/rollout-checklist-2026-07-21.md`, two blocked todo
+      items) — deliberately, on owner instruction, rather than doing the
+      full sweep in the same session. Still open, and larger than a single
+      commit: every `CLAUDE.md`, `docs/todo.md`, and `knowledge/` entry
+      across `Claude-Code`, `tlelosa-claude-config`, and `ai-product-factory`
+      that describes Operations/Pappa T as *live, current* machines (not
+      historical record of what already happened there — those stay
+      untouched, per the same distinction the 2026-08-20 fix already drew).
+      Needs a spec first per Hard Rule 1 (>2 files) before dispatching —
+      start from `Claude-Code/CLAUDE.md`'s own path table (already flagged
+      stale there for a different reason, the `Desktop/…` moves) and
+      `knowledge/INDEX.md`'s per-topic pointers, since those are the two
+      places a session would look first.
+
 *(Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself succeeded —
 implemented; see Done.)*
 
