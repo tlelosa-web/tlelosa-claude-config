@@ -1,5 +1,12 @@
 # Machine rollout checklist — 2026-07-21
 
+> **Retired 2026-08-20.** Operations and Pappa T are no longer in use —
+> `ai-product-factory` is the sole environment now. Every numbered block
+> below already passed on both machines (see the ticks in `docs/todo.md`)
+> except the two items noted inline as permanently blocked rather than
+> pending. Kept for history, not as a live checklist — there is no second
+> machine left to run this on.
+
 Consolidates every machine-side open item in `docs/todo.md` into one
 ordered run per machine: marketplace validation, dcoe-roster 3.3.0,
 external plugins (Context7, document-skills), and — Pappa T only — the

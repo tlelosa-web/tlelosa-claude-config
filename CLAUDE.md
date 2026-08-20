@@ -47,8 +47,9 @@ inactive; run: git config core.hooksPath .githooks`
 ```
 Project:     tlelosa-claude-config
 Type:        Private Claude Code plugin marketplace (Markdown + JSON only)
-Deployment:  GitHub → /plugin marketplace add on each machine
-Machines:    Operations (work PC) · Pappa T (personal)
+Deployment:  GitHub → /plugin marketplace add in each environment
+Environment: ai-product-factory (sole vault as of 2026-08-20 — Operations and
+             Pappa T are retired; see docs/todo.md for what that closed out)
 Content:     Shared tooling only — NEVER project content or company data
 ```
 
@@ -60,7 +61,9 @@ Content:     Shared tooling only — NEVER project content or company data
   `dcoe-roster`'s `SessionStart` hook (`bootstrap.mjs`, CORE 1.5+);
   `bootstrap.sh` is the pre-1.5 manual fallback.
 - `codex-gate/` — `/codex-review`, advisory cross-family second opinion on a
-  spec. Per-machine install; Pappa T only until Operations OpenAI clearance.
+  spec. Installed in the ai-product-factory environment (the machine-split
+  gating this used to need — Pappa T cleared, Operations pending IT
+  clearance — no longer applies now that Operations is retired).
 - `shared-skills/` — cross-project Skills plugin.
 - `hub-template/` — vault-agnostic `/continue` + `/session-end` skeletons,
   checklists, and ready-made `hooks/` (ADR-008).
@@ -90,7 +93,8 @@ python -m json.tool codex-gate/plugin.json
 #   /plugin marketplace add ./tlelosa-claude-config
 #   /plugin install dcoe-roster@tlelosa-claude-config
 
-# Roll out after push — run on EACH machine:
+# Roll out after push — run in the ai-product-factory environment
+# (the sole vault; no second machine to repeat this on since 2026-08-20):
 #   /plugin marketplace update tlelosa-claude-config
 #   /plugin update dcoe-roster@tlelosa-claude-config
 #   /reload-plugins
@@ -126,15 +130,18 @@ scaled to the work:
 4. **No `CLAUDE.md` inside plugin folders** — Claude Code ignores it there
    by design; per-project config stays a per-project file.
 5. **Changes to `dcoe-roster/CORE.md` or to `agent-bodies-reference/` affect
-   every opted-in project on both machines** — treat edits to them as
-   structural (spec first), and bump the core version noted at the top of
-   `CORE.md`. As of CORE 1.5 the agent bodies reach a machine via
-   `dcoe-roster`'s `SessionStart` hook (missing-only — a local edit isn't
-   silently reverted, but it also isn't silently updated), so an agent edit
-   here reaches other machines on their next session start there, not on
-   this push. A cloud session used to be the one surface this didn't reach
-   (it clones the source repo without installing the marketplace, so the
-   plugin hook never fires) — closed 2026-08-12 by a repo-level hook,
+   every opted-in project** — treat edits to them as structural (spec
+   first), and bump the core version noted at the top of `CORE.md`. As of
+   CORE 1.5 the agent bodies reach an environment via `dcoe-roster`'s
+   `SessionStart` hook (missing-only — a local edit isn't silently
+   reverted, but it also isn't silently updated), so an agent edit here
+   reaches other sessions on their next session start, not on this push.
+   A cloud session used to be the one surface this didn't reach (it clones
+   the source repo without installing the marketplace, so the plugin hook
+   never fires) — closed 2026-08-12 by a repo-level hook,
    `hub-template/hooks/cloud-roster-bootstrap.sh`, copy-installed into each
    opted-in project same as the other `hub-template/hooks/` scripts. See
-   `docs/specs/2026-08-12-roster-cloud-sessions.md`.
+   `docs/specs/2026-08-12-roster-cloud-sessions.md`. (This rule used to read
+   "both machines" — Operations and Pappa T are retired as of 2026-08-20;
+   ai-product-factory is the sole environment now, but the propagation
+   mechanism itself is unchanged.)

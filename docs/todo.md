@@ -481,24 +481,33 @@ implemented; see Done.)*
       is affected too, the note now in `hub-template/continue.md` needs
       upgrading from a surface quirk to a much bigger problem.
       **Test plan prepared at `docs/research/slash-command-environment-restriction.md`**
-      — requires testing on desktop CLI (Operations or Pappa T machine).
+      — requires testing on desktop CLI. **Blocked, not just pending, as of
+      2026-08-20:** Operations and Pappa T are retired, and `ai-product-factory`
+      is a cloud/remote environment — if a desktop CLI test is still wanted,
+      it needs a desktop machine identified first; there isn't one on record
+      right now.
 - [x] **Decide whether to implement the JSON-validation pre-commit hook** —
       spec at `docs/specs/2026-08-05-json-validation-hook.md` (Codex-reviewed).
       **Implemented 2026-08-12:** `.githooks/pre-commit` created, CLAUDE.md
       updated with session-start check, ESSENTIAL COMMANDS, and hard rule #3
       note. Commit: `3887017`. Next step: per-machine `git config core.hooksPath .githooks`
       during rollout.
-- [ ] **Run `/codex-review` on both 2026-08-08 specs from Pappa T, or record
+- [ ] **Run `/codex-review` on both 2026-08-08 specs, or record
       a waiver** — `2026-08-08-model-routing.md` and
       `2026-08-08-unmerged-branch-checks.md`. Universal hard rule 9 wants the
       pass on every spec before an Executor runs; both were approved and
       implemented the same day without it, because codex-gate is a
-      per-machine install and this session ran in a cloud container. Both
+      per-environment install and this session ran in a cloud container. Both
       changes are already committed, so these are **retrospective** reviews:
       anything Codex raises becomes a follow-up fix, not a revert. Recorded
       here rather than left to lapse quietly — the model-routing one changes
-      what both machines install. **Status 2026-08-12:** Cloud container has no
-      codex-gate; this session cannot run the review. Deferred to Pappa T session.
+      what every environment installs. **Status 2026-08-12:** Cloud container has no
+      codex-gate; this session cannot run the review. **Status 2026-08-20:**
+      the "deferred to Pappa T session" plan no longer applies — Pappa T is
+      retired. Re-scope to wherever codex-gate is actually installed now
+      (`ai-product-factory`, per this file's Project Overview) — same
+      cloud-container blocker may still apply there; check before assuming
+      it's unblocked.
 - [x] **Verify or drop the "introductory pricing ends 31 August 2026" claim**
       in `CLAUDE.md.template` (~line 175). **Dropped 2026-08-12:** Claim was
       unverifiable (knowledge cutoff Feb 2025; claim references Aug 2026).
