@@ -398,6 +398,23 @@ completed task; one task = one commit.
       `git merge-base --is-ancestor <sha> origin/<default-branch>` after a
       fresh fetch.
 
+- [x] **Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself
+      succeeded, not just that one was run.** Spec at
+      `docs/specs/2026-08-20-verify-fetch-succeeded-hard-rule-10.md`,
+      approved with nits by reviewer agent 2026-08-20 (from `Claude-Code`'s
+      second `/retro` run). Rule now requires checking a `git fetch`'s own
+      exit status before trusting any derived comparison (a single fetch
+      naming multiple refs can abort atomically on one bad ref, leaving
+      every ref's cache stale with no separate error), and using
+      `git ls-remote --heads origin` — not `git branch -a` — as ground
+      truth for whether a tracking ref actually exists on the remote. CORE
+      version bumped 1.7 → 1.8. Also closed a second, currently-open
+      `coreVersion` drift the reviewer found while re-verifying this spec's
+      own evidence: `roster-manifest.json`/`plugin.json` still said `1.6`
+      against `CORE.md`'s `1.7` (open since `fe88c2b`, never caught) — both
+      bumped to `1.8` in the same commit, `plugin.json`'s own version
+      3.8.1 → 3.9.0. Commit: `48badc5` (2026-08-20).
+
 - [x] **Implement hard rule: "A record is not a control"** — Spec at
       `docs/specs/2026-08-12-record-is-not-control.md`, approved by reviewer
       agent 2026-08-12. New CORE hard rule #11: sessions recording lessons must
