@@ -1,10 +1,11 @@
 # Spec — Cross-project knowledge-cache check in close-out commands
 
-**Date:** 2026-08-20 | **Status:** Approved with nits (reviewer pass, 2026-08-20, third pass — two
-prior BLOCKs resolved) — ready for implementation. Five nits from the third pass (a
-branch-vs-`main` timing clause, a missing negative report-line option, a pull-before-write guard
-on the cross-repo `knowledge/INDEX.md` write in all three proposed texts, and two wording nits)
-folded into this revision; no further re-review required.
+**Date:** 2026-08-20 | **Status:** Needs a fourth reviewer pass before dispatch. Reviewer approved
+the third pass (2026-08-20, two prior BLOCKs resolved, five nits folded in) as "ready for
+implementation, no further re-review required" — but this revision changes the proposed mechanics
+themselves (see Fourth revision note below), reached by cross-checking the third pass against
+`Claude-Code/knowledge/` rather than by a reviewer BLOCK. That verdict predates this content, so it
+does not cover it.
 **Basis:** `Claude-Code`'s second `/retro` run (2026-08-20), item 3 of 3 selected. Evidence:
 session-log entry "2026-08-20 — Cross-repo learnings sweep: two gaps closed in
 `knowledge/tlelosa-claude-config.md`" (`Claude-Code/docs/session-log.md`).
@@ -25,6 +26,26 @@ this revision: the Problem section's timing now cites the exact commits, and eve
 sentence that mentions writing to `Claude-Code/knowledge/` now separates "write the entry now"
 from "commit/push only on this turn's explicit confirmation," matching Step 1's existing rule in
 every file this spec touches.
+
+**Fourth revision note (this pass — cross-checked against `Claude-Code/knowledge/` before
+dispatch, no reviewer BLOCK involved):** the third pass approved the mechanics as sound but was
+reviewed on their own terms, not against this hub's own recorded incidents about editing this
+exact class of file. Two of those incidents apply directly and are folded in below (§1–§3's
+proposed text, all three files): `Claude-Code/knowledge/hub-process.md`'s 2026-08-07 entry
+("Contention-file discipline needs a re-check immediately before writing") — a single
+fetch-then-pull at the *start* of a step doesn't cover the gap between checking and the
+eventual write in a longer close-out conversation, which is exactly the failure mode Hard Rule
+6 exists to prevent for `knowledge/INDEX.md` specifically; and `Claude-Code/knowledge/cloud-sessions.md`'s
+2026-08-12 entry (a cloud container measured 13 commits behind `origin/main` with a clean tree
+and no symptom) — "is `Claude-Code` checked out" is not the same question as "is it current,"
+and the existing proposed text branches on the former. Both are now folded into the three
+proposed-text blocks as an explicit re-fetch-at-write-time step and a freshness check before
+treating a checkout as usable. A third, smaller addition — one Enforcement line — comes from
+`Claude-Code/knowledge/tlelosa-claude-config.md`'s 2026-08-16 entry: a PR independently shipped a
+still-BLOCKED spec's exact text into these same three `session-end.md` files, so "approved"
+does not mean the surface is quiet. **This revision changes proposed mechanics, not just prose
+— it needs one more reviewer pass before dispatch**, notwithstanding the third pass's "no
+further re-review required," since that verdict was reached before this content existed.
 
 ## Problem
 
@@ -115,11 +136,19 @@ now before closing out":
 > Then ask a second, separate question: **is this fact relevant beyond this vault** — a bug or
 > gap in a shared plugin/core (`dcoe-roster`, `CORE.md`, `hub-template/`), or a process/governance
 > finding about how DCOE mechanics behave in practice? If yes, it also belongs in the
-> `Claude-Code` hub's cross-project `knowledge/` cache — `git fetch` + pull `Claude-Code` first
-> (its own Hard Rule 6 names `knowledge/INDEX.md` as a contention file other concurrent sessions
-> write too), then write a dated entry to the matching `knowledge/<topic>.md` and update
-> `knowledge/INDEX.md` now, in this session, if `Claude-Code` is
-> checked out alongside this vault, rather than deferring to a later sweep. **Committing and
+> `Claude-Code` hub's cross-project `knowledge/` cache. First confirm `Claude-Code` is not just
+> checked out but **current** — `git -C <Claude-Code path> fetch origin main --quiet` then check
+> `rev-list HEAD..origin/main --count`; a nonzero count means pull before writing, since a stale
+> local checkout can look identical to a current one (a cloud session has measured 13 commits
+> behind with a clean tree and no other symptom). Then write a dated entry to the matching
+> `knowledge/<topic>.md` and update `knowledge/INDEX.md` now, in this session, if `Claude-Code` is
+> checked out alongside this vault, rather than deferring to a later sweep. **Re-run the same
+> fetch-and-count check immediately before the write itself**, not only at the start of this step
+> — `Claude-Code`'s own Hard Rule 6 names `knowledge/INDEX.md` as a contention file other
+> concurrent sessions write too, and the gap between checking and writing can be long enough in a
+> close-out conversation for another session's write to land in between; abort the write and fall
+> back to the queue-item path below if the count has moved. Prefer a surgical edit to
+> `knowledge/INDEX.md`'s one row over rewriting the file. **Committing and
 > pushing that write follows the same rule as everything else in this command: only on this
 > session's explicit confirmation this turn, never automatically because this step ran.** If
 > `Claude-Code` isn't checked out this session, file a queue item in this vault naming the exact
@@ -151,11 +180,16 @@ re-audit the whole backlog." before the SHA-citation note), add a new paragraph:
 
 > Before finishing, ask: **did this session find something relevant beyond this repo** — a bug or
 > gap in a plugin/core this repo ships (`dcoe-roster`, `CORE.md`, `agent-bodies-reference/`), or a
-> process/governance finding (a spec-review-gate miss, a session-mechanics bug)? If yes, `git
-> fetch` + pull `Claude-Code` first (its Hard Rule 6 names `knowledge/INDEX.md` as a contention
-> file), then write a dated entry to `Claude-Code/knowledge/<topic>.md` (+ `INDEX.md`) in this same
-> session — a session working here commonly has `Claude-Code` checked out alongside this repo (see
-> Step 1.5 above), so this is a normal cross-repo write, not a hand-off. **Committing and pushing
+> process/governance finding (a spec-review-gate miss, a session-mechanics bug)? If yes, confirm
+> `Claude-Code` is checked out **and current** — `git fetch origin main --quiet` then check
+> `rev-list HEAD..origin/main --count`; pull if nonzero, since a stale checkout with a clean tree
+> gives no other sign of being behind. Then write a dated entry to `Claude-Code/knowledge/<topic>.md`
+> (+ `INDEX.md`) in this same session — a session working here commonly has `Claude-Code` checked
+> out alongside this repo (see Step 1.5 above), so this is a normal cross-repo write, not a
+> hand-off. **Re-run the same fetch-and-count check immediately before the write**, not only when
+> this step started — `knowledge/INDEX.md` is a named Hard Rule 6 contention file in `Claude-Code`,
+> and another session can land a write in the gap; abort and fall back to the `docs/todo.md` path
+> below if the count moved. **Committing and pushing
 > that write follows Step 1's existing rule: only on explicit confirmation this turn, never
 > automatically because this step ran.** If `Claude-Code` isn't checked out this session, file a
 > `docs/todo.md` item
@@ -194,11 +228,17 @@ Proposed addition, appended after the existing "If **yes** to any above..." bull
 
 > A "yes" to **"A new pattern or workflow that other projects could use?"** or **"A cross-cutting
 > bug or limitation discovered?"** specifically also means checking whether it's relevant beyond
-> this repo (a bug in a shared plugin/core, a process finding about DCOE mechanics) — if so, `git
-> fetch` + pull `Claude-Code` first (its Hard Rule 6 names `knowledge/INDEX.md` as a contention
-> file other concurrent sessions also write), then write a dated entry to the `Claude-Code` hub's
-> `knowledge/<topic>.md` (+ `INDEX.md`) now, in this session, if `Claude-Code` is checked out
-> alongside this repo, or as a `docs/todo.md` item naming the exact target file if it isn't.
+> this repo (a bug in a shared plugin/core, a process finding about DCOE mechanics) — if so, first
+> confirm `Claude-Code` is checked out **and current**, not just present: `git fetch origin main
+> --quiet` then `rev-list HEAD..origin/main --count`, pulling if nonzero (a stale checkout with a
+> clean tree carries no other sign of being behind — `Claude-Code`'s own Hard Rule 6 names
+> `knowledge/INDEX.md` as a contention file other concurrent sessions also write). Then write a
+> dated entry to the `Claude-Code` hub's `knowledge/<topic>.md` (+ `INDEX.md`) now, in this
+> session, if `Claude-Code` is checked out alongside this repo, or as a `docs/todo.md` item naming
+> the exact target file if it isn't. **Re-run the fetch-and-count check again immediately before
+> the write itself**, since the gap between the first check and the actual write can be long
+> enough for another session to land a write in between — abort and use the `docs/todo.md` path
+> instead if the count moved.
 > **Commit/push that write only on this session's explicit
 > confirmation** — same rule as this repo's own `/session-end` convention (per
 > `ai-product-factory/CLAUDE.md`'s session-commands line: "Never commit/push without explicit
@@ -252,6 +292,11 @@ Same posture as the rest of this repo's process rules — no automated gate, sel
    `docs/todo.md`/`docs/session-log.md` with no corresponding `Claude-Code/knowledge/` entry. That
    remains a gap after this spec — flagged as a follow-up in Related, not solved here, since it
    would change `retro.md` itself and this spec is scoped to the three `session-end.md` files.
+4. **At implementation/dispatch time**, check for other in-flight PRs or branches independently
+   touching these same three `session-end.md` files before landing this spec's text — this
+   spec's own primary evidence (Problem section, PR #22) is a case where a spec's review state had
+   no bearing on an unrelated PR shipping conflicting text into the identical files. This spec
+   being "approved" does not mean that risk is zero for its own landing.
 
 ## Impact
 
@@ -277,11 +322,24 @@ discipline addition, not a hook or automation.
 
 - Hard Rule 11 ("a record is not a control," CORE 1.6 → 1.7) — the general form of this problem
   (a finding recorded but not installed anywhere executable); this spec is the *which-repo* special
-  case of it.
+  case of it. The fallback path in §1–§3 (file a `docs/todo.md` item when `Claude-Code` isn't
+  checked out) is itself just such a record — nothing in this spec makes a future session pick it
+  up automatically, which is exactly the follow-up named in Enforcement item 3.
 - `session-end.md` Step 1.5 ("Can This Session's Work Be Found?", both `Claude-Code`'s and
   `tlelosa-claude-config`'s instances) — the existing precedent for "check every repo this session
   touched, not just the one you're sitting in," which this spec applies to knowledge-cache writes
   specifically rather than PR/branch reachability.
+- `Claude-Code/knowledge/hub-process.md`, 2026-08-07 entry ("Contention-file discipline needs a
+  re-check immediately before writing") — source for this revision's re-fetch-immediately-before-
+  the-write addition in §1–§3; the original finding is about `docs/todo.md`/`session-log.md`
+  inside `Claude-Code` itself, applied here to the same repo's `knowledge/INDEX.md` written *from
+  outside* it.
+- `Claude-Code/knowledge/cloud-sessions.md`, 2026-08-12 entry (a cloud container 13 commits behind
+  `origin/main` with a clean tree and no other symptom) — source for this revision's "checked out
+  is not the same as current" freshness check in §1–§3.
+- `Claude-Code/knowledge/tlelosa-claude-config.md`, 2026-08-16 entry (PR #22 independently shipped
+  a still-BLOCKED spec's text into these same three `session-end.md` files) — source for
+  Enforcement item 4 above and this spec's own Problem-section evidence.
 - `Claude-Code/knowledge/tlelosa-claude-config.md` — where both findings that motivated this spec
   actually landed, both on 2026-08-20 (not `knowledge/claude-code-plugin-hooks.md`, which doesn't exist in
   `Claude-Code`'s own `knowledge/`; that filename belongs to `ai-product-factory/knowledge/`, a
