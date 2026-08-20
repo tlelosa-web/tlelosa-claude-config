@@ -458,12 +458,15 @@ completed task; one task = one commit.
       session — not deferred to a manual sweep. Promote via ADR-008 once
       proven on one instance. **Spec:**
       `docs/specs/2026-08-20-cross-project-knowledge-checklist.md` —
-      **BLOCKED by reviewer (2026-08-20), revised same day, awaiting
-      re-review.** First draft proposed no actual text for the three files
-      it changes and misstated `hub-template/session-end.md`'s existing
-      state; revision quotes exact current/proposed text per file and
-      corrects a wrong knowledge-file citation and an internally
-      inconsistent timing claim in the original evidence.
+      **Approved with nits (reviewer pass, 2026-08-20, third pass), ready
+      for implementation.** BLOCKED twice first: draft 1 proposed no actual
+      text for the three files it changes; draft 2 fixed that but got its
+      own timing evidence wrong (claimed ~8 days, actual 4:
+      `tlelosa-claude-config` `94c9351` 2026-08-16 →`Claude-Code` `4659aeb`
+      2026-08-20) and told `/session-end` to commit/push, contradicting the
+      no-auto-commit rule already stated in every file it edits. Draft 3
+      fixed both, verified independently against `git log` on the third
+      pass; five nits folded in same revision.
 
 - [ ] **Add CODEOWNERS** — cross-repo Builder/Executor task (branch
       protection on all 5 wired repos already requires code-owner review,
@@ -577,7 +580,11 @@ completed task; one task = one commit.
       (this repo's two session-end instances, not Claude-Code's separate copy).
       **PR #22 had independently shipped the pre-review flawed version live
       into all three `/session-end` instances** (mechanical bypass of the
-      spec-review gate). Reverted on merge (2026-08-12) — replaced with a
+      spec-review gate). Reverted 2026-08-16 (`94c9351`/`02462dd`) — not
+      2026-08-12, which is when the flawed text was originally authored
+      (`cfb4767`); corrected 2026-08-20 while dating
+      `docs/specs/2026-08-20-cross-project-knowledge-checklist.md`'s own
+      evidence. Replaced with a
       pointer note to this blocked spec in all three files, including
       `Claude-Code`'s copy, which this spec's own scope note says is out of
       its two-file remit but still needed the live flawed text pulled.

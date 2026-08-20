@@ -1,7 +1,10 @@
 # Spec — Cross-project knowledge-cache check in close-out commands
 
-**Date:** 2026-08-20 | **Status:** Draft (revised twice after two reviewer BLOCKs, 2026-08-20) —
-awaiting re-review before implementation
+**Date:** 2026-08-20 | **Status:** Approved with nits (reviewer pass, 2026-08-20, third pass — two
+prior BLOCKs resolved) — ready for implementation. Five nits from the third pass (a
+branch-vs-`main` timing clause, a missing negative report-line option, a pull-before-write guard
+on the cross-repo `knowledge/INDEX.md` write in all three proposed texts, and two wording nits)
+folded into this revision; no further re-review required.
 **Basis:** `Claude-Code`'s second `/retro` run (2026-08-20), item 3 of 3 selected. Evidence:
 session-log entry "2026-08-20 — Cross-repo learnings sweep: two gaps closed in
 `knowledge/tlelosa-claude-config.md`" (`Claude-Code/docs/session-log.md`).
@@ -37,8 +40,16 @@ spec-review gate (`tlelosa-claude-config`) — a `/session-end` instance shipped
 three `/session-end` copies before its own counterpart spec (the SHA-citation requirement) had
 been reviewed; the reviewer had BLOCKED that spec on 2026-08-12. The bypass was found and reverted
 the same day it was noticed, **2026-08-16** — `tlelosa-claude-config/docs/todo.md` was updated
-that day (commit `94c9351`) and `Claude-Code`'s copy of the flawed text was reverted the same day
-(`02462dd`). This is a process-integrity finding about spec review and shipped commands drifting
+that day (commit `94c9351`, on PR #22's branch; it reached `main` with the PR's own merge,
+`55f1cfb`, 2026-08-17) and `Claude-Code`'s copy of the flawed text was reverted the same day
+(`02462dd`, 82 seconds after `94c9351`). **This repo's own `docs/todo.md` entry for this item is
+itself stale on this exact point** — it reads "Reverted on merge (**2026-08-12**)", but
+`2026-08-12` is when `cfb4767` first authored the flawed SHA-citation text (the spec that later got
+BLOCKED), not when it was reverted; the revert commits are both dated `2026-08-16`, four days
+later. Left uncorrected here deliberately — fixing that line is outside this spec's own scope,
+but it's the same "record asserting something git doesn't back up" pattern this spec exists to
+close, one level up. This is a process-integrity finding about spec review and shipped commands
+drifting
 apart — squarely the kind of fact `Claude-Code/knowledge/hub-process.md` or
 `knowledge/tlelosa-claude-config.md` exists to hold. It sat recorded only in
 `tlelosa-claude-config/docs/todo.md` and in `Claude-Code`'s own revert-commit message — not yet in
@@ -104,8 +115,10 @@ now before closing out":
 > Then ask a second, separate question: **is this fact relevant beyond this vault** — a bug or
 > gap in a shared plugin/core (`dcoe-roster`, `CORE.md`, `hub-template/`), or a process/governance
 > finding about how DCOE mechanics behave in practice? If yes, it also belongs in the
-> `Claude-Code` hub's cross-project `knowledge/` cache — write a dated entry to the matching
-> `knowledge/<topic>.md` and update `knowledge/INDEX.md` now, in this session, if `Claude-Code` is
+> `Claude-Code` hub's cross-project `knowledge/` cache — `git fetch` + pull `Claude-Code` first
+> (its own Hard Rule 6 names `knowledge/INDEX.md` as a contention file other concurrent sessions
+> write too), then write a dated entry to the matching `knowledge/<topic>.md` and update
+> `knowledge/INDEX.md` now, in this session, if `Claude-Code` is
 > checked out alongside this vault, rather than deferring to a later sweep. **Committing and
 > pushing that write follows the same rule as everything else in this command: only on this
 > session's explicit confirmation this turn, never automatically because this step ran.** If
@@ -138,12 +151,14 @@ re-audit the whole backlog." before the SHA-citation note), add a new paragraph:
 
 > Before finishing, ask: **did this session find something relevant beyond this repo** — a bug or
 > gap in a plugin/core this repo ships (`dcoe-roster`, `CORE.md`, `agent-bodies-reference/`), or a
-> process/governance finding (a spec-review-gate miss, a session-mechanics bug)? If yes, write a
-> dated entry to `Claude-Code/knowledge/<topic>.md` (+ `INDEX.md`) in this same session — a session
-> working here commonly has `Claude-Code` checked out alongside this repo (see Step 1.5 above), so
-> this is a normal cross-repo write, not a hand-off. **Committing and pushing that write follows
-> Step 1's existing rule: only on explicit confirmation this turn, never automatically because
-> this step ran.** If `Claude-Code` isn't checked out this session, file a `docs/todo.md` item
+> process/governance finding (a spec-review-gate miss, a session-mechanics bug)? If yes, `git
+> fetch` + pull `Claude-Code` first (its Hard Rule 6 names `knowledge/INDEX.md` as a contention
+> file), then write a dated entry to `Claude-Code/knowledge/<topic>.md` (+ `INDEX.md`) in this same
+> session — a session working here commonly has `Claude-Code` checked out alongside this repo (see
+> Step 1.5 above), so this is a normal cross-repo write, not a hand-off. **Committing and pushing
+> that write follows Step 1's existing rule: only on explicit confirmation this turn, never
+> automatically because this step ran.** If `Claude-Code` isn't checked out this session, file a
+> `docs/todo.md` item
 > naming the exact fact and pointing at the target `knowledge/<topic>.md` file instead — per Hard
 > Rule 11, a queue item naming the exact change still discharges the obligation.
 
@@ -179,10 +194,12 @@ Proposed addition, appended after the existing "If **yes** to any above..." bull
 
 > A "yes" to **"A new pattern or workflow that other projects could use?"** or **"A cross-cutting
 > bug or limitation discovered?"** specifically also means checking whether it's relevant beyond
-> this repo (a bug in a shared plugin/core, a process finding about DCOE mechanics) — if so, also
-> write a dated entry to the `Claude-Code` hub's `knowledge/<topic>.md` (+ `INDEX.md`) now, in this
-> session, if `Claude-Code` is checked out alongside this repo, or as a `docs/todo.md` item naming
-> the exact target file if it isn't. **Commit/push that write only on this session's explicit
+> this repo (a bug in a shared plugin/core, a process finding about DCOE mechanics) — if so, `git
+> fetch` + pull `Claude-Code` first (its Hard Rule 6 names `knowledge/INDEX.md` as a contention
+> file other concurrent sessions also write), then write a dated entry to the `Claude-Code` hub's
+> `knowledge/<topic>.md` (+ `INDEX.md`) now, in this session, if `Claude-Code` is checked out
+> alongside this repo, or as a `docs/todo.md` item naming the exact target file if it isn't.
+> **Commit/push that write only on this session's explicit
 > confirmation** — same rule as this repo's own `/session-end` convention (per
 > `ai-product-factory/CLAUDE.md`'s session-commands line: "Never commit/push without explicit
 > confirmation"), never automatically because this step ran.
@@ -209,7 +226,10 @@ result is unreported and "silence and never-ran look identical" — the same fai
 - **`hub-template/session-end.md`** Step 4 report block — extend the existing `**Logged:**` line
   from `[docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated]` to
   `[docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated | +
-  Claude-Code/knowledge/<topic>.md updated (cross-project)]`.
+  Claude-Code/knowledge/<topic>.md updated (cross-project) | cross-project: none this session]` —
+  the negative option matters here as much as in §2's proposal below: this file's own Step 1.5
+  already says "report a pass in one line too — silence and never-ran look identical," and
+  omitting the negative case here would contradict that in the file that gets copied everywhere.
 - **`tlelosa-claude-config/.claude/commands/session-end.md`** Step 4 report block — extend
   `**Logged:** [docs/todo.md updated]` to `[docs/todo.md updated | + Claude-Code/knowledge/<topic>.md
   updated (cross-project) | cross-project: none this session]`.
@@ -237,7 +257,10 @@ Same posture as the rest of this repo's process rules — no automated gate, sel
 
 **Structural, but no CORE version bump** — this changes `hub-template/session-end.md` and two
 repos' own command-file instances, not `CORE.md` itself (confirmed: grepping `dcoe-roster/CORE.md`
-for cross-project/knowledge-cache language returns no relevant hits). Distribution follows the
+for cross-project/knowledge-cache language returns one hit — Hard Rule 11's applicability list at
+`CORE.md:237`, which names "knowledge-cache entries" as one of the things a record-without-a-control
+can be, but doesn't itself establish a cross-project convention — so no CORE change or version bump
+is needed). Distribution follows the
 existing file-copy path (ADR-008): fix in `hub-template/` first, then re-copy into each opted-in
 vault's own `.claude/commands/session-end.md` — copying doesn't propagate automatically, per this
 repo's own documented tradeoff.
@@ -259,8 +282,8 @@ discipline addition, not a hook or automation.
   `tlelosa-claude-config`'s instances) — the existing precedent for "check every repo this session
   touched, not just the one you're sitting in," which this spec applies to knowledge-cache writes
   specifically rather than PR/branch reachability.
-- `Claude-Code/knowledge/tlelosa-claude-config.md` — where both 2026-08-20 findings that motivated
-  this spec actually landed (not `knowledge/claude-code-plugin-hooks.md`, which doesn't exist in
+- `Claude-Code/knowledge/tlelosa-claude-config.md` — where both findings that motivated this spec
+  actually landed, both on 2026-08-20 (not `knowledge/claude-code-plugin-hooks.md`, which doesn't exist in
   `Claude-Code`'s own `knowledge/`; that filename belongs to `ai-product-factory/knowledge/`, a
   different repo's local cache holding its own copy of the same finding).
 - **Follow-up, out of scope here:** `ai-product-factory/.claude/commands/session-end.md` Step 4
@@ -270,3 +293,8 @@ discipline addition, not a hook or automation.
 - **Follow-up, out of scope here:** `/retro`'s Step 2 (`Claude-Code/.claude/commands/retro.md`)
   could specifically check for cross-repo-relevant facts sitting un-mirrored in another repo's
   queue, once this spec gives it something to check against.
+- **Follow-up, out of scope here:** `docs/todo.md`'s own "Require a Done entry to cite a SHA on
+  `main`" item (the PR #22 entry) says "Reverted on merge (2026-08-12)" — that date is the flawed
+  text's original authorship (`cfb4767`), not the revert, which happened `2026-08-16`
+  (`94c9351`/`02462dd`). Found while dating this spec's own evidence; not corrected here since it's
+  a one-line todo.md fix unrelated to the close-out commands this spec changes.
