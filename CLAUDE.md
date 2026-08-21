@@ -118,12 +118,16 @@ scaled to the work:
 
 ## REPO-SPECIFIC HARD RULES
 
-1. **No company or project data, ever.** This repo is cloned on both a
-   personal and an employer machine — keep it deliberately generic.
+1. **No company or project data, ever.** This repo was cloned on both a
+   personal and an employer machine before their 2026-08-20 retirement
+   (`ai-product-factory` is the sole environment now) — keep it
+   deliberately generic regardless of how many environments exist.
 2. **`CLAUDE.md.template` is the master for other projects** — edits to it
    are template maintenance, never this repo's own setup.
 3. **Validate JSON** before committing catalog or plugin manifest changes;
-   a broken manifest breaks installs on both machines. A `pre-commit` hook at
+   a broken manifest breaks installs everywhere it's deployed (used to read
+   "both machines" — Operations and Pappa T are retired as of 2026-08-20,
+   same correction Hard Rule 5 below already carries). A `pre-commit` hook at
    `.githooks/pre-commit` enforces this automatically once `core.hooksPath`
    is set (one-time setup per machine, per clone). The session-start check
    above monitors drift; hard rule stands as documentation of intent.
