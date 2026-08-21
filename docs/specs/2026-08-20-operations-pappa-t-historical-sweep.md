@@ -1,7 +1,15 @@
 # Spec: Operations/Pappa T historical-reference sweep
 
 **Date:** 2026-08-20
-**Status:** Reviewed (general-purpose@opus simulating `reviewer`, per the
+**Status:** **IMPLEMENTED 2026-08-20.** `tlelosa-claude-config` `d00f103`,
+`Claude-Code` `53f808c`, `ai-product-factory` `93bfae6`. Pass 6 review could
+not complete (this account's monthly spend limit was hit mid-pass); the
+dispatching session's own read-through of the full spec stood in as the
+final check before execution, per the editorial decision recorded at the
+end of the pass-5 amendment entry below (five rounds of real,
+shrinking-severity findings judged sufficient to treat content as
+converged).
+**Review history:** Reviewed (general-purpose@opus simulating `reviewer`, per the
 2026-08-20 workaround in `Claude-Code/knowledge/cloud-sessions.md` — no
 `reviewer` sub-agent type registered in this environment). **Pass 1: BLOCK**
 (survey gaps, one internal scope contradiction, a Hard Rule 7 count

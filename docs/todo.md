@@ -446,31 +446,45 @@ completed task; one task = one commit.
       after this Done entry landed, exactly the drift hard rule #11 exists to
       catch. Removed; this Done entry is now the only record.
 
+- [x] **Full Operations/Pappa T historical-reference sweep** — closes out
+      the item 2026-08-20's narrow rollout-mechanics fix (`58ea03d`)
+      deliberately deferred. Spec at
+      `docs/specs/2026-08-20-operations-pappa-t-historical-sweep.md`,
+      reviewed six rounds by a simulated `reviewer` (general-purpose@opus,
+      no `reviewer` sub-agent type registered in this environment) — five
+      BLOCKs each finding real, progressively narrower survey gaps (whole
+      missed `knowledge/` directories and files, unopened `docs/todo.md`
+      sections, a root-cause diagnosis that a proper-noun-only grep can't
+      catch "both machines"-style phrasing, then that even a widened
+      pattern misses phrases hard-wrapped across a line break), folded in
+      each round; the sixth review round could not complete (this account's
+      monthly spend limit was hit mid-pass) so this repo's own read-through
+      stood in as the final check before dispatch. `/codex-review` (Hard
+      Rule 9) not run — not runnable from this cloud container, recorded as
+      a waiver per this same item's own earlier precedent, not a silent
+      skip.
+      Implemented across all three repos in one commit each: this repo
+      (Hard Rules 1/3's "both machines" phrasing — `d00f103`), `Claude-Code`
+      (`CLAUDE.md`, `docs/todo.md`, six `knowledge/` files plus `INDEX.md`
+      — `53f808c`), and `ai-product-factory` (`knowledge/` banners/header
+      corrections plus a dashboard `docs/todo.md` annotation — `93bfae6`).
+      Historical dated `knowledge/` entries, `docs/session-log.md`, and
+      `docs/specs/` were left untouched throughout, per this repo's own
+      "record, not deleted" convention. One residual, deliberately
+      out-of-scope finding: `ai-product-factory/Projects/dashboard/lib/vaults.ts`
+      still hardcodes a Pappa T fallback path that no longer resolves to
+      anything live — application code, named in the spec but not fixed by
+      this docs-only sweep.
+
 ## Open
 
 > Machine-side items below are consolidated into one ordered run per
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
-- [ ] **Full Operations/Pappa T historical-reference sweep — deferred, not
-      done.** 2026-08-20's retirement fix was scoped narrowly to rollout
-      mechanics only (this repo's `CLAUDE.md` Project Overview/Essential
-      Commands, `docs/rollout-checklist-2026-07-21.md`, two blocked todo
-      items) — deliberately, on owner instruction, rather than doing the
-      full sweep in the same session. Still open, and larger than a single
-      commit: every `CLAUDE.md`, `docs/todo.md`, and `knowledge/` entry
-      across `Claude-Code`, `tlelosa-claude-config`, and `ai-product-factory`
-      that describes Operations/Pappa T as *live, current* machines (not
-      historical record of what already happened there — those stay
-      untouched, per the same distinction the 2026-08-20 fix already drew).
-      Needs a spec first per Hard Rule 1 (>2 files) before dispatching —
-      start from `Claude-Code/CLAUDE.md`'s own path table (already flagged
-      stale there for a different reason, the `Desktop/…` moves) and
-      `knowledge/INDEX.md`'s per-topic pointers, since those are the two
-      places a session would look first.
-
-*(Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself succeeded —
-implemented; see Done.)*
+*(Full Operations/Pappa T historical-reference sweep — implemented; see
+Done. Strengthen `CORE.md` Hard Rule 10 — verify the fetch itself succeeded
+— implemented; see Done.)*
 
 *(Cross-project knowledge-cache checklist item in close-out commands —
 implemented; see Done.)*
