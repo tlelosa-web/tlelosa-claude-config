@@ -51,13 +51,53 @@ that, stop and warn instead.
    `timeout 90 codex exec --skip-git-repo-check "$(cat <payload-file>)"`
    capturing stdout. Any failure — `codex` not installed, no credentials,
    network/proxy failure, rate limit, non-zero exit, empty output, or the
-   90 s timeout — means: print
-   `Codex second opinion unavailable (<short reason>) — proceeding solo`,
-   do step 6 with `warned (<reason>)`, and stop **successfully**. Never
-   retry, never block, never treat this as a task failure.
+   90 s timeout — means Codex is unavailable this run. Do not stop yet —
+   go to step 4a (local fallback) before falling back to solo.
 
-5. **Append the advisory note** to the spec file (Edit tool), at the end:
+4a. **Local fallback (tier 2), only on Codex failure.** Check for
+   `${CLAUDE_PROJECT_DIR}/scripts/qwen-review.sh` with a file-existence
+   guard — most projects won't have it installed, and that's a normal,
+   silent skip, not an error (same missing-only philosophy as the roster
+   bootstrap hooks). If present, run it against the same payload file used
+   for Codex (unstripped-frontmatter spec content — the script does its own
+   stripping):
+   `bash "${CLAUDE_PROJECT_DIR}/scripts/qwen-review.sh" <spec-file>`
+   with a 180 s cap (the script enforces its own internal timeout; wrap in
+   `timeout 185` as an outer guard only). Canonical source:
+   `hub-template/scripts/qwen-review.sh` — install into a project the same
+   way as the hooks (`hub-template/hooks/README.md`'s pattern), not bundled
+   inside this plugin (a plugin-cache install only copies the plugin's own
+   folder, and this script needs to run from the *target* project's own
+   context, not the plugin's — same reasoning as
+   `docs/specs/2026-08-20-hook-crash-cache-relative-path.md`, applied in
+   the opposite direction: don't reach for a path that won't exist where
+   this actually runs).
 
+   The script is local-only by design (talks to `localhost:11434`, never
+   leaves the machine) — this does not touch the Hard Payload Rule above,
+   which governs what leaves the machine to Codex.
+
+   Any failure from the script itself (Ollama not running, model missing,
+   timeout, empty output) — the script already fail-warns to stderr and
+   exits 0; treat that identically to "not installed": fall through to
+   solo, step 4b.
+
+   If it succeeds: go to step 5 with the Qwen output, log state `warned
+   (codex: <reason>) — qwen fallback ran`.
+
+4b. **Solo, if both tiers failed or tier 2 isn't installed.** Print
+   `Codex second opinion unavailable (<short reason>) — proceeding solo`.
+   If `scripts/qwen-review.sh` wasn't present at all, also print: `No
+   automated second opinion available. Consider asking the reviewer agent
+   to read this spec with an adversarial brief before dispatch (per CORE.md
+   Hard Rule 9's fallback chain).` This is a printed recommendation only —
+   this command cannot spawn a `reviewer` agent itself. Do step 6 with
+   `warned (<reason>) — no fallback available`, and stop **successfully**.
+   Never retry, never block, never treat any of this as a task failure.
+
+5. **Append the advisory note** to the spec file (Edit tool), at the end.
+
+   If Codex ran (the normal case):
    ```markdown
    ## Codex second opinion (advisory) — <YYYY-MM-DD>
 
@@ -66,14 +106,34 @@ that, stop and warn instead.
    _Advisory only — reviewer agent retains sole APPROVE/BLOCK authority._
    ```
 
+   If the local fallback ran instead (step 4a succeeded):
+   ```markdown
+   ## Local review fallback (qwen3:1.7b, advisory, zero weight) — <YYYY-MM-DD>
+
+   Codex was unavailable (<reason>). The following is a local-model second
+   opinion, included for a partial check only. Measured 2026-08-31: this
+   tier's output can contain factually incorrect claims about the spec it
+   reviewed (flagged already-handled cases as "not considered"). Read for
+   stray useful points only — never treat agreement or disagreement here as
+   evidence for or against the spec's soundness.
+
+   <qwen output verbatim>
+
+   _Advisory only, zero decision weight — reviewer agent retains sole APPROVE/BLOCK authority._
+   ```
+
    Touch nothing else in the file or repo.
 
 6. **Log one line** to `docs/session-log.md` if that file exists (create
    nothing if it doesn't):
    `<YYYY-MM-DD> codex-review <file>: ran` or
-   `<YYYY-MM-DD> codex-review <file>: warned (<reason>)`.
+   `<YYYY-MM-DD> codex-review <file>: warned (<reason>)` — using whichever
+   state string step 4/4a/4b produced.
 
-7. **Report** to the human: whether Codex ran or warned, and (if it ran) a
-   one-paragraph summary of its strongest point. The human decides what, if
-   anything, changes in the spec — a logged note is sufficient; no
-   disposition ceremony is required before approval.
+7. **Report** to the human: which tier actually produced the opinion (Codex,
+   local fallback, or neither), and a one-paragraph summary of its
+   strongest point if one ran. If the local fallback ran, say so explicitly
+   and restate its zero-weight status — never present it with the same
+   framing as a Codex result. The human decides what, if anything, changes
+   in the spec — a logged note is sufficient; no disposition ceremony is
+   required before approval.

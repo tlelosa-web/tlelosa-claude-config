@@ -1,7 +1,7 @@
 {
   "name": "codex-gate",
-  "version": "1.0.0",
-  "description": "Cross-family second-opinion gate: /codex-review sends exactly one spec file under docs/specs/ to OpenAI Codex for an advisory review appended to the spec. Warn-only, never blocks. Installed per machine (NOT part of dcoe-roster) so it can be limited to machines cleared for OpenAI egress.",
+  "version": "1.1.0",
+  "description": "Cross-family second-opinion gate: /codex-review sends exactly one spec file under docs/specs/ to OpenAI Codex for an advisory review appended to the spec. Warn-only, never blocks. On Codex failure, falls back to a local Ollama/qwen3:1.7b second opinion (hub-template/scripts/qwen-review.sh, per-project opt-in, zero decision weight) before giving up and recommending a reviewer-agent plan read (CORE.md Hard Rule 9's three-tier chain). Installed per machine (NOT part of dcoe-roster) so it can be limited to machines cleared for OpenAI egress.",
   "author": {
     "name": "Tebello Lelosa"
   }

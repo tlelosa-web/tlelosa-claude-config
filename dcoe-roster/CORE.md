@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.8** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.10** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -222,7 +222,22 @@ relax these.
    acceptance criteria, real failure modes) back into the spec as a dated
    Amendment section before build starts. Standard procedure for every spec,
    not optional. The `reviewer` agent still holds sole APPROVE/BLOCK
-   authority — Codex is advisory only.
+   authority — Codex is advisory only. **This is a three-tier fallback
+   chain, not a single dependency, and each tier used must be visible in
+   the spec's own review section — never silently skipped without a logged
+   reason:** (1) Codex, the default; (2) on Codex failure, `/codex-review`
+   automatically attempts a local second opinion via `scripts/qwen-review.sh`
+   where a project has it installed (local-machine only — this tier is
+   unavailable on a cloud/remote session, which has no local model to call;
+   its output carries **zero decision weight**, advisory-only, measured to
+   contain factually incorrect claims about specs it reviewed — never treat
+   its agreement or disagreement as evidence for or against a spec); (3) if
+   neither tier ran, the session must have a `reviewer` agent read the spec
+   itself with an adversarial brief before dispatch — this is the rule's
+   fallback path, not optional degradation, installing the pattern proven
+   2026-08-21 rather than leaving it as a one-off. Spec:
+   `docs/specs/2026-08-31-multi-tier-review-fallback.md` (in
+   `ai-product-factory`).
 10. **Verify remote state before asserting it.** Before reporting repo/PR/
    branch status or proposing an action conditioned on it (open a PR, merge,
    rebase), `git fetch` the relevant ref and check it — never answer from a
@@ -247,6 +262,24 @@ relax these.
    A finding is passive; executable change is what alters behavior. Applies to
    commit messages that describe lessons, knowledge-cache entries, and notes that
    describe future behavior (not past-tense descriptions or in-function comments).
+12. **Verify a claim against its primary source before asserting it — a paraphrase
+   is a new, unverified claim.** Before stating a fact about a live system's own
+   files, schema, config, or repo state in a report, audit, spec, or plan, read
+   that source directly, even when a trusted document (a spec, a prior analysis,
+   an earlier finding in the same session, your own summary from minutes ago)
+   already describes it. Restating a claim does not re-verify it — the drift
+   enters at the paraphrase step, not the original reading, and happens even
+   under otherwise-careful process discipline. This generalizes Hard Rule 10
+   (verify *external* state before asserting it) to a session's own prior
+   claims about *internal* system state. Promoted from
+   `shared-memory/learnings/process/verify-schema-claims-against-source-not-paraphrase.md`
+   (Projects/tenders, 2026-08-19/20, two schema-claim instances) after a third,
+   independent instance in a different project and a different claim category
+   (ai-product-factory governance docs — a session incorrectly asserted a
+   mission statement didn't exist and misidentified where a Hard Rule belonged,
+   both correctable by reading the primary file directly) — the corroboration
+   in a different project the original learning's own Next Steps called for
+   before generalizing beyond schema/contract claims.
 
 -----
 
