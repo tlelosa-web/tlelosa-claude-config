@@ -42,8 +42,10 @@ than one repo checked out or referenced, list them explicitly before
 running the check, then run it — and Step 4's report — once per repo:
 
 ```bash
+git fetch origin --prune --quiet
 git rev-parse --abbrev-ref HEAD
 git log --oneline origin/<default-branch>..HEAD
+git ls-remote --heads origin refs/heads/$(git rev-parse --abbrev-ref HEAD)
 ```
 
 If HEAD is not the default branch and the second command returns commits,
@@ -53,8 +55,23 @@ report it in Step 4, once per repo checked:
 > `<default>`. Invisible to any session starting from `<default>` until
 > merged or a PR is opened.
 
-**Report a pass in one line too** — "all commits reachable from `<default>`"
-— because silence and never-ran look identical.
+**The final `ls-remote` line is a separate check from the reachability
+question above it, and both matter.** A branch can pass "commits ahead of
+`<default>`, pushed" trivially and still have vanished from the remote by
+the time a later session checks — the local cached tracking ref never
+invalidates itself just because the remote side changed. Confirmed for
+real (2026-08-20): a branch this session pushed was gone from the remote
+with no PR, merge, or force-push visible from the pushing session, while
+`git status`/`git branch -vv` kept reading "up to date" throughout. If
+`ls-remote` returns nothing for a branch this session just pushed, re-push
+it now (`git push -u origin <branch>`) and re-verify with the same
+command — don't trust the push's own "success" message either, that's
+exactly what read as success the first time. Report the discrepancy in
+Step 4 even after re-pushing fixes it.
+
+**Report a pass in one line too** — "all commits reachable from `<default>`,
+branch verified via ls-remote" — because silence and never-ran look
+identical.
 
 **Never open the PR, merge, or push** to resolve this. Same rule as Step 1:
 `/session-end` reports what it is leaving behind; it does not act on the
@@ -256,7 +273,7 @@ makes that later run's judgment easy, which is most of the value anyway.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
-**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from <default> | <repo>: N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd]
+**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from <default>, branch verified via ls-remote | <repo>: N commit(s) on <branch> not reachable from <default> — invisible until merged or PR'd | <repo>: branch had vanished from the remote and was re-pushed — see notes]
 **Logged:** [docs/todo.md updated | + session-log.md entry added | + knowledge/<topic>.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | + Claude-Code write pending commit (command given in Step 2) | cross-project: none this session]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
