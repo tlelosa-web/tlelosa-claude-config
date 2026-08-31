@@ -39,13 +39,29 @@ List every repo this session touched, then run this — and report it in
 Step 4 — once per repo:
 
 ```bash
+git fetch origin --prune --quiet
 git rev-parse --abbrev-ref HEAD
 git log --oneline origin/main..HEAD
+git ls-remote --heads origin refs/heads/$(git rev-parse --abbrev-ref HEAD)
 ```
 
 If HEAD is not `main` and commits come back, say so in Step 4, naming the
 repo, branch, and count. Report a pass in one line too, per repo — silence
 and never-ran look identical.
+
+**The `ls-remote` line is a separate check from the reachability question
+above it, and both matter.** A branch can pass "commits ahead of `main`,
+pushed" trivially and still have vanished from the remote by the time a
+later session checks — the local cached tracking ref never invalidates
+itself just because the remote side changed. Confirmed for real in
+`ai-product-factory` (2026-08-20): a branch this session pushed was gone
+from the remote with no PR, merge, or force-push visible from the pushing
+session, while `git status`/`git branch -vv` kept reading "up to date"
+throughout. If `ls-remote` returns nothing for a branch this session just
+pushed, re-push it now (`git push -u origin <branch>`) and re-verify with
+the same command — don't trust the push's own "success" message either,
+that's exactly what read as success the first time. Report the
+discrepancy in Step 4 even after re-pushing fixes it.
 
 **Never open the PR, merge, or push** to resolve it: same rule as Step 1.
 Naming the branch is the whole job — a branch that has been named is one
@@ -181,7 +197,7 @@ run (or Tebello directly) does the actual archiving.
 
 **Committed:** [what's committed this session, or "nothing to commit"]
 **Pushed:** [clean — nothing outstanding | N unpushed commit(s) on <branch>]
-**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from main | <repo>: N commit(s) on <branch> not reachable from main — invisible until merged or PR'd]
+**Branch state:** [Step 1.5, per repo touched this session — <repo>: all commits reachable from main, branch verified via ls-remote | <repo>: N commit(s) on <branch> not reachable from main — invisible until merged or PR'd | <repo>: branch had vanished from the remote and was re-pushed — see notes]
 **Logged:** [docs/todo.md updated | + Claude-Code/knowledge/<topic>.md updated (cross-project) | + Claude-Code write pending commit (command given in Step 2) | cross-project: none this session]
 **Title set:** [Cont-"<title>" | attempted, refused — <reason> | not available in this environment]
 **Open follow-ups:** [none | listed, each already reflected in docs/todo.md]
