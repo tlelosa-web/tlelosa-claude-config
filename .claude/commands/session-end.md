@@ -39,13 +39,27 @@ List every repo this session touched, then run this — and report it in
 Step 4 — once per repo:
 
 ```bash
+git fetch origin --prune --quiet
 git rev-parse --abbrev-ref HEAD
 git log --oneline origin/main..HEAD
+git ls-remote --heads origin refs/heads/$(git rev-parse --abbrev-ref HEAD)
 ```
 
 If HEAD is not `main` and commits come back, say so in Step 4, naming the
-repo, branch, and count. Report a pass in one line too, per repo — silence
-and never-ran look identical.
+repo, branch, and count.
+
+**The final `ls-remote` line is a separate check, and both matter.** A
+branch can pass "commits ahead of `main`, pushed" and still have vanished
+from the remote by the time a later session checks — the local cached
+tracking ref never invalidates itself just because the remote moved.
+Confirmed for real in `ai-product-factory` (2026-08-20): a pushed branch
+was gone from the remote with no PR, merge, or force-push visible, while
+`git status` kept reading "up to date." If `ls-remote` returns nothing for
+a branch this session just pushed, re-push now and re-verify the same way
+— don't trust the second push's own success message either.
+
+Report a pass in one line too, per repo — "reachable from `main`, verified
+via ls-remote" — silence and never-ran look identical.
 
 **Never open the PR, merge, or push** to resolve it: same rule as Step 1.
 Naming the branch is the whole job — a branch that has been named is one

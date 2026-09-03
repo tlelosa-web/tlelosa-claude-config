@@ -40,8 +40,19 @@ this repo and the hub, holding an ADR another file already claimed existed
 and a finished three-part initiative nobody could see.
 
 ```bash
+git fetch origin --prune --quiet
 git for-each-ref --format='%(refname:short)|%(committerdate:short)' refs/remotes/origin
+git ls-remote --heads origin refs/heads/$(git rev-parse --abbrev-ref HEAD)
 ```
+
+`--prune` is not optional: a plain `fetch` leaves a deleted remote branch's
+local tracking ref intact, so this loop keeps reading a branch as present
+after it's gone from the remote. The final `ls-remote` line separately
+verifies the branch this session is actually resuming — ground truth from
+the remote, not a local ref. Found for real 2026-08-20
+(`ai-product-factory`, `claude/continuation-2gbew7`): a branch pushed
+successfully was gone from the remote by the next check, caught only by
+`fetch --prune` + `ls-remote`, never by `git status`.
 
 For each ref that is not `origin/main` and not `origin/HEAD`:
 

@@ -186,9 +186,22 @@ already claimed existed, three `knowledge/` files, and a finished three-part
 initiative nobody could see.
 
 ```
-git fetch origin --quiet
+git fetch origin --prune --quiet
 git for-each-ref --format='%(refname:short)|%(committerdate:short)' refs/remotes/origin
+git ls-remote --heads origin refs/heads/$(git rev-parse --abbrev-ref HEAD)
 ```
+
+`--prune` is not optional: a plain `fetch` leaves a deleted remote branch's
+local tracking ref intact, so this loop (and `git status` generally) keeps
+reading a branch as present after it's gone from the remote. The final
+`ls-remote` line is a separate, stronger check on the branch this session
+is actually resuming — ground truth from the remote directly, not a local
+ref at all. Found for real 2026-08-20 (`ai-product-factory`,
+`claude/continuation-2gbew7`): a branch pushed successfully was gone from
+the remote by the next session's check, with no PR, merge, or force-push
+visible — caught only by `git fetch --prune` + `git ls-remote`, never by
+`git status`'s cached view. See
+`shared-memory/learnings/process/verify-push-survival-with-ls-remote-not-cached-status.md`.
 
 Then, for each ref that is not the default branch and not `HEAD`:
 
