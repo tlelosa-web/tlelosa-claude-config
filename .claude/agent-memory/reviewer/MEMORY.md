@@ -1,0 +1,4 @@
+- [Core version bump is one commit](project_core_version_bump_is_one_commit.md) — the three files citing core version must land together; splitting causes the recorded stale-coreVersion failure.
+- [bootstrap.mjs --quiet silences checks](project_bootstrap_quiet_silences_checks.md) — the !QUIET guard swallows any new exit-code logic placed in the default-mode notes block.
+- [Criteria that restate rather than test](project_acceptance_criteria_restate_not_test.md) — recurring spec weakness: strong property claimed via an observable that can't distinguish it.
+- [Retired machine names in live strings](project_retired_machine_names.md) — "Operations"/"Pappa T" survive as present-tense claims in CORE.md and plugin.json; historical prose is fine.
