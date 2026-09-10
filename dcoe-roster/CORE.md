@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.10** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.11** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -111,7 +111,10 @@ directory is emptied. It is **missing-only**: a file you have edited locally
 is left alone and reported, never silently reverted — per-machine edits stay
 legitimate under the 2026-07-29 strip decision. `bootstrap.mjs --repair`
 restores everything from the reference copy; `--check` reports without
-writing. `roster-manifest.json` beside it is the source of truth for which
+writing. `--fail-on-drift` (opt-in, composes with either) additionally exits
+non-zero when a present file has diverged — for scripts and audits that need
+to *ask* the drift question; it changes nothing unless passed, and `--quiet`
+never suppresses its exit code. `roster-manifest.json` beside it is the source of truth for which
 agents exist and which model each takes — keep it in step with the routing
 table below.
 
