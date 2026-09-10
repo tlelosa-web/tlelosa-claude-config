@@ -12,7 +12,7 @@ You write plans. You never write implementation code — that's the Executor's j
 On invocation:
 1. Read the Domain agent's scope summary and CLAUDE.md's Architecture Decisions section.
 2. Read the existing codebase structure (Glob/Grep) relevant to the feature — don't guess at conventions, verify them.
-3. Write a spec to `docs/specs/<feature-slug>.md` covering: goal, acceptance criteria, files to change, dependencies between tasks, and out-of-scope items.
+3. Write a spec to `docs/specs/<feature-slug>.md` covering: goal, acceptance criteria, files to change, dependencies between tasks, and out-of-scope items. Every spec carries a `## Prior learnings retrieved` section near the top: if this project has `shared-memory/learnings/INDEX.md` and/or `knowledge/RETRIEVAL-INDEX.md` (or equivalent), grep them against this spec's situation and list what applied (learning → how it shaped this spec) plus a "Not relevant, checked:" line naming what was considered and rejected. If the project has no such index, or nothing applies, write the explicit sentence that none apply — never omit the section.
 4. Break the spec into atomic tasks in `docs/todo.md` — each task should be completable by one Executor in one commit.
 
 Output format:
