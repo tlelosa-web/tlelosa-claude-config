@@ -15,6 +15,17 @@
  *               local edits. The deliberate "put it back" path.
  *   --check     reports only; writes nothing. Exit 1 if anything is missing.
  *
+ * Modifiers (compose with the modes above; not modes themselves):
+ *   --fail-on-drift  exit 1 if any PRESENT roster file has diverged from its
+ *               reference copy. Opt-in only: absent, output and exit code are
+ *               unchanged in every mode, because divergence is legitimate
+ *               (see the default mode note above). Deliberately evaluated
+ *               OUTSIDE the --quiet guard — --quiet may suppress the
+ *               "locally edited" text, it must never suppress this exit code,
+ *               per the "loud on failure" rule below. Vacuous with --repair,
+ *               which eliminates divergence before it could be observed.
+ *               Spec: docs/specs/2026-09-10-bootstrap-fail-on-drift.md.
+ *
  * Design rules this file must keep:
  *   - Loud on failure. Silence means success; it must never mean "never ran".
  *     A bootstrap that fails quietly rebuilds the very defect it exists to fix.
@@ -38,6 +49,7 @@ const TAG = "dcoe-bootstrap";
 const argv = new Set(process.argv.slice(2));
 const MODE = argv.has("--repair") ? "repair" : argv.has("--check") ? "check" : "missing";
 const QUIET = argv.has("--quiet");
+const FAIL_ON_DRIFT = argv.has("--fail-on-drift");
 
 /** Single-line reporter. Anything user-visible goes through here. */
 const say = (msg) => console.log(`${TAG}: ${msg}`);
@@ -173,6 +185,7 @@ function main() {
     if (roster.copied.length) fail(`missing ${roster.copied.length}/${manifest.agents.length}: ${roster.copied.join(", ")}`);
     else say(`all ${manifest.agents.length} roster agents present`);
     if (roster.diverged.length) say(`locally edited: ${roster.diverged.join(", ")}`);
+    if (roster.diverged.length && FAIL_ON_DRIFT) fail(`drift: ${roster.diverged.join(", ")}`);
     if (stray.length) say(`not in manifest: ${stray.join(", ")}`);
     return;
   }
@@ -189,6 +202,10 @@ function main() {
     notes.push(`locally edited, left as-is: ${roster.diverged.join(", ")} (--repair to restore)`);
   }
   if (notes.length) say(notes.join(" | "));
+
+  // Outside the !QUIET guard on purpose: a verbosity flag may silence the text
+  // above, never the exit status. Inside it, --quiet would turn the detector off.
+  if (roster.diverged.length && FAIL_ON_DRIFT) fail(`drift: ${roster.diverged.join(", ")}`);
 }
 
 try {
