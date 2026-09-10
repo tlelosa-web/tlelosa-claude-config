@@ -129,6 +129,13 @@ Running the script by hand still works on any machine with Node:
 node agent-bodies-reference/bootstrap.mjs            # install what's missing
 node agent-bodies-reference/bootstrap.mjs --check    # report only, no writes
 node agent-bodies-reference/bootstrap.mjs --repair   # restore all from reference
+
+# --fail-on-drift is a modifier, not a mode: composes with the first two above.
+# Exits 1 if a present roster file has diverged from its reference copy, so a
+# script or audit can ask the drift question. Opt-in — changes nothing unless
+# passed — because a local edit is legitimate, not an error. --quiet suppresses
+# the report text but never this exit code.
+node agent-bodies-reference/bootstrap.mjs --check --fail-on-drift
 ```
 
 `bootstrap.sh` is retained as a bash fallback but is no longer on the hook
