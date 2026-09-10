@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.11** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.12** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -114,9 +114,9 @@ restores everything from the reference copy; `--check` reports without
 writing. `--fail-on-drift` (opt-in, composes with either) additionally exits
 non-zero when a present file has diverged — for scripts and audits that need
 to *ask* the drift question; it changes nothing unless passed, and `--quiet`
-never suppresses its exit code. `roster-manifest.json` beside it is the source of truth for which
-agents exist and which model each takes — keep it in step with the routing
-table below.
+never suppresses its exit code. `roster-manifest.json` beside it is the
+source of truth for which agents exist and which model each takes — keep it
+in step with the routing table below.
 
 This closes a real failure. Before Core 1.5 bootstrap was a manual
 per-machine copy, and on 2026-08-09 `~/.claude/agents/` was found not to
@@ -127,16 +127,19 @@ missing agent raises no error; it just makes sessions quieter and more
 expensive. Hence a hook rather than a documented step.
 
 **A third surface, covered since Core 1.6.** The Core 1.5 hook ships inside
-the `dcoe-roster` *plugin*, so it only fires on a machine that has actually
-installed the marketplace — Operations and Pappa T. A Claude Code cloud/web
-session clones the target repo fresh and never installs the marketplace, so
-`~/.claude/agents/` doesn't exist there either, silently, same failure mode
-as the pre-1.5 Pappa T gap. Cloud sessions get a **repo-level** `SessionStart`
+the `dcoe-roster` *plugin*, so it only fires where the marketplace has
+actually been installed — i.e. a local environment set up with
+`/plugin marketplace add`. A Claude Code cloud/web session clones the target
+repo fresh and never installs the marketplace, so `~/.claude/agents/` doesn't
+exist there either, silently, same failure mode as the pre-1.5 Pappa T gap
+(that gap is history — the machine it happened on is retired; the failure
+mode it describes is not). Cloud sessions get a **repo-level** `SessionStart`
 hook instead — `hub-template/hooks/cloud-roster-bootstrap.sh`, copied into
 each opted-in project's own `.claude/hooks/` and registered in its
 `.claude/settings.json` (steps in that folder's `README.md`). It checks
-`$CLAUDE_CODE_REMOTE`, no-ops on Operations/Pappa T, and otherwise clones
-`tlelosa-claude-config` shallow and runs the same `bootstrap.mjs` the plugin
+`$CLAUDE_CODE_REMOTE`, no-ops in a local environment (where the plugin hook
+already fires), and otherwise clones `tlelosa-claude-config` shallow and
+runs the same `bootstrap.mjs` the plugin
 hook uses — one bootstrap implementation, two delivery paths. Missing-only
 semantics carry over unchanged. Spec:
 `docs/specs/2026-08-12-roster-cloud-sessions.md`.
