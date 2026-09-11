@@ -1,7 +1,7 @@
 {
   "name": "shared-skills",
-  "version": "1.1.0",
-  "description": "Cross-project Claude Code Skills proven on at least one real project: dev server staleness verification, safe reads of Office files that may be open elsewhere, draft-only vault note capture (/capture), and 3 UI-specific patterns (reusing existing overlay primitives, sweeping shared UI conventions, verifying UI cardinality against generator output). Installs to user scope so it applies automatically across every project on a machine.",
+  "version": "1.2.0",
+  "description": "Cross-project Claude Code Skills proven on at least one real project. Process-discipline skills: verifying a push actually survived on the remote, committing stray writes left by earlier same-day sessions, the two independent worktree-isolation failures around Executor dispatch and merge, and verifying a claim against its primary source rather than a subagent's or brief's paraphrase. Plus dev server staleness verification, safe reads of Office files that may be open elsewhere, draft-only vault note capture (/capture), and 3 UI-specific patterns (reusing existing overlay primitives, sweeping shared UI conventions, verifying UI cardinality against generator output). Installs to user scope so it applies automatically across every project on a machine.",
   "author": {
     "name": "Tebello Lelosa"
   }
