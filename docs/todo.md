@@ -452,6 +452,10 @@ completed task; one task = one commit.
 > machine in `docs/rollout-checklist-2026-07-21.md` — work from that,
 > tick here as each block passes.
 
+- [ ] **`hub-template/hooks/cloud-roster-bootstrap.sh:19`'s `EXPECTED_COUNT` is a duplicated, not derived, roster count.** It duplicates the count that already lives in `roster-manifest.json`'s `agents[]` array length and `bootstrap.sh`'s `AGENTS` array length — a third place this number lives and can drift again next time an agent is added (as it nearly did mid-dispatch of `docs/specs/2026-09-22-investigator-agent.md`, task 8, 2026-09-22). Needs a derived-not-duplicated fix, e.g. read the count from `roster-manifest.json` after the shallow clone instead of a hardcoded literal.
+- [ ] **`.claude-plugin/marketplace.json:11` is a fifth stale version surface.** The `dcoe-roster` plugin description reads `Matches CLAUDE.md v3.4` (stale against `CLAUDE.md.template`'s current v3.7) and points at `agent-bodies-reference/bootstrap.sh` as the bootstrap path, superseded by `bootstrap.mjs` since CORE 1.5. Filed 2026-09-22 during the investigator-agent spec (task 10), not fixed there. Needs its own small spec-or-single-edit task deciding whether marketplace-level descriptions should carry version strings at all, given they are a known drift surface.
+- [ ] **`agent-bodies-reference/debugger.md:4`'s `tools` list omits `Write`, while `debugger.md:44` instructs it to write findings to `docs/bugs/<slug>.md`.** Live instance of exactly the defect the `investigator` agent spec (`docs/specs/2026-09-22-investigator-agent.md`) fixed in its own body (Codex finding, 2026-09-22). Not fixed here — a roster agent body change is its own structural change under repo hard rule 5 — but filed so it is not lost.
+
 - [ ] **Full Operations/Pappa T historical-reference sweep — deferred, not
       done.** 2026-08-20's retirement fix was scoped narrowly to rollout
       mechanics only (this repo's `CLAUDE.md` Project Overview/Essential
