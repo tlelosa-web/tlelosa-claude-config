@@ -2,7 +2,7 @@
 
 # Architecture: DCOE (Domain → Context → Orchestrate → Execute)
 
-# Version: 3.6 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
+# Version: 3.7 | Owner: Tebello Lelosa | Stack: see PROJECT OVERVIEW
 
 > Loaded at the start of every Claude Code session.
 > Single source of truth for how this project operates.
@@ -138,6 +138,7 @@ confirm the active roster, and `/doctor` if a name conflict is suspected.
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
 |`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
+|`investigator`|`~/.claude/agents/investigator.md`|Retrospective root-cause analysis of project delays/blockers (report-only)|
 
 ### Model routing (via OpenRouter)
 
@@ -421,7 +422,7 @@ project-root/
 │   └── specs/                   ← Feature specs (pre-build)
 ├── .claude/
 │   ├── agents/                  ← PROJECT-LEVEL OVERRIDES ONLY.
-│   │                                Default 9-agent roster lives in
+│   │                                Default 11-agent roster lives in
 │   │                                ~/.claude/agents/ (user-level) and
 │   │                                applies to this project automatically.
 │   │                                Only add a file here to override a
@@ -450,7 +451,9 @@ project-root/
 ├── reviewer.md
 ├── doc-writer.md
 ├── debugger.md
-└── data-agent.md
+├── data-agent.md
+├── explore.md
+└── investigator.md
 ```
 
 -----
@@ -532,5 +535,7 @@ escalation trigger — which documents `architect`'s pin instead of leaving it
 contradicting the "Opus is earned" rule; and moved every escalation target
 from `claude-opus-4-8` to `claude-opus-5`, since escalating from a 5-family
 default to a 4.8-family Opus moved to an older model.*
+
+*v3.7 change: added the `investigator` row to the sub-agent roster table — retrospective root-cause analysis of project delays/blockers, report-only, no standing model pin. Spec: `docs/specs/2026-09-22-investigator-agent.md` in `tlelosa-claude-config`.*
 
 *Last review: August 2026 — Tebello Lelosa*

@@ -1,7 +1,7 @@
 {
   "$comment": "Single source of truth for what the DCOE roster IS. Consumed by bootstrap.mjs. Keep in step with CORE.md's roster and model-routing tables — spec: docs/specs/2026-08-09-universal-roster-and-codex-gate.md (in the Claude-Code hub).",
   "manifestVersion": 1,
-  "coreVersion": "1.12",
+  "coreVersion": "1.13",
   "agents": [
     { "file": "domain.md",     "model": "claude-sonnet-5",  "effort": "medium", "role": "Session start, scope confirmation" },
     { "file": "planner.md",    "model": "claude-sonnet-5",  "effort": "medium", "role": "Break features into spec + tasks" },
@@ -12,7 +12,8 @@
     { "file": "doc-writer.md", "model": "claude-sonnet-5",  "effort": "medium", "role": "Update docs, README, changelogs" },
     { "file": "debugger.md",   "model": "claude-sonnet-5",  "effort": "medium", "role": "Systematic bug investigation" },
     { "file": "data-agent.md", "model": "claude-sonnet-5",  "effort": "medium", "role": "Excel/CSV transforms, report processing" },
-    { "file": "explore.md",    "model": "claude-haiku-4-5", "effort": "low",    "role": "Read-only search/grep tier" }
+    { "file": "explore.md",    "model": "claude-haiku-4-5", "effort": "low",    "role": "Read-only search/grep tier" },
+    { "file": "investigator.md", "model": "claude-sonnet-5", "effort": "medium", "role": "Retrospective root-cause analysis of project delays/blockers, report-only" }
   ],
   "requiredPlugins": [
     "dcoe-roster@tlelosa-claude-config",

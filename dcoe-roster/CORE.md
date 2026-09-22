@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.12** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.13** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -156,6 +156,7 @@ semantics carry over unchanged. Spec:
 |`debugger`  |`~/.claude/agents/debugger.md`  |Systematic bug investigation           |
 |`data-agent`|`~/.claude/agents/data-agent.md`|Excel/CSV transforms, report processing|
 |`Explore`   |`~/.claude/agents/explore.md`   |Read-only search/grep (Haiku tier)     |
+|`investigator`|`~/.claude/agents/investigator.md`|Retrospective root-cause analysis of project delays/blockers, report-only|
 
 ### Model routing
 

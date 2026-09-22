@@ -21,10 +21,10 @@ Use the **local working-copy path above**, not the installed-plugin path
 projects use — this repo IS the source of that file, and the installed copy
 may lag behind the branch being edited.
 
-Also check whether `~/.claude/agents/` (user-level only) contains all 10
+Also check whether `~/.claude/agents/` (user-level only) contains all 11
 expected roster filenames (`architect.md`, `data-agent.md`, `debugger.md`,
-`doc-writer.md`, `domain.md`, `executor.md`, `explore.md`, `planner.md`,
-`reviewer.md`, `tester.md` — e.g. via `ls ~/.claude/agents/`). As of CORE 1.5
+`doc-writer.md`, `domain.md`, `executor.md`, `explore.md`, `investigator.md`,
+`planner.md`, `reviewer.md`, `tester.md` — e.g. via `ls ~/.claude/agents/`). As of CORE 1.5
 this deploys itself: the `dcoe-roster` plugin's `SessionStart` hook runs
 `agent-bodies-reference/bootstrap.mjs` on every session, missing-only so
 local agent edits survive. If any are still missing after that ran, the
@@ -56,7 +56,7 @@ Content:     Shared tooling only — NEVER project content or company data
 - `.claude-plugin/marketplace.json` — the catalog Claude Code reads.
 - `dcoe-roster/` — ships `CORE.md` only (shared core, ADR-007). Does **not**
   ship agent bodies; those were stripped 2026-07-29.
-- `agent-bodies-reference/` — the 10 roster agent bodies, the copy-source
+- `agent-bodies-reference/` — the 11 roster agent bodies, the copy-source
   for a new machine's `~/.claude/agents/`. Deployed automatically by
   `dcoe-roster`'s `SessionStart` hook (`bootstrap.mjs`, CORE 1.5+);
   `bootstrap.sh` is the pre-1.5 manual fallback.
