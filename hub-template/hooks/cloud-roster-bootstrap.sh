@@ -16,7 +16,7 @@ if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
   exit 0
 fi
 
-EXPECTED_COUNT=10
+EXPECTED_COUNT=11
 AGENTS_DIR="$HOME/.claude/agents"
 
 if [ -d "$AGENTS_DIR" ]; then
