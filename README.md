@@ -12,9 +12,9 @@ company data. Deliberately generic so it's safe to clone on either machine.
   hard rules), distributed to any project via a plain read instruction in
   that project's own `CLAUDE.md` (not a Claude Code `@import` — those
   don't resolve absolute paths outside the project tree). See `ADR-007` in
-  the `Operations` hub's `docs/decisions/` for the full design. The 9
+  the `Operations` hub's `docs/decisions/` for the full design. The 11
   roster agent bodies (domain, planner, architect, executor, tester,
-  reviewer, doc-writer, debugger, data-agent) are **not** shipped by this
+  reviewer, doc-writer, debugger, data-agent, explore, investigator) are **not** shipped by this
   plugin — they live at `~/.claude/agents/` on each machine (user level,
   authoritative). `agent-bodies-reference/` at repo root holds copies to
   bootstrap a new machine from (2026-07-29: stripped from the plugin to
@@ -112,7 +112,7 @@ plugins listed in `roster-manifest.json`, and re-heals the directory if it is
 ever emptied. Steady state is silent; it speaks only when it changes
 something or hits a problem.
 
-Verify with `/agents` — all ten show up unprefixed, with no `dcoe-roster:*`
+Verify with `/agents` — all eleven show up unprefixed, with no `dcoe-roster:*`
 or `<sha>:*` duplicates. `node agent-bodies-reference/bootstrap.mjs --check`
 reports roster state without writing anything.
 
