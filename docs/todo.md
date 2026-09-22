@@ -5,6 +5,75 @@ completed task; one task = one commit.
 
 ## Done
 
+- [x] Added the `investigator` roster agent (11th agent) — 10 atomic tasks per
+      `docs/specs/2026-09-22-investigator-agent.md`, merged via
+      [PR #37](https://github.com/tlelosa-web/tlelosa-claude-config/pull/37)
+      (merge commit `053512b`, 2026-09-22). One entry per task, per this
+      repo's `docs/specs/2026-08-12-done-sha-citation.md` convention —
+      each SHA verified via `git log origin/main --oneline -- <path>`:
+      - [x] Task 1 — `agent-bodies-reference/investigator.md` (new file,
+            agent body). Verified: commit `7407650` (2026-09-22).
+      - [x] Task 2 — `dcoe-roster/CORE.md` roster row + Core 1.12 → 1.13.
+            Verified: commit `f97b23a` (2026-09-22) is the most recent
+            change to this file on `origin/main` — it is the corrective
+            commit that restored task 2's original change (`22c8f01`)
+            after task 8's commit accidentally reverted it mid-dispatch;
+            content confirmed live-correct on `origin/main` at close-out.
+      - [x] Task 3 — `agent-bodies-reference/roster-manifest.json`
+            investigator entry + `coreVersion` 1.13. Verified: commit
+            `09e99c6` (2026-09-22).
+      - [x] Task 4 — `agent-bodies-reference/bootstrap.sh` AGENTS array +
+            4 count-mention bumps to 11. Verified: commit `627cd73`
+            (2026-09-22).
+      - [x] Task 5 — this repo's `CLAUDE.md` roster count bumps (2
+            non-adjacent edits). Verified: commit `c2ea158` (2026-09-22).
+      - [x] Task 6 — `CLAUDE.md.template` investigator row + v3.6 → v3.7 +
+            changelog + stale 9-agent tree fix. Verified: commit `e1f8012`
+            (2026-09-22).
+      - [x] Task 7 — `dcoe-roster/plugin.json` version 3.12.1 → 3.13.0 +
+            synced description version strings. Verified: commit `a2a99e7`
+            (2026-09-22).
+      - [x] Task 8 — `hub-template/hooks/cloud-roster-bootstrap.sh`
+            `EXPECTED_COUNT` 10 → 11. Verified: same-day corrective commit
+            `f97b23a` is the most recent change to this file on
+            `origin/main` (task 8's own edit, `4d92348`, is intact —
+            the corrective commit only touched `CORE.md`/`README.md`,
+            confirmed by diff); `EXPECTED_COUNT=11` confirmed live on
+            `origin/main` at close-out.
+      - [x] Task 9 — `README.md` roster count + filename list (2
+            non-adjacent edits). Verified: commit `f97b23a` (2026-09-22)
+            is the most recent change to this file on `origin/main` — the
+            corrective commit that restored task 9's original change
+            (`49448bb`) after task 8's commit accidentally reverted it;
+            content confirmed live-correct on `origin/main` at close-out.
+      - [x] Task 10 — `docs/todo.md`: this Done block + the 3 follow-up
+            queue items below (filed pre-merge, commit `666977d`,
+            2026-09-22).
+      **Final cross-check (2026-09-22), verified directly against
+      `origin/main` after merge — not inferred from the task list:**
+      `CORE.md` Core version 1.13 = `roster-manifest.json` `coreVersion`
+      1.13 = `plugin.json` description "v1.13"; `plugin.json.version`
+      3.13.0; `CLAUDE.md.template` v3.7 = `plugin.json` description
+      "matching CLAUDE.md v3.7" — all equal (AC3/AC7). `EXPECTED_COUNT=11`
+      = `roster-manifest.json` `agents[]` length 11 = `bootstrap.sh`
+      `AGENTS` array length 11 — all equal (AC8). `agent-bodies-reference/`
+      (11 `.md` files) ↔ manifest `agents[]` (11 entries) — identical sets,
+      checked both directions (AC11b). **Not yet run:** AC11a's sequenced
+      `node agent-bodies-reference/bootstrap.mjs` (real run) then
+      `--check` — needs an actual bootstrap invocation (a fresh session or
+      manual run), not done as part of this merge; queued as the next
+      verification step, not a blocker on this Done entry (the source-tree
+      and manifest state it would confirm is already verified above).
+      **One defect caught and fixed mid-dispatch, recorded here for the
+      historical record:** task 8's executor built its commit via
+      low-level git plumbing against a stale branch snapshot, which
+      silently reverted task 2's and task 9's changes while keeping its
+      own edit intact. Two downstream executors (tasks 3 and 7) caught
+      this independently by re-verifying live file state before
+      committing, per Hard Rule 12, and refused to proceed on the bad
+      base rather than build on it. Fixed via corrective commit `f97b23a`
+      before tasks 3 and 7 were retried against the corrected base.
+
 - [x] Set up the repo itself with the DCOE framework (slim profile):
       root `CLAUDE.md`, `docs/todo.md`, `docs/specs/` (2026-07-21)
 - [x] Adapt a minimal `/continue` for this repo:
