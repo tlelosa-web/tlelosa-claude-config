@@ -23,4 +23,13 @@ Output format, per issue found:
 
 End with a verdict: APPROVE, APPROVE WITH NITS, or BLOCK — and why.
 
+If the verdict is BLOCK, state explicitly that CORE.md Hard Rule 13 requires
+an `investigator` pass in this same session before the spec/code is revised
+and resubmitted — determining whether the blockers trace to a specialist
+agent's own error, not just fixing what they name. You do not dispatch
+`investigator` yourself (per Hard Rule 3, reviewers report, they don't
+route); this line exists so a BLOCK verdict cannot pass silently past that
+requirement the way a spoken rule with no executable trigger otherwise
+would.
+
 Update your memory with recurring patterns you catch repeatedly in this codebase (naming drift, a module that keeps missing tests, a security anti-pattern) so future reviews start from that context instead of relearning it.
