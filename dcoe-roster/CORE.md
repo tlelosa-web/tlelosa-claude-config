@@ -1,6 +1,6 @@
 # CORE.md — DCOE Shared Core
 
-**Core version: 1.13** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
+**Core version: 1.14** | Source: `tlelosa-claude-config` (`dcoe-roster` plugin) | Owner: Tebello Lelosa
 
 > Shared, reusable core for every Fan Movement / Tebello Lelosa project running
 > the DCOE pattern: the DCOE architecture, the sub-agent roster, model
@@ -91,7 +91,11 @@ complex task is routed through four stages. Never collapse them.
    and the loop repeats. Only the `reviewer` agent's APPROVE exits the loop
    into Execute. The loop is manual and owner/reviewer-directed — no
    automatic retry count or escalation; a spec can cycle as many times as
-   the reviewer requires.
+   the reviewer requires. **Every BLOCK verdict also triggers an
+   `investigator` pass in the same session, per Hard Rule 13** — the loop
+   does not just repeat toward APPROVE, it also asks whether the blocker
+   traces to a specialist agent's own process error, before the spec is
+   revised and resubmitted.
 
 -----
 
@@ -287,6 +291,22 @@ relax these.
    both correctable by reading the primary file directly) — the corroboration
    in a different project the original learning's own Next Steps called for
    before generalizing beyond schema/contract claims.
+13. **Every `reviewer` BLOCK verdict triggers an `investigator` pass in the
+   same session** — not merely fixing what the blockers name, but determining
+   whether the blockers trace to a specialist agent's own error (planner, an
+   amendment fold-in, an Executor, the reviewer itself on a prior pass, etc.).
+   `investigator`'s finding must be filed as a `shared-memory/learnings/`
+   entry — new, or an added instance on an existing learning — per Hard Rule
+   11's install-not-just-record discipline; a BLOCK that recurs the same
+   failure mode with no learning filed is that gap repeating itself.
+   Diagnosis and hand-off only — `investigator` does not fix anything itself.
+   Adopted 2026-09-22 in `ai-product-factory`, first applied to the review
+   cycle on `docs/specs/2026-09-22-security-critical-fixes.md` (3 straight
+   review rounds, 2 BLOCKs, each catching a defect introduced by the prior
+   round's own fix — exactly the pattern this rule exists to catch and
+   record, not just survive). Promoted here (Core 1.14) as a universal rule:
+   this applies to any project's `reviewer` BLOCK, spec or code/merge review
+   alike, not only `ai-product-factory`'s own review chain.
 
 -----
 
