@@ -47,12 +47,38 @@ that, stop and warn instead.
    > why. Be concrete and reference the spec's own wording. If the spec is
    > sound, say so briefly rather than inventing objections.
 
-4. **Call Codex, fail-warn, 90 s cap, no retry.** Run via Bash:
-   `timeout 90 codex exec --skip-git-repo-check "$(cat <payload-file>)"`
-   capturing stdout. Any failure — `codex` not installed, no credentials,
-   network/proxy failure, rate limit, non-zero exit, empty output, or the
-   90 s timeout — means Codex is unavailable this run. Do not stop yet —
-   go to step 4a (local fallback) before falling back to solo.
+4. **Pre-flight model check, then call Codex, fail-warn, 90 s cap, no
+   retry.** Before spending the real review call's budget, run a cheap
+   20 s-capped smoke test with the exact same invocation shape:
+   `timeout 20 codex exec --skip-git-repo-check "reply with the single word: pong"`.
+   This exists because the configured model in `~/.codex/config.toml`
+   (`model = "..."`) can be silently retired by OpenAI between sessions —
+   found 2026-09-24, when a pinned `gpt-5.5` started returning
+   `unexpected status 404 Not Found: The model "gpt-5.5" does not exist or
+   you do not have access to it.` on every call, while a different model
+   (`gpt-5.6-terra`) worked fine on the same token in the same minute. That
+   error text is a **config problem, not a Codex-unavailable problem** —
+   worth surfacing distinctly rather than letting it read as a generic
+   outage:
+   - If the probe's output contains `does not exist or you do not have
+     access to it` (a model-id rejection): print
+     `codex-review: configured model in ~/.codex/config.toml is invalid or
+     retired (<model from the error text>) — update its \`model = \` line
+     to a currently available id (cross-check ~/.codex/models_cache.json,
+     or test candidates directly with \`codex exec --model <id>
+     "ping"\`) before Tier 1 can run again.` Log state `warned (stale
+     model config: <model>)` and go straight to step 4a — do not retry
+     the real payload against a model already shown to be rejected.
+   - Any other probe failure (not installed, no credentials, network/proxy
+     failure, rate limit, non-zero exit, empty output, or the 20 s
+     timeout) is an ordinary "Codex unavailable this run" — go to step 4a
+     as before.
+   - If the probe succeeds, its own output is discarded (it is a smoke
+     test, not the review) and the real call proceeds:
+     `timeout 90 codex exec --skip-git-repo-check "$(cat <payload-file>)"`
+     capturing stdout, same fail-warn/no-retry rule as before — any
+     failure here (having passed the probe) is treated as an ordinary
+     Codex-unavailable outcome, go to step 4a.
 
 4a. **Local fallback (tier 2), only on Codex failure.** Check for
    `${CLAUDE_PROJECT_DIR}/scripts/qwen-review.sh` with a file-existence
